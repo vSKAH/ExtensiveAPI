@@ -32,12 +32,14 @@ public abstract class LastModule {
 
     public void onEnable() {
         LastSkyCore.getListeners().parallelStream().filter(e -> e.getModuleName().equals(moduleOptions.getModuleName())).forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, LastSkyCore.getInstance()));
+        LastSkyCore.getCommands().parallelStream().filter(e -> e.getModuleName().equals(moduleOptions.getModuleName())).forEach(command -> LastSkyCore.getInstance().getCommandManager().getCommandManager().registerCommand(command));
         setModuleState(ModuleState.ENABLED);
         printModuleInformations();
     }
 
     public void onDisable() {
         LastSkyCore.getListeners().parallelStream().filter(e -> e.getModuleName().equals(moduleOptions.getModuleName())).forEach(HandlerList::unregisterAll);
+        LastSkyCore.getCommands().parallelStream().filter(e -> e.getModuleName().equals(moduleOptions.getModuleName())).forEach(command -> LastSkyCore.getInstance().getCommandManager().getCommandManager().unregisterCommand(command));
         setModuleState(ModuleState.DISABLED);
         printModuleInformations();
     }
