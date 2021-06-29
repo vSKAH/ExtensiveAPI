@@ -1,0 +1,6 @@
+name: LastSkyCore
+description: A Core plugin for LastSky Server
+main: fr.skah.lastskycore.LastSkyCore
+author: vSKAH#0075
+version: 1.0-SNAPSHOT
+api-version: 1.13
