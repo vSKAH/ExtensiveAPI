@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 
 
@@ -24,6 +26,7 @@ public abstract class LastModule {
     private ModuleOption moduleOptions;
     private ModuleState moduleState;
     private Logger logger;
+    private static final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
 
     public void onRegister() {
         setLogger(LoggerFactory.getLogger(moduleOptions.getModuleName()));
@@ -40,6 +43,7 @@ public abstract class LastModule {
     public void onDisable() {
         LastSkyCore.getListeners().parallelStream().filter(e -> e.getModuleName().equals(moduleOptions.getModuleName())).forEach(HandlerList::unregisterAll);
         LastSkyCore.getCommands().parallelStream().filter(e -> e.getModuleName().equals(moduleOptions.getModuleName())).forEach(command -> LastSkyCore.getInstance().getCommandManager().getCommandManager().unregisterCommand(command));
+        getScheduledExecutorService().shutdown();
         setModuleState(ModuleState.DISABLED);
         printModuleInformations();
     }
@@ -83,6 +87,10 @@ public abstract class LastModule {
         logger.info(" Can Be Disabled: " + (moduleOptions.isCanBeDisabled() ? "yes" : "no"));
         logger.info(" State: " + (moduleState == ModuleState.ENABLED ? "Enabled" : "Disabled"));
         logger.info("-----------------------------------");
+    }
+
+    public static ScheduledExecutorService getScheduledExecutorService() {
+        return scheduledExecutorService;
     }
 
     public ModuleOption getModuleOptions() {
