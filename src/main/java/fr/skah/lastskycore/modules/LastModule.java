@@ -6,8 +6,8 @@ package fr.skah.lastskycore.modules;
  *  * @Author Jimmy
  */
 
-import co.aikar.commands.BaseCommand;
 import fr.skah.lastskycore.LastSkyCore;
+import fr.skah.lastskycore.api.LastCommand;
 import fr.skah.lastskycore.api.LastListener;
 import fr.skah.lastskycore.modules.loader.ModuleOption;
 import org.bukkit.Bukkit;
@@ -51,7 +51,7 @@ public abstract class LastModule {
     public void unregister() {
         onDisable();
         List<LastListener> listeners = LastSkyCore.getListeners().stream().filter(e -> e.getModuleName().equals(moduleOptions.getModuleName())).collect(Collectors.toList());
-        List<BaseCommand> commands = LastSkyCore.getCommands().stream().filter(e -> e.getModuleName().equals(moduleOptions.getModuleName())).collect(Collectors.toList());
+        List<LastCommand> commands = LastSkyCore.getCommands().stream().filter(e -> e.getModuleName().equals(moduleOptions.getModuleName())).collect(Collectors.toList());
 
         listeners.forEach(LastSkyCore.getListeners()::remove);
         commands.forEach(LastSkyCore.getCommands()::remove);
@@ -59,7 +59,7 @@ public abstract class LastModule {
 
         listeners.clear();
         commands.clear();
-        logger.info(" Module has been unregistred");
+        logger.info(" Module has been unregistered");
     }
 
     public ModuleState getModuleState() {
