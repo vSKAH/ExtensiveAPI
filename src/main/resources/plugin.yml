@@ -1,6 +1,6 @@
-name: LastSkyCore
-description: A Core plugin for LastSky Server
-main: fr.skah.lastskycore.LastSkyCore
+name: SK-MDL
+description: A Module core plugin by vSKAH
+main: fr.skah.skmdl.ModulesPlugin
 author: vSKAH#0075
 version: 1.0-SNAPSHOT
-api-version: 1.13
+api-version: 1.16

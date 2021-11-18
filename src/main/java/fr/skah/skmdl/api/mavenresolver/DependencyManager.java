@@ -1,4 +1,4 @@
-package fr.skah.lastskycore.mavenresolver;
+package fr.skah.skmdl.api.mavenresolver;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -12,7 +12,7 @@ public class DependencyManager {
     private final URLClassLoader classLoader;
     private final DependencyDownloader dependencyDownloader;
     private Method method;
-    private List<Dependency> toLoad;
+    private final List<Dependency> toLoad;
 
     /**
      * @param mainClass The main class of the application / plugin (Spigot, BungeeCoord, ...)

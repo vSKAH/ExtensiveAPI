@@ -1,4 +1,4 @@
-package fr.skah.lastskycore.mavenresolver;
+package fr.skah.skmdl.api.mavenresolver;
 
 import java.io.*;
 import java.net.URL;

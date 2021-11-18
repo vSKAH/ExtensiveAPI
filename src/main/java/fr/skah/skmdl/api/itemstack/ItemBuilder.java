@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package fr.skah.lastskycore.api.inventory;
+package fr.skah.skmdl.api.itemstack;
 
 import org.bukkit.Color;
 import org.bukkit.Material;

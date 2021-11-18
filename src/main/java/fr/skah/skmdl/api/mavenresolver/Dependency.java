@@ -1,4 +1,4 @@
-package fr.skah.lastskycore.mavenresolver;
+package fr.skah.skmdl.api.mavenresolver;
 
 public class Dependency {
 

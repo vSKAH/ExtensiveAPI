@@ -1,8 +1,8 @@
-package fr.skah.lastskycore.modules.loader;
+package fr.skah.skmdl.modules.models;
 
 /*
  *  * @Created on 2021 - 20:00
- *  * @Project LastSkyCore
+ *  * @Project SKMDL
  *  * @Author Jimmy
  */
 
