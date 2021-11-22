@@ -16,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Executors;
@@ -27,6 +28,7 @@ public abstract class Module {
     private ModuleOption moduleOptions;
     private ModuleState moduleState;
     private Logger logger;
+    private File moduleConfigurationFolder;
 
     private final Set<Listener> listeners = new HashSet<>();
     private final Set<BaseCommand> commands = new HashSet<>();
@@ -34,11 +36,13 @@ public abstract class Module {
 
     public void onStartup() {
         setLogger(LoggerFactory.getLogger(moduleOptions.getModuleName()));
+        moduleConfigurationFolder = new File(ModulesPlugin.getInstance().getDataFolder(), "modules/".concat(moduleOptions.getModuleName()));
     }
 
     public void onEnable() {
-        listeners.parallelStream().forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, ModulesPlugin.getInstance()));
-        commands.parallelStream().forEach(command -> ModulesPlugin.getInstance().getCommandManager().paperCommandManager().registerCommand(command));
+        ModulesPlugin plugin = ModulesPlugin.getInstance();
+        listeners.parallelStream().forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, plugin));
+        commands.parallelStream().forEach(command -> plugin.getCommandManager().paperCommandManager().registerCommand(command));
         setModuleState(ModuleState.ENABLED);
         printModuleInformation();
     }
@@ -91,6 +95,10 @@ public abstract class Module {
 
     public void setModuleOptions(ModuleOption moduleOptions) {
         this.moduleOptions = moduleOptions;
+    }
+
+    public File getModuleConfigurationFolder() {
+        return moduleConfigurationFolder;
     }
 
     public Set<Listener> getListeners() {

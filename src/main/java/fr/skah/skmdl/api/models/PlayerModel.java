@@ -5,13 +5,12 @@ public interface PlayerModel {
     /**
      * @return return the player uuid inside a string
      */
-    String playerUniqueId();
+    String getPlayerUniqueId();
 
 
     /**
      * @return return the player name (player.getName()) inside string
      */
-    String playerName();
-
+    String getPlayerName();
 
 }
