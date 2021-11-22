@@ -10,6 +10,8 @@ import com.google.common.collect.Maps;
 import fr.skah.skmdl.modules.enums.ModuleState;
 import fr.skah.skmdl.modules.models.Module;
 import fr.skah.skmdl.modules.models.ModuleOption;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
 
@@ -20,11 +22,19 @@ public class ModuleManager {
 
     public static void registerModule(Module module) {
         module.onStartup();
-        module.onEnable();
+        loadModule(module.getModuleOptions().getModuleName());
         modules.put(module.getModuleOptions().getModuleName(), module);
     }
 
     public static void loadModule(String moduleName) {
+        Module module = modules.get(moduleName);
+        for (String pluginDependency : module.getModuleOptions().getPluginDependencies()) {
+            Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginDependency);
+            if (plugin == null || !plugin.isEnabled()) {
+                module.getLogger().warn("Impossible de charger le module " + moduleName + ". Il manque " + pluginDependency);
+                return;
+            }
+        }
         modules.get(moduleName).onEnable();
     }
 

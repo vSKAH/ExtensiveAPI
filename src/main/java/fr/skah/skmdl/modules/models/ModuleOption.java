@@ -6,6 +6,8 @@ package fr.skah.skmdl.modules.models;
  *  * @Author Jimmy
  */
 
+import java.util.List;
+
 public class ModuleOption {
 
     private String moduleName;
@@ -14,18 +16,20 @@ public class ModuleOption {
     private String moduleAuthor;
     private String moduleVersion;
     private String moduleMainClass;
+    private List<String> pluginDependencies;
 
     public ModuleOption() {
         super();
     }
 
-    public ModuleOption(String moduleName, String moduleDescription, boolean canBeDisabled, String moduleAuthor, String moduleVersion, String moduleMainClass) {
+    public ModuleOption(String moduleName, String moduleDescription, boolean canBeDisabled, String moduleAuthor, String moduleVersion, String moduleMainClass, List<String> pluginDependencies) {
         this.moduleName = moduleName;
         this.moduleDescription = moduleDescription;
         this.canBeDisabled = canBeDisabled;
         this.moduleAuthor = moduleAuthor;
         this.moduleVersion = moduleVersion;
         this.moduleMainClass = moduleMainClass;
+        this.pluginDependencies = pluginDependencies;
     }
 
     public String getModuleName() {
@@ -50,5 +54,10 @@ public class ModuleOption {
 
     public String getModuleMainClass() {
         return moduleMainClass;
+    }
+
+
+    public List<String> getPluginDependencies() {
+        return pluginDependencies;
     }
 }

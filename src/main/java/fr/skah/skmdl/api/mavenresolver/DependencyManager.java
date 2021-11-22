@@ -62,7 +62,6 @@ public class DependencyManager {
     public void injectJar(File jarFilefolder) {
         try {
             for (File file : jarFilefolder.listFiles()) {
-                System.out.println("La librairie " + file.getName() + " vient d'être injecté avec succès !");
                 this.method.invoke(this.classLoader, file.toURI().toURL());
             }
         } catch (Exception e) {

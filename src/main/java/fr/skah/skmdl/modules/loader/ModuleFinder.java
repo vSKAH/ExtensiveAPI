@@ -51,7 +51,7 @@ public class ModuleFinder {
     private static ModuleOption getModuleOption(File file) {
         try {
             JarFile jarFile = new JarFile(file);
-            JarEntry jarEntry = jarFile.getJarEntry("module.json");
+            JarEntry jarEntry = jarFile.getJarEntry("Module.json");
             if (jarEntry == null) return null;
             return new ObjectMapper().readValue(jarFile.getInputStream(jarEntry), ModuleOption.class);
         } catch (IOException e) {
