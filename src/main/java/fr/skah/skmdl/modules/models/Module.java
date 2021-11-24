@@ -42,14 +42,14 @@ public abstract class Module {
     public void onEnable() {
         ModulesPlugin plugin = ModulesPlugin.getInstance();
         listeners.parallelStream().forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, plugin));
-        commands.parallelStream().forEach(command -> plugin.getCommandManager().paperCommandManager().registerCommand(command));
+        commands.parallelStream().forEach(command -> plugin.getCommandManager().getPaperCommandManager().registerCommand(command));
         setModuleState(ModuleState.ENABLED);
         printModuleInformation();
     }
 
     public void onDisable() {
         listeners.parallelStream().forEach(HandlerList::unregisterAll);
-        commands.parallelStream().forEach(command -> ModulesPlugin.getInstance().getCommandManager().paperCommandManager().unregisterCommand(command));
+        commands.parallelStream().forEach(command -> ModulesPlugin.getInstance().getCommandManager().getPaperCommandManager().unregisterCommand(command));
         getScheduledExecutorService().shutdown();
         setModuleState(ModuleState.DISABLED);
         printModuleInformation();

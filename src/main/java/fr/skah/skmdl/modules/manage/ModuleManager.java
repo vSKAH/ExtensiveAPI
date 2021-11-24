@@ -22,19 +22,19 @@ public class ModuleManager {
 
     public static void registerModule(Module module) {
         module.onStartup();
-        loadModule(module.getModuleOptions().getModuleName());
         modules.put(module.getModuleOptions().getModuleName(), module);
+        loadModule(module.getModuleOptions().getModuleName());
     }
 
     public static void loadModule(String moduleName) {
         Module module = modules.get(moduleName);
-        for (String pluginDependency : module.getModuleOptions().getPluginDependencies()) {
-            Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginDependency);
-            if (plugin == null || !plugin.isEnabled()) {
-                module.getLogger().warn("Impossible de charger le module " + moduleName + ". Il manque " + pluginDependency);
-                return;
+            for (String pluginDependency : module.getModuleOptions().getPluginDependencies()) {
+                Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginDependency);
+                if (plugin == null || !plugin.isEnabled()) {
+                    module.getLogger().warn("Impossible de charger le module " + moduleName + ". Il manque " + pluginDependency);
+                    return;
+                }
             }
-        }
         modules.get(moduleName).onEnable();
     }
 

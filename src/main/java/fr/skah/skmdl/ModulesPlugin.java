@@ -8,11 +8,13 @@ package fr.skah.skmdl;
 
 import co.aikar.commands.PaperCommandManager;
 import fr.skah.skmdl.api.commands.CommandLoader;
+import fr.skah.skmdl.api.events.ArmorListeners;
 import fr.skah.skmdl.api.mavenresolver.Dependency;
 import fr.skah.skmdl.api.mavenresolver.DependencyManager;
 import fr.skah.skmdl.api.smartinventory.InventoryManager;
 import fr.skah.skmdl.modules.loader.ModuleFinder;
 import fr.skah.skmdl.modules.manage.ModuleManager;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -44,8 +46,9 @@ public class ModulesPlugin extends JavaPlugin {
         commandLoader = new CommandLoader(new PaperCommandManager(this));
         commandLoader.registerDefault();
 
+        Bukkit.getPluginManager().registerEvents(new ArmorListeners(), this);
         //register and load Modules
-        ModuleFinder.getAllModules().forEach(ModuleManager::registerModule);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(ModulesPlugin.getInstance(), () -> ModuleFinder.getAllModules().forEach(ModuleManager::registerModule), 200);
     }
 
     @Override

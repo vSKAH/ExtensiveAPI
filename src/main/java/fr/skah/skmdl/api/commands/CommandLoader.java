@@ -14,7 +14,14 @@ import org.bukkit.entity.HumanEntity;
 
 import java.util.stream.Collectors;
 
-public record CommandLoader(PaperCommandManager paperCommandManager) {
+public class CommandLoader{
+
+    private final PaperCommandManager paperCommandManager;
+
+    public CommandLoader(PaperCommandManager paperCommandManager) {
+        super();
+        this.paperCommandManager = paperCommandManager;
+    }
 
     public void registerDefault() {
         paperCommandManager.enableUnstableAPI("help");
@@ -23,8 +30,7 @@ public record CommandLoader(PaperCommandManager paperCommandManager) {
         paperCommandManager.registerCommand(new ModuleCommand());
     }
 
-    @Override
-    public PaperCommandManager paperCommandManager() {
+    public PaperCommandManager getPaperCommandManager() {
         return paperCommandManager;
     }
 }
