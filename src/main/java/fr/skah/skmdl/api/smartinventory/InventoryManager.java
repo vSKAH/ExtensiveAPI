@@ -139,6 +139,7 @@ public class InventoryManager {
             }
 
             if (clickedInventory == p.getOpenInventory().getTopInventory()) {
+                e.setCancelled(true);
 
                 int row = e.getSlot() / 9;
                 int column = e.getSlot() % 9;
@@ -146,19 +147,22 @@ public class InventoryManager {
 
                 SmartInventory inv = inventories.get(p.getUniqueId());
 
-                if (!inv.isCanPut()) e.setCancelled(true);
-                else if(e.getAction() == InventoryAction.PLACE_SOME){
-                    if (row >= inv.getRows() || column >= inv.getColumns())
-                        return;
+                //   if (!inv.isCanPut() || (inv.isCanPut()) && (e.getAction() != InventoryAction.PLACE_SOME || e.getAction() != InventoryAction.PLACE_ALL || e.getAction() != InventoryAction.PLACE_ONE)) {
+                //      System.out.println(inv.isCanPut());
+                //     System.out.println(e.getAction());
+                //}
 
-                    inv.getListeners().stream()
-                            .filter(listener -> listener.getType() == InventoryClickEvent.class)
-                            .forEach(listener -> ((InventoryListener<InventoryClickEvent>) listener).accept(e));
+                if (row >= inv.getRows() || column >= inv.getColumns())
+                    return;
 
-                    contents.get(p.getUniqueId()).get(row, column).ifPresent(item -> item.run(e));
+                inv.getListeners().stream()
+                        .filter(listener -> listener.getType() == InventoryClickEvent.class)
+                        .forEach(listener -> ((InventoryListener<InventoryClickEvent>) listener).accept(e));
 
-                    p.updateInventory();
-                }
+                contents.get(p.getUniqueId()).get(row, column).ifPresent(item -> item.run(e));
+
+                p.updateInventory();
+
             }
         }
 
