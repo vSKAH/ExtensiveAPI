@@ -21,6 +21,7 @@ public class SmartInventory {
     private InventoryType type;
     private int rows, columns;
     private boolean closeable;
+    private boolean canPut;
 
     private InventoryProvider provider;
     private SmartInventory parent;
@@ -115,6 +116,8 @@ public class SmartInventory {
         this.closeable = closeable;
     }
 
+    public boolean isCanPut() {return  canPut;}
+
     public InventoryProvider getProvider() {
         return provider;
     }
@@ -142,6 +145,7 @@ public class SmartInventory {
         private InventoryType type = InventoryType.CHEST;
         private int rows = 6, columns = 9;
         private boolean closeable = true;
+        private boolean canPut = false;
 
         private InventoryManager manager;
         private InventoryProvider provider;
@@ -175,6 +179,11 @@ public class SmartInventory {
 
         public Builder closeable(boolean closeable) {
             this.closeable = closeable;
+            return this;
+        }
+
+        public Builder canPut(boolean canPut) {
+            this.canPut = canPut;
             return this;
         }
 
@@ -215,6 +224,7 @@ public class SmartInventory {
             inv.rows = this.rows;
             inv.columns = this.columns;
             inv.closeable = this.closeable;
+            inv.canPut = this.canPut;
             inv.provider = this.provider;
             inv.parent = this.parent;
             inv.listeners = this.listeners;

@@ -12,6 +12,7 @@ import fr.skah.skmdl.modules.manage.ModuleManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class CommandLoader{
@@ -28,6 +29,7 @@ public class CommandLoader{
         paperCommandManager.getCommandCompletions().registerAsyncCompletion("players", c -> Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
         paperCommandManager.getCommandCompletions().registerAsyncCompletion("modules", handler -> ModuleManager.getModules().keySet());
         paperCommandManager.registerCommand(new ModuleCommand());
+        paperCommandManager.getLocales().setDefaultLocale(Locale.FRANCE);
     }
 
     public PaperCommandManager getPaperCommandManager() {

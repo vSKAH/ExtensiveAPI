@@ -29,7 +29,7 @@ public class ModuleFinder {
         if (!MODULES_FOLDER.exists()) MODULES_FOLDER.mkdirs();
         List<Module> modules = new ArrayList<>();
         for (File moduleFileName : Objects.requireNonNull(MODULES_FOLDER.listFiles(file -> file.getName().endsWith(".jar")))) {
-            modules.add(Objects.requireNonNull(getModuleFromFile(moduleFileName.getName())));
+            modules.add(getModuleFromFile(moduleFileName.getName()));
         }
         return modules;
     }
@@ -39,7 +39,7 @@ public class ModuleFinder {
         File moduleFile = new File(MODULES_FOLDER, jarName);
         try {
             ModuleOption moduleOptions = getModuleOption(moduleFile);
-            Module module = new ModuleClassLoader(moduleFile, ModuleFinder.class.getClassLoader(), Objects.requireNonNull(moduleOptions)).getModule();
+            Module module = new ModuleClassLoader(moduleFile, ModuleFinder.class.getClassLoader(), moduleOptions).getModule();
             module.setModuleOptions(moduleOptions);
             return module;
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException | InvocationTargetException | NoSuchMethodException e) {

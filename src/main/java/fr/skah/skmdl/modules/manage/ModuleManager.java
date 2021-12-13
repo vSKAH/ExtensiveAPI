@@ -13,11 +13,11 @@ import fr.skah.skmdl.modules.models.ModuleOption;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 public class ModuleManager {
 
-    private static final Map<String, Module> modules = Maps.newHashMap();
+    private static final ConcurrentMap<String, Module> modules = Maps.newConcurrentMap();
 
 
     public static void registerModule(Module module) {
@@ -51,7 +51,7 @@ public class ModuleManager {
         return module;
     }
 
-    public static Map<String, Module> getModules() {
+    public static ConcurrentMap<String, Module> getModules() {
         return modules;
     }
 }

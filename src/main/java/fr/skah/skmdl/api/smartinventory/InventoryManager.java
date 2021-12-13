@@ -139,26 +139,26 @@ public class InventoryManager {
             }
 
             if (clickedInventory == p.getOpenInventory().getTopInventory()) {
-                e.setCancelled(true);
 
                 int row = e.getSlot() / 9;
                 int column = e.getSlot() % 9;
-
-                if (row < 0 || column < 0)
-                    return;
+                if (row < 0 || column < 0) return;
 
                 SmartInventory inv = inventories.get(p.getUniqueId());
 
-                if (row >= inv.getRows() || column >= inv.getColumns())
-                    return;
+                if (!inv.isCanPut()) e.setCancelled(true);
+                else if(e.getAction() == InventoryAction.PLACE_SOME){
+                    if (row >= inv.getRows() || column >= inv.getColumns())
+                        return;
 
-                inv.getListeners().stream()
-                        .filter(listener -> listener.getType() == InventoryClickEvent.class)
-                        .forEach(listener -> ((InventoryListener<InventoryClickEvent>) listener).accept(e));
+                    inv.getListeners().stream()
+                            .filter(listener -> listener.getType() == InventoryClickEvent.class)
+                            .forEach(listener -> ((InventoryListener<InventoryClickEvent>) listener).accept(e));
 
-                contents.get(p.getUniqueId()).get(row, column).ifPresent(item -> item.run(e));
+                    contents.get(p.getUniqueId()).get(row, column).ifPresent(item -> item.run(e));
 
-                p.updateInventory();
+                    p.updateInventory();
+                }
             }
         }
 
