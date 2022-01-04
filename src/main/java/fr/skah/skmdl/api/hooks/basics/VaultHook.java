@@ -11,7 +11,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-public class VaultHook implements Hook {
+public class VaultHook implements Hook<Economy> {
 
     private Economy vaultEconomy;
 
@@ -22,7 +22,7 @@ public class VaultHook implements Hook {
 
     @Override
     public String getClasz() {
-        return null;
+        return "net.milkbowl.vault.economy.Economy";
     }
 
     @Override

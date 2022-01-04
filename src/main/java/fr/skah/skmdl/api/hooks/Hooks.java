@@ -7,7 +7,12 @@ package fr.skah.skmdl.api.hooks;
  */
 
 import fr.skah.skmdl.api.hooks.basics.LandsHook;
+import fr.skah.skmdl.api.hooks.basics.VaultHook;
 import fr.skah.skmdl.api.hooks.basics.WorldguardHook;
+import me.angeschossen.lands.api.integration.LandsIntegration;
+import me.angeschossen.lands.api.integration.LandsIntegrator;
+import me.angeschossen.lands.api.land.Land;
+import net.milkbowl.vault.economy.Economy;
 
 import java.util.HashMap;
 
@@ -18,11 +23,11 @@ public class Hooks {
     public Hooks() {
         pluginHooks.put("WorldGuard", new WorldguardHook());
 
-        Hook vaultHook = new LandsHook();
+        Hook<Economy> vaultHook = new VaultHook();
         vaultHook.registerHook();
         pluginHooks.put(vaultHook.getHookName(), vaultHook);
 
-        Hook landsHook = new LandsHook();
+        Hook<LandsIntegration> landsHook = new LandsHook();
         landsHook.registerHook();
         pluginHooks.put(landsHook.getHookName(), landsHook);
 

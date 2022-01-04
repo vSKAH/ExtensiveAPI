@@ -10,7 +10,7 @@ import fr.skah.skmdl.ModulesPlugin;
 import fr.skah.skmdl.api.hooks.Hook;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 
-public class LandsHook implements Hook {
+public class LandsHook implements Hook<LandsIntegration> {
 
     private LandsIntegration lands;
 

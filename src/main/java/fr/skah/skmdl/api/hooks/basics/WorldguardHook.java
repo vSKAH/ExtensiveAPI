@@ -9,7 +9,7 @@ package fr.skah.skmdl.api.hooks.basics;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import fr.skah.skmdl.api.hooks.Hook;
 
-public class WorldguardHook implements Hook {
+public class WorldguardHook implements Hook<WorldGuardPlugin> {
 
     @Override
     public String getHookName() {
@@ -18,7 +18,7 @@ public class WorldguardHook implements Hook {
 
     @Override
     public String getClasz() {
-        return null;
+        return "com.sk89q.worldguard.bukkit.WorldGuardPlugin";
     }
 
     @Override
