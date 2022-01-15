@@ -12,7 +12,7 @@ public class ConfigurationExporter {
 
     public static File createConfig(@NotNull Path path, @NotNull String fileName, @NotNull Class classz) throws IOException {
         File folder = createFolder(path);
-        File file = new File(folder, fileName + ".yml");
+        File file = new File(folder, fileName);
 
         if (!file.exists()) {
             InputStream input = classz.getResourceAsStream("/" + file.getName());
