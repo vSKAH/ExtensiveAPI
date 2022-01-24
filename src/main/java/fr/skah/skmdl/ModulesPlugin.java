@@ -7,15 +7,15 @@ package fr.skah.skmdl;
  */
 
 import co.aikar.commands.PaperCommandManager;
-import fr.skah.skmdl.api.commands.CommandLoader;
-import fr.skah.skmdl.api.events.ArmorListeners;
-import fr.skah.skmdl.api.hooks.Hooks;
-import fr.skah.skmdl.api.mavenresolver.Dependency;
-import fr.skah.skmdl.api.mavenresolver.DependencyManager;
-import fr.skah.skmdl.api.smartinventory.InventoryManager;
-import fr.skah.skmdl.modules.loader.ModuleFinder;
-import fr.skah.skmdl.modules.manage.ModuleManager;
-import fr.skah.skmdl.modules.models.Module;
+import fr.skah.skmdl.api.spigot.commands.CommandLoader;
+import fr.skah.skmdl.api.spigot.events.ArmorListeners;
+import fr.skah.skmdl.api.spigot.hooks.Hooks;
+import fr.skah.skmdl.api.commons.mavenresolver.Dependency;
+import fr.skah.skmdl.api.commons.mavenresolver.DependencyManager;
+import fr.skah.skmdl.api.spigot.smartinventory.InventoryManager;
+import fr.skah.skmdl.api.spigot.modules.loader.ModuleFinder;
+import fr.skah.skmdl.api.spigot.modules.manage.ModuleManager;
+import fr.skah.skmdl.api.spigot.modules.models.Module;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

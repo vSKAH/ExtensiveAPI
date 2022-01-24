@@ -1,7 +1,7 @@
 name: SK-MDL
 description: A Module core plugin by vSKAH
 main: fr.skah.skmdl.ModulesPlugin
-author: vSKAH#0075
+author: SKAH#7513
 version: 1.1-SNAPSHOT
 api-version: 1.16
 load: POSTWORLD

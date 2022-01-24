@@ -45,12 +45,6 @@
             <version>0.5.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>provided</scope>
-        </dependency>
 
         <!-- Hooks -->
 
@@ -76,6 +70,11 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.0.1</version>
+        </dependency>
 
     </dependencies>
 
