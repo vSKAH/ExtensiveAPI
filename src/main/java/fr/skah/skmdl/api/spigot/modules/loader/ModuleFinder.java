@@ -7,7 +7,7 @@ package fr.skah.skmdl.api.spigot.modules.loader;
  */
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.skah.skmdl.ModulesPlugin;
+import fr.skah.skmdl.api.spigot.ModulesPlugin;
 import fr.skah.skmdl.api.spigot.modules.models.Module;
 import fr.skah.skmdl.api.spigot.modules.models.ModuleOption;
 

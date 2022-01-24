@@ -7,7 +7,7 @@ package fr.skah.skmdl.api.spigot.protections;
  */
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import fr.skah.skmdl.ModulesPlugin;
+import fr.skah.skmdl.api.spigot.ModulesPlugin;
 import fr.skah.skmdl.api.spigot.hooks.Hooks;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 import me.angeschossen.lands.api.land.Land;

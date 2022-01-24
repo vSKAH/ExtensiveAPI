@@ -6,7 +6,7 @@ package fr.skah.skmdl.api.spigot.hooks.basics;
  *  * @Author jimmy  / vSKAH#0075
  */
 
-import fr.skah.skmdl.ModulesPlugin;
+import fr.skah.skmdl.api.spigot.ModulesPlugin;
 import fr.skah.skmdl.api.spigot.hooks.Hook;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 

@@ -1,4 +1,4 @@
-package fr.skah.skmdl;
+package fr.skah.skmdl.api.spigot;
 
 /*
  *  * @Created on 2021 - 17:58

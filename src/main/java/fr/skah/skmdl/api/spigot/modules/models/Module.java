@@ -7,7 +7,7 @@ package fr.skah.skmdl.api.spigot.modules.models;
  */
 
 import co.aikar.commands.BaseCommand;
-import fr.skah.skmdl.ModulesPlugin;
+import fr.skah.skmdl.api.spigot.ModulesPlugin;
 import fr.skah.skmdl.api.spigot.modules.enums.ModuleState;
 import fr.skah.skmdl.api.spigot.modules.manage.ModuleManager;
 import org.bukkit.Bukkit;

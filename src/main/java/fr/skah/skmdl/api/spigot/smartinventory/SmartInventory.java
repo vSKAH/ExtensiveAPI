@@ -1,6 +1,6 @@
 package fr.skah.skmdl.api.spigot.smartinventory;
 
-import fr.skah.skmdl.ModulesPlugin;
+import fr.skah.skmdl.api.spigot.ModulesPlugin;
 import fr.skah.skmdl.api.spigot.smartinventory.content.InventoryContents;
 import fr.skah.skmdl.api.spigot.smartinventory.content.InventoryProvider;
 import fr.skah.skmdl.api.spigot.smartinventory.opener.InventoryOpener;
