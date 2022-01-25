@@ -9,48 +9,46 @@ package fr.skah.skmdl.api.data.sql;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import fr.skah.skmdl.api.commons.configuration.ConfigurationExporter;
-import fr.skah.skmdl.api.data.database.IDatabase;
+import fr.skah.skmdl.api.data.IDataSource;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class SQLManager implements IDatabase {
+public class SQLDataSource implements IDataSource {
 
-    private static SQLManager INSTANCE;
+    private static SQLDataSource instance;
     private final File configurationFile;
     private HikariDataSource hikariDataSource;
 
-    public SQLManager(final File configurationFile)
-    {
+    public SQLDataSource(final File configurationFile) {
         this.configurationFile = configurationFile;
-        SQLManager.INSTANCE = this;
+        instance = this;
     }
 
     @Override
-    public void open() {
+    public void openDataSource() {
         try {
             this.hikariDataSource = new HikariDataSource(new HikariConfig(ConfigurationExporter.createConfig(configurationFile, this.getClass().getResourceAsStream("/hikari.properties"), false).getPath()));
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
     @Override
-    public boolean isClosed() {
-        try {
-            return this.hikariDataSource == null || this.hikariDataSource.getConnection().isClosed();
-        }
-        catch (SQLException e) {
-            return false;
-        }    }
+    public boolean dataSourceIsOpen() throws SQLException {
+        return this.hikariDataSource != null && !this.hikariDataSource.getConnection().isClosed();
+    }
 
     @Override
-    public void close() {
-        if (!this.isClosed()) {
-            this.hikariDataSource.close();
+    public void closeDataSource() {
+        try {
+            if (this.dataSourceIsOpen()) {
+                this.hikariDataSource.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -58,8 +56,8 @@ public class SQLManager implements IDatabase {
         return this.hikariDataSource;
     }
 
-    public static SQLManager getInstance() {
-        return SQLManager.INSTANCE;
+    public static SQLDataSource getInstance() {
+        return instance;
     }
 
 }
