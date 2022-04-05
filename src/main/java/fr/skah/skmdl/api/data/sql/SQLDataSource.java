@@ -27,12 +27,8 @@ public class SQLDataSource implements IDataSource {
     }
 
     @Override
-    public void openDataSource() {
-        try {
-            this.hikariDataSource = new HikariDataSource(new HikariConfig(ConfigurationExporter.createConfig(configurationFile, this.getClass().getResourceAsStream("/hikari.properties"), false).getPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void openDataSource() throws IOException {
+        this.hikariDataSource = new HikariDataSource(new HikariConfig(ConfigurationExporter.createConfig(configurationFile, this.getClass().getResourceAsStream("/hikari.properties"), false).getPath()));
     }
 
 
