@@ -6,6 +6,7 @@ package fr.skah.skmdl.api.spigot.hooks;
  *  * @Author jimmy  / vSKAH#0075
  */
 
+import fr.skah.skmdl.api.spigot.hooks.basics.JobsHook;
 import fr.skah.skmdl.api.spigot.hooks.basics.LandsHook;
 import fr.skah.skmdl.api.spigot.hooks.basics.VaultHook;
 import fr.skah.skmdl.api.spigot.hooks.basics.WorldguardHook;
@@ -19,16 +20,18 @@ public class Hooks {
     private final HashMap<String, Hook> pluginHooks = new HashMap<>();
 
     public Hooks() {
-        pluginHooks.put("WorldGuard", new WorldguardHook());
+        hookDefaultsPlugins();
+    }
 
-        Hook<Economy> vaultHook = new VaultHook();
-        vaultHook.registerHook();
-        pluginHooks.put(vaultHook.getHookName(), vaultHook);
+    private void hookDefaultsPlugins() {
+        hookPlugin(new WorldguardHook());
+        hookPlugin(new VaultHook());
+        hookPlugin(new LandsHook());
+        hookPlugin(new JobsHook());
+    }
 
-        Hook<LandsIntegration> landsHook = new LandsHook();
-        landsHook.registerHook();
-        pluginHooks.put(landsHook.getHookName(), landsHook);
-
+    public void hookPlugin(Hook hook) {
+        if (hook.registerHook()) pluginHooks.put(hook.getHookName(), hook);
     }
 
     public HashMap<String, Hook> getLoaded() {

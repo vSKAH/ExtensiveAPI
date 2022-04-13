@@ -22,7 +22,9 @@ public class WorldguardHook implements Hook<WorldGuardPlugin> {
     }
 
     @Override
-    public void registerHook() {}
+    public boolean registerHook() {
+        return pluginEnabled();
+    }
 
     @Override
     public WorldGuardPlugin get() {

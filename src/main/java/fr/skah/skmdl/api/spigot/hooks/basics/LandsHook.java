@@ -15,8 +15,10 @@ public class LandsHook implements Hook<LandsIntegration> {
     private LandsIntegration lands;
 
     @Override
-    public void registerHook() {
+    public boolean registerHook() {
+        if(!pluginEnabled()) return false;
         this.lands = new LandsIntegration(ModulesPlugin.getInstance());
+        return true;
     }
 
     @Override

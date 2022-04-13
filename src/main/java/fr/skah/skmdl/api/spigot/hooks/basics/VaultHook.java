@@ -26,10 +26,12 @@ public class VaultHook implements Hook<Economy> {
     }
 
     @Override
-    public void registerHook() {
+    public boolean registerHook() {
+        if(!pluginEnabled()) return false;
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) return;
+        if (rsp == null) return false;
         vaultEconomy = rsp.getProvider();
+        return true;
     }
 
     @Override

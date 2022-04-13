@@ -14,7 +14,7 @@ public interface Hook<R> {
 
     String getClasz();
 
-    void registerHook();
+     boolean registerHook();
 
     R get();
 
