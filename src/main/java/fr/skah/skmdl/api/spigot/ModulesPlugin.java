@@ -40,9 +40,9 @@ public class ModulesPlugin extends JavaPlugin {
         DependencyManager dependencyManager = new DependencyManager(this.getClass());
 
         dependencyManager.preLoad(new Dependency("", "command-api", "", "https://repo.aikar.co/nexus/content/groups/aikar/co/aikar/acf-paper/0.5.1-SNAPSHOT/acf-paper-0.5.1-20211222.025603-2.jar", true));
-        dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-core", "2.13.1"));
-        dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-databind", "2.13.1"));
-        dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-annotations", "2.13.1"));
+        dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-core", "2.13.2"));
+        dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-databind", "2.13.2.2"));
+        dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-annotations", "2.13.2"));
 
         dependencyManager.dl(getDependenciesFolder()).injectJar(getDependenciesFolder());
 

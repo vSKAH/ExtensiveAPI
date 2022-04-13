@@ -7,6 +7,7 @@ package fr.skah.skmdl.api.spigot.json;
  */
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import fr.skah.skmdl.api.spigot.ModulesPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +22,11 @@ public abstract class IDataSerialisable<T> {
 
     public T load(File file, Class<T> tClass) {
         try {
-            return getMinecraftObjectMapper().getObjectMapper().readValue(file, tClass);
+            T type = getMinecraftObjectMapper().getObjectMapper().readValue(file, tClass);
+            if(ModulesPlugin.getInstance() != null && ModulesPlugin.getInstance().isEnabled()) {
+                ModulesPlugin.getInstance().getLogger().info("File ".concat(file.getAbsolutePath()).concat(" has been loaded"));
+            }
+            return type;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,6 +40,9 @@ public abstract class IDataSerialisable<T> {
     public void save(File file, Object object) {
         try {
             getMinecraftObjectMapper().getObjectMapper().writeValue(file, object);
+            if(ModulesPlugin.getInstance() != null && ModulesPlugin.getInstance().isEnabled()) {
+                ModulesPlugin.getInstance().getLogger().info("File ".concat(file.getAbsolutePath()).concat(" has been saved"));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
