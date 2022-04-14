@@ -29,7 +29,7 @@ public class PlayerProtectionTest {
 
         final Block block = location.getBlock();
 
-        if(block.isLiquid() || !block.getType().isOccluding()) return false;
+        if(block.isLiquid() || !block.getType().isOccluding() || block.getType() != Material.CHEST) return false;
 
         if (hooks.isHooked("Lands")) {
             LandsIntegration landsIntegration = (LandsIntegration) hooks.getLoaded().get("Lands").get();
@@ -43,7 +43,7 @@ public class PlayerProtectionTest {
             if (!worldGuardIntegration.createProtectionQuery().testBlockBreak(null, block)) return false;
         }
 
-        return block.getType() != Material.AIR || !block.getType().equals(Material.CHEST);
+        return block.getType() != Material.AIR;
     }
 
 
