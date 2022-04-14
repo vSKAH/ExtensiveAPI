@@ -13,6 +13,7 @@ import me.angeschossen.lands.api.integration.LandsIntegration;
 import me.angeschossen.lands.api.land.Land;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -26,6 +27,10 @@ public class PlayerProtectionTest {
 
     public boolean testBreak(Location location, Player player) {
 
+        final Block block = location.getBlock();
+
+        if(block.isLiquid() || !block.getType().isOccluding()) return false;
+
         if (hooks.isHooked("Lands")) {
             LandsIntegration landsIntegration = (LandsIntegration) hooks.getLoaded().get("Lands").get();
             Land land = landsIntegration.getLand(location);
@@ -35,10 +40,10 @@ public class PlayerProtectionTest {
 
         if (hooks.isHooked("WorldGuard")) {
             WorldGuardPlugin worldGuardIntegration = (WorldGuardPlugin) hooks.getLoaded().get("WorldGuard").get();
-            if (!worldGuardIntegration.createProtectionQuery().testBlockBreak(null, location.getBlock())) return false;
+            if (!worldGuardIntegration.createProtectionQuery().testBlockBreak(null, block)) return false;
         }
 
-        return location.getBlock() == null || !location.getBlock().getType().equals(Material.CHEST);
+        return block.getType() != Material.AIR || !block.getType().equals(Material.CHEST);
     }
 
 

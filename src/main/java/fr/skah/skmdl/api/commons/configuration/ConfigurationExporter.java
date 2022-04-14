@@ -26,9 +26,16 @@ public class ConfigurationExporter {
         return file;
     }
 
-    public static File createFolder(final File folder) {
+    public static File createFolders(final File folder) {
         if (!folder.exists()) {
             folder.getParentFile().mkdirs();
+        }
+        return folder;
+    }
+
+    public static File createFolder(final File folder) {
+        if (!folder.exists()) {
+            folder.mkdirs();
         }
         return folder;
     }
