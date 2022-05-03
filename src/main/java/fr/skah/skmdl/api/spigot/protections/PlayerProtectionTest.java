@@ -17,6 +17,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+
 public class PlayerProtectionTest {
 
     public final Hooks hooks;
@@ -25,11 +26,30 @@ public class PlayerProtectionTest {
         this.hooks = ModulesPlugin.getInstance().getHooks();
     }
 
+    public boolean testBreakHammer(Location location, Player player) {
+        final Block block = location.getBlock();
+
+        final Material material = block.getType();
+        final String materialName = material.name();
+
+        if (material == Material.BEDROCK || block.isLiquid() || material == Material.SPAWNER) return false;
+        if (material == Material.CHEST || material == Material.TRAPPED_CHEST) return false;
+
+        if (materialName.contains("AIR")) return false;
+        if (materialName.contains("_SIGN") || materialName.contains("_WALL_SIGN") || materialName.contains("_SIGN_POST")) return false;
+
+        if (materialName.contains("_BANNER") || materialName.contains("_WALL_BANNER")) return false;
+        if (materialName.contains("WOOD") || materialName.contains("OAK") || materialName.contains("LOG")) return false;
+        return testBreak(location, player);
+    }
+
     public boolean testBreak(Location location, Player player) {
+
+        if (location.getWorld().getName().equalsIgnoreCase("SPAWN")) return false;
 
         final Block block = location.getBlock();
 
-        if(block.isLiquid() || !block.getType().isOccluding() || block.getType() != Material.CHEST) return false;
+        if (block.isLiquid() || block.getType() == Material.CHEST) return false;
 
         if (hooks.isHooked("Lands")) {
             LandsIntegration landsIntegration = (LandsIntegration) hooks.getLoaded().get("Lands").get();
