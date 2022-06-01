@@ -11,12 +11,12 @@
     <distributionManagement>
         <repository>
             <id>evolucraft</id>
-            <url>http://54.36.127.131:8081/repository/evolucraft-release/</url>
+            <url>https://nexus.evolucraft.fr/repository/evolucraft-release/</url>
         </repository>
 
         <snapshotRepository>
             <id>evolucraft</id>
-            <url>http://54.36.127.131:8081/repository/evolucraft-snapshot/</url>
+            <url>https://nexus.evolucraft.fr/repository/evolucraft-snapshot/</url>
         </snapshotRepository>
 
     </distributionManagement>

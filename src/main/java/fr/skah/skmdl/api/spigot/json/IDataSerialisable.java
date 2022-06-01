@@ -6,7 +6,6 @@ package fr.skah.skmdl.api.spigot.json;
  *  * @Author Jimmy
  */
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import fr.skah.skmdl.api.spigot.ModulesPlugin;
 
 import java.io.File;
@@ -31,10 +30,6 @@ public abstract class IDataSerialisable<T> {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public T convertValue(Object object, TypeReference<T> typeReference) {
-        return getMinecraftObjectMapper().getObjectMapper().convertValue(object, typeReference);
     }
 
     public void save(File file, Object object) {

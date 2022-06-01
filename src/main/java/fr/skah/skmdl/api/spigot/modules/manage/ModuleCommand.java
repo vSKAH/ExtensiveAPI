@@ -67,6 +67,9 @@ public class ModuleCommand extends BaseCommand {
         sender.sendMessage("Le module vient d'être déchargé !");
     }
 
+
+
+
     @CommandAlias("Modules")
     @CommandPermission("skmdl.modules.manage")
     @Description("Permet de d'activer / désactiver un module")

@@ -35,8 +35,16 @@ public class ItemStackSerializer extends StdSerializer<ItemStack> {
         jsonGenerator.writeNumberField("amount", itemStack.getAmount());
         if(itemStack.hasItemMeta()) {
             Map<String, Object> map = new HashMap<>(itemStack.getItemMeta().serialize());
-            map.remove("lore");
-            map.put("lore", itemStack.getItemMeta().getLore());
+            if(itemStack.getItemMeta().hasLore()) {
+                map.remove("lore");
+                map.put("lore", itemStack.getItemMeta().getLore());
+            }
+            if(itemStack.getItemMeta().hasDisplayName()) {
+                map.remove("display-name");
+                map.put("display-name", itemStack.getItemMeta().getDisplayName());
+            }
+            if(itemStack.getItemMeta().getAttributeModifiers() != null && itemStack.getItemMeta().hasAttributeModifiers())
+            itemStack.getItemMeta().getAttributeModifiers().forEach((attribute, attributeModifier) -> attributeModifier.serialize());
             jsonGenerator.writeObjectField("meta", map);
         }
         jsonGenerator.writeEndObject();
