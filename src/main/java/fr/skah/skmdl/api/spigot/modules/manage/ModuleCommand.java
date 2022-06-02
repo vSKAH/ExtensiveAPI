@@ -25,6 +25,7 @@ public class ModuleCommand extends BaseCommand {
         sender.sendMessage("§7§m-----------------------------------");
         sender.sendMessage("§6>> §eModule unregister [Nom du Module]");
         sender.sendMessage("§6>> §eModule register [Nom du Module]");
+        sender.sendMessage("§6>> §eModule reload [Nom du Module]");
         sender.sendMessage("§6>> §eModules");
         sender.sendMessage("§7§m-----------------------------------");
 
@@ -36,7 +37,7 @@ public class ModuleCommand extends BaseCommand {
     @Description("Permet de charger un module")
     public void registerModule(CommandSender sender, String moduleName) {
         String moduleWithJar = moduleName.concat(".jar");
-        if (ModuleManager.getModules().get(moduleName) != null) {
+        if (ModuleManager.getModules().containsKey(moduleName)) {
             sender.sendMessage("Le module est déjà chargé !");
             return;
         }
@@ -49,26 +50,38 @@ public class ModuleCommand extends BaseCommand {
     @Subcommand("unregister")
     @CommandPermission("skmdl.modules.manage")
     @Description("Permet de décharger un module")
-    public void unregisterModule(CommandSender sender, String moduleName) {
+    public boolean unregisterModule(CommandSender sender, String moduleName) {
 
         final Module module = ModuleManager.getModules().get(moduleName);
-
         if (module == null) {
             sender.sendMessage("Le module n'est pas chargé !");
-            return;
+            return false;
         }
 
         if (!module.getModuleOptions().isCanBeDisabled()) {
             sender.sendMessage("Le module ne peut pas être désactivé !");
-            return;
+            return false;
         }
 
         module.onUnregister();
         sender.sendMessage("Le module vient d'être déchargé !");
+        return true;
     }
 
 
+    @CommandCompletion("@modules")
+    @Subcommand("reload")
+    @CommandPermission("skmdl.modules.manage")
+    @Description("Permet de relancer un Module")
+    public void reloadModule(CommandSender sender, String moduleName) {
+        final Module module = ModuleManager.getModules().get(moduleName);
 
+        if(module != null) {
+            unregisterModule(sender, moduleName);
+            registerModule(sender, module.getModuleFileName().replace(".jar", ""));
+        }
+
+    }
 
     @CommandAlias("Modules")
     @CommandPermission("skmdl.modules.manage")
@@ -76,8 +89,6 @@ public class ModuleCommand extends BaseCommand {
     public void openGuiMenu(Player player) {
         new ModuleInventory().getInventory().open(player);
     }
-
-
 
 
 }

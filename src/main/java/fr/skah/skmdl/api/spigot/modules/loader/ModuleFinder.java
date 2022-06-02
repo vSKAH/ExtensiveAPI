@@ -41,6 +41,7 @@ public class ModuleFinder {
             ModuleOption moduleOptions = getModuleOption(moduleFile);
             Module module = new ModuleClassLoader(moduleFile, ModuleFinder.class.getClassLoader(), moduleOptions).getModule();
             module.setModuleOptions(moduleOptions);
+            module.setModuleFileName(jarName);
             return module;
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();

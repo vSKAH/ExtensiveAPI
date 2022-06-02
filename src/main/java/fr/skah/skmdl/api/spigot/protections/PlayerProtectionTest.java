@@ -67,10 +67,10 @@ public class PlayerProtectionTest {
     }
 
 
-    public boolean testPvp(Entity entity, Player player) {
+    public boolean testPvp(Player player) {
         if (hooks.isHooked("WorldGuard")) {
             WorldGuardPlugin worldGuardIntegration = (WorldGuardPlugin) hooks.getLoaded().get("WorldGuard").get();
-            return worldGuardIntegration.createProtectionQuery().testEntityDamage(null, entity);
+            return worldGuardIntegration.createProtectionQuery().testEntityDamage(null, player);
         }
         return true;
     }

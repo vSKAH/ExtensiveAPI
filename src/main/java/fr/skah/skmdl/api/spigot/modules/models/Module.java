@@ -26,6 +26,8 @@ import java.util.concurrent.ScheduledExecutorService;
 public abstract class Module {
 
     private ModuleOption moduleOptions;
+    private String moduleFileName;
+
     private ModuleState moduleState;
     private Logger logger;
     private File moduleConfigurationFolder;
@@ -107,6 +109,14 @@ public abstract class Module {
 
     public Set<BaseCommand> getCommands() {
         return commands;
+    }
+
+    public String getModuleFileName() {
+        return moduleFileName;
+    }
+
+    public void setModuleFileName(String moduleFileName) {
+        this.moduleFileName = moduleFileName;
     }
 
     public ScheduledExecutorService getScheduledExecutorService() {
