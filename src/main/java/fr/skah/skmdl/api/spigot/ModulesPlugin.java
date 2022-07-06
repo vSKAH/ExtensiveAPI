@@ -7,11 +7,10 @@ package fr.skah.skmdl.api.spigot;
  */
 
 import co.aikar.commands.PaperCommandManager;
+import fr.skah.skmdl.api.commons.async.ModuleScheduler;
 import fr.skah.skmdl.api.spigot.commands.CommandLoader;
 import fr.skah.skmdl.api.spigot.events.ArmorListeners;
 import fr.skah.skmdl.api.spigot.hooks.Hooks;
-import fr.skah.skmdl.api.commons.mavenresolver.Dependency;
-import fr.skah.skmdl.api.commons.mavenresolver.DependencyManager;
 import fr.skah.skmdl.api.spigot.smartinventory.InventoryManager;
 import fr.skah.skmdl.api.spigot.modules.loader.ModuleFinder;
 import fr.skah.skmdl.api.spigot.modules.manage.ModuleManager;
@@ -36,6 +35,7 @@ public class ModulesPlugin extends JavaPlugin {
         //Create plugin instance
         instance = this;
         //Download load and init Dependencies.
+        /*
         dependenciesFolder = new File(getDataFolder().getAbsolutePath().replace(getInstance().getName(), "SKAH-DEPENDENCIES"));
         DependencyManager dependencyManager = new DependencyManager(this.getClass());
 
@@ -45,7 +45,7 @@ public class ModulesPlugin extends JavaPlugin {
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-annotations", "2.13.2"));
 
         dependencyManager.dl(getDependenciesFolder()).injectJar(getDependenciesFolder());
-
+*/
         //Init SmartInventory
         inventoryManager = new InventoryManager(this);
         inventoryManager.init();
@@ -70,6 +70,7 @@ public class ModulesPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         ModuleManager.getModules().values().parallelStream().forEach(Module::onUnregister);
+        ModuleScheduler.shutdownNow();
     }
 
     public static ModulesPlugin getInstance() {
