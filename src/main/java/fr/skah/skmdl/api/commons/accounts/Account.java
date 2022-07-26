@@ -10,19 +10,10 @@ import java.util.UUID;
 
 public class Account implements IAccountIdentifier, IAccountData, Cloneable
 {
-    private int accountId;
-    private UUID playerUniqueId;
-    private String playerName;
+    private final UUID playerUniqueId;
 
-    public Account(final int accountId, final UUID playerUniqueId, final String playerName) {
-        this.accountId = accountId;
+    public Account(final UUID playerUniqueId) {
         this.playerUniqueId = playerUniqueId;
-        this.playerName = playerName;
-    }
-
-    @Override
-    public int getPlayerDatabaseId() {
-        return this.accountId;
     }
 
     @Override
@@ -30,10 +21,6 @@ public class Account implements IAccountIdentifier, IAccountData, Cloneable
         return this.playerUniqueId;
     }
 
-    @Override
-    public String getPlayerName() {
-        return this.playerName;
-    }
 
     public Account clone() {
         try {

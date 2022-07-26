@@ -4,7 +4,6 @@ import java.util.UUID;
 
 public interface IAccountIdentifier {
 
-    int getPlayerDatabaseId();
 
     /**
      * @return return the player uuid
@@ -12,9 +11,5 @@ public interface IAccountIdentifier {
     UUID getPlayerUniqueId();
 
 
-    /**
-     * @return return the player name
-     */
-    String getPlayerName();
 
 }
