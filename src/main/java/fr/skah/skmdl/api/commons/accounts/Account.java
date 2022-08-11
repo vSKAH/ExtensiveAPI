@@ -6,13 +6,20 @@ package fr.skah.skmdl.api.commons.accounts;
  *  * @Author jimmy  / vSKAH#0075
  */
 
+import com.google.common.base.Objects;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
-public class Account implements IAccountIdentifier, IAccountData, Cloneable
+public class Account implements IAccountIdentifier, Cloneable
 {
-    private final UUID playerUniqueId;
+    private UUID playerUniqueId;
+    private Map<String, Object> playerData;
 
-    public Account(final UUID playerUniqueId) {
+    public Account(UUID playerUniqueId) {
+        this.playerData = new HashMap<>();
         this.playerUniqueId = playerUniqueId;
     }
 
@@ -21,6 +28,13 @@ public class Account implements IAccountIdentifier, IAccountData, Cloneable
         return this.playerUniqueId;
     }
 
+    public Optional<Object> getDataFromMap(final String key) {
+        return this.playerData.containsKey(key) ? Optional.of(this.playerData.get(key)) : Optional.empty();
+    }
+
+    public void setDataToMap(final String key, final Object value) {
+        this.playerData.put(key, value);
+    }
 
     public Account clone() {
         try {
@@ -30,5 +44,21 @@ public class Account implements IAccountIdentifier, IAccountData, Cloneable
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof final Account account)) {
+            return false;
+        }
+        return Objects.equal(this.getPlayerUniqueId(), account.getPlayerUniqueId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.getPlayerUniqueId());
     }
 }
