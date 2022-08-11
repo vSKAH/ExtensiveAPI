@@ -1,7 +1,7 @@
 package fr.skah.skmdl.api.commons.async;
 
 
-import fr.skah.skmdl.api.spigot.modules.manage.ModuleManager;
+import fr.skah.skmdl.api.spigot.common.modules.manage.ModuleManager;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

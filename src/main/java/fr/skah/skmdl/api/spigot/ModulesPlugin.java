@@ -10,14 +10,12 @@ import co.aikar.commands.PaperCommandManager;
 import fr.skah.skmdl.api.commons.async.ModuleScheduler;
 import fr.skah.skmdl.api.commons.mavenresolver.Dependency;
 import fr.skah.skmdl.api.commons.mavenresolver.DependencyManager;
-import fr.skah.skmdl.api.spigot.commands.CommandLoader;
-import fr.skah.skmdl.api.spigot.events.ArmorListeners;
-import fr.skah.skmdl.api.spigot.hooks.Hooks;
-import fr.skah.skmdl.api.spigot.smartinventory.InventoryManager;
-import fr.skah.skmdl.api.spigot.modules.loader.ModuleFinder;
-import fr.skah.skmdl.api.spigot.modules.manage.ModuleManager;
-import fr.skah.skmdl.api.spigot.modules.models.Module;
-import org.bukkit.Bukkit;
+import fr.skah.skmdl.api.spigot.common.commands.CommandLoader;
+import fr.skah.skmdl.api.spigot.common.hooks.Hooks;
+import fr.skah.skmdl.api.spigot.common.smartinventory.InventoryManager;
+import fr.skah.skmdl.api.spigot.common.modules.loader.ModuleFinder;
+import fr.skah.skmdl.api.spigot.common.modules.manage.ModuleManager;
+import fr.skah.skmdl.api.spigot.common.modules.models.Module;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -57,7 +55,7 @@ public class ModulesPlugin extends JavaPlugin {
         commandLoader.registerDefault();
 
         //Register armor equit event
-        Bukkit.getPluginManager().registerEvents(new ArmorListeners(), this);
+        //Bukkit.getPluginManager().registerEvents(new ArmorListeners(), this);
 
         //Hook basics plugins
         hooks = new Hooks();

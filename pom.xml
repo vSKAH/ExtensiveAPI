@@ -6,20 +6,8 @@
 
     <groupId>fr.skah</groupId>
     <artifactId>SKMDL</artifactId>
-    <version>2.0-MC1.17</version>
-
-    <distributionManagement>
-        <repository>
-            <id>evolucraft</id>
-            <url>https://nexus.evolucraft.fr/repository/evolucraft-release/</url>
-        </repository>
-
-        <snapshotRepository>
-            <id>evolucraft</id>
-            <url>https://nexus.evolucraft.fr/repository/evolucraft-snapshot/</url>
-        </snapshotRepository>
-
-    </distributionManagement>
+    <packaging>jar</packaging>
+    <version>2.0</version>
 
     <repositories>
 
@@ -109,7 +97,7 @@
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
-            <version>3.17.3</version>
+            <version>3.17.5</version>
             <scope>provided</scope>
         </dependency>
 
@@ -119,7 +107,6 @@
             <version>v4.17.2</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
 
     <properties>
