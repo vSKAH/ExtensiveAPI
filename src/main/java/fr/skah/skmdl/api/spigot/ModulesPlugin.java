@@ -16,26 +16,33 @@ import fr.skah.skmdl.api.spigot.common.smartinventory.InventoryManager;
 import fr.skah.skmdl.api.spigot.common.modules.loader.ModuleFinder;
 import fr.skah.skmdl.api.spigot.common.modules.manage.ModuleManager;
 import fr.skah.skmdl.api.spigot.common.modules.models.Module;
+import fr.skah.skmdl.api.spigot.common.utils.MinecraftVersion;
+import fr.skah.skmdl.api.spigot.common.events.armors.ArmorListeners;
+import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
+
+@Getter
 public class ModulesPlugin extends JavaPlugin {
 
     private static ModulesPlugin instance;
 
     private static InventoryManager inventoryManager;
-    private static File dependenciesFolder;
-    private static CommandLoader commandLoader;
+    private File dependenciesFolder;
+    private CommandLoader commandLoader;
 
     private Hooks hooks;
 
     @Override
     public void onEnable() {
+
         //Create plugin instance
         instance = this;
-        //Download load and init Dependencies.
 
+        //Download load and init Dependencies.
         dependenciesFolder = new File(getDataFolder().getAbsolutePath().replace(getInstance().getName(), "SKAH-DEPENDENCIES"));
         DependencyManager dependencyManager = new DependencyManager(this.getClass());
 
@@ -54,8 +61,9 @@ public class ModulesPlugin extends JavaPlugin {
         commandLoader = new CommandLoader(new PaperCommandManager(this));
         commandLoader.registerDefault();
 
+
         //Register armor equit event
-        //Bukkit.getPluginManager().registerEvents(new ArmorListeners(), this);
+        Bukkit.getPluginManager().registerEvents(new ArmorListeners(), this);
 
         //Hook basics plugins
         hooks = new Hooks();
@@ -77,20 +85,9 @@ public class ModulesPlugin extends JavaPlugin {
         return instance;
     }
 
-    public Hooks getHooks() {
-        return hooks;
-    }
-
-    public File getDependenciesFolder() {
-        return dependenciesFolder;
-    }
-
     public static InventoryManager getInventoryManager() {
         return inventoryManager;
     }
 
-    public CommandLoader getCommandManager() {
-        return commandLoader;
-    }
 
 }

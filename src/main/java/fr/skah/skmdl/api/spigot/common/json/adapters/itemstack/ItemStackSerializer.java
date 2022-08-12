@@ -9,6 +9,8 @@ package fr.skah.skmdl.api.spigot.common.json.adapters.itemstack;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import fr.skah.skmdl.api.spigot.ModulesPlugin;
+import fr.skah.skmdl.api.spigot.common.utils.MinecraftVersion;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
@@ -30,18 +32,20 @@ public class ItemStackSerializer extends StdSerializer<ItemStack> {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeStringField("type", itemStack.getType().name());
         jsonGenerator.writeNumberField("amount", itemStack.getAmount());
-        if(itemStack.hasItemMeta()) {
+        if (itemStack.hasItemMeta()) {
             Map<String, Object> map = new HashMap<>(itemStack.getItemMeta().serialize());
-            if(itemStack.getItemMeta().hasLore()) {
+            if (itemStack.getItemMeta().hasLore()) {
                 map.remove("lore");
                 map.put("lore", itemStack.getItemMeta().getLore());
             }
-            if(itemStack.getItemMeta().hasDisplayName()) {
+            if (itemStack.getItemMeta().hasDisplayName()) {
                 map.remove("display-name");
                 map.put("display-name", itemStack.getItemMeta().getDisplayName());
             }
-            if(itemStack.getItemMeta().getAttributeModifiers() != null && itemStack.getItemMeta().hasAttributeModifiers())
-            itemStack.getItemMeta().getAttributeModifiers().forEach((attribute, attributeModifier) -> attributeModifier.serialize());
+            if (MinecraftVersion.atLeast(MinecraftVersion.V.v1_9)) {
+                if (itemStack.getItemMeta().getAttributeModifiers() != null && itemStack.getItemMeta().hasAttributeModifiers())
+                    itemStack.getItemMeta().getAttributeModifiers().forEach((attribute, attributeModifier) -> attributeModifier.serialize());
+            }
             jsonGenerator.writeObjectField("meta", map);
         }
         jsonGenerator.writeEndObject();

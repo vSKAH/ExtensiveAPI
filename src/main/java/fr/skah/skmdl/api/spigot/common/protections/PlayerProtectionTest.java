@@ -9,6 +9,7 @@ package fr.skah.skmdl.api.spigot.common.protections;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import fr.skah.skmdl.api.spigot.ModulesPlugin;
 import fr.skah.skmdl.api.spigot.common.hooks.Hooks;
+import fr.skah.skmdl.api.spigot.common.utils.MinecraftVersion;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 import me.angeschossen.lands.api.land.Land;
 import org.bukkit.Location;
@@ -31,11 +32,15 @@ public class PlayerProtectionTest {
         final Material material = block.getType();
         final String materialName = material.name();
 
-        if (material == Material.BEDROCK || block.isLiquid() || material == Material.SPAWNER) return false;
+        if (!MinecraftVersion.atLeast(MinecraftVersion.V.v1_13)) {
+            if (material == Material.BEDROCK || block.isLiquid() || material == Material.SPAWNER) return false;
+        }
+        else if (material == Material.BEDROCK || block.isLiquid() || material == Material.getMaterial("MOB_SPAWNER")) return false;
         if (material == Material.CHEST || material == Material.TRAPPED_CHEST) return false;
 
         if (materialName.contains("AIR")) return false;
-        if (materialName.contains("_SIGN") || materialName.contains("_WALL_SIGN") || materialName.contains("_SIGN_POST")) return false;
+        if (materialName.contains("_SIGN") || materialName.contains("_WALL_SIGN") || materialName.contains("_SIGN_POST"))
+            return false;
 
         if (materialName.contains("_BANNER") || materialName.contains("_WALL_BANNER")) return false;
         if (materialName.contains("WOOD") || materialName.contains("OAK") || materialName.contains("LOG")) return false;

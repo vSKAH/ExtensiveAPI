@@ -1,4 +1,4 @@
-package fr.skah.skmdl.api.spigot.v_1_16_5.events;
+package fr.skah.skmdl.api.spigot.common.events.armors;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

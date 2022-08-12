@@ -2,6 +2,8 @@ package fr.skah.skmdl.api.spigot.common.itemstack;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import fr.skah.skmdl.api.spigot.ModulesPlugin;
+import fr.skah.skmdl.api.spigot.common.utils.MinecraftVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
@@ -119,6 +121,10 @@ public class SkullCreator {
      * @return The head of the Player.
      */
     public static ItemStack itemWithUuid(ItemStack item, UUID id) {
+        if(!MinecraftVersion.atLeast(MinecraftVersion.V.v1_12)) {
+            ModulesPlugin.getInstance().getLogger().warning("This method can be used only in 1.12+");
+            return item;
+        }
         notNull(item, "item");
         notNull(id, "id");
 
@@ -177,7 +183,7 @@ public class SkullCreator {
         notNull(name, "name");
 
         Skull state = (Skull) block.getState();
-        state.setOwningPlayer(Bukkit.getOfflinePlayer(name));
+        state.setOwner(name);
         state.update(false, false);
     }
 
@@ -188,6 +194,10 @@ public class SkullCreator {
      * @param id    The player to set it to.
      */
     public static void blockWithUuid(Block block, UUID id) {
+        if(!MinecraftVersion.atLeast(MinecraftVersion.V.v1_12)) {
+            ModulesPlugin.getInstance().getLogger().warning("This method can be used only in 1.12+");
+            return;
+        }
         notNull(block, "block");
         notNull(id, "id");
 

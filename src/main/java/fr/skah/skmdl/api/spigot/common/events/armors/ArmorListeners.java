@@ -1,5 +1,6 @@
-package fr.skah.skmdl.api.spigot.v_1_16_5.events;
+package fr.skah.skmdl.api.spigot.common.events.armors;
 
+import fr.skah.skmdl.api.spigot.common.utils.MinecraftVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -98,11 +99,22 @@ public class ArmorListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void playerInteractEvent(PlayerInteractEvent e) {
-        if(e.getHand() != EquipmentSlot.HAND) return;
-        if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL) return;
+        //Get hand
+        if (!MinecraftVersion.atLeast(MinecraftVersion.V.v1_9)) {
+            if (e.getHand() != EquipmentSlot.HAND) return;
+        }
+        if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL)
+            return;
 
         Player player = e.getPlayer();
-        ArmorType newArmorType = ArmorType.matchType(e.getPlayer().getInventory().getItemInMainHand());
+        //get item in hand
+        ArmorType newArmorType;
+        if (!MinecraftVersion.atLeast(MinecraftVersion.V.v1_9)) {
+            newArmorType = ArmorType.matchType(e.getPlayer().getInventory().getItemInMainHand());
+        } else {
+            newArmorType = ArmorType.matchType(e.getPlayer().getInventory().getItemInHand());
+        }
+
         if (newArmorType != null) {
             if (newArmorType.equals(ArmorType.HELMET) && isAirOrNull(e.getPlayer().getInventory().getHelmet()) || newArmorType.equals(ArmorType.CHESTPLATE) && isAirOrNull(e.getPlayer().getInventory().getChestplate()) || newArmorType.equals(ArmorType.LEGGINGS) && isAirOrNull(e.getPlayer().getInventory().getLeggings()) || newArmorType.equals(ArmorType.BOOTS) && isAirOrNull(e.getPlayer().getInventory().getBoots())) {
                 ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(e.getPlayer(), ArmorEquipEvent.EquipMethod.HOTBAR, ArmorType.matchType(e.getItem()), null, e.getItem());
