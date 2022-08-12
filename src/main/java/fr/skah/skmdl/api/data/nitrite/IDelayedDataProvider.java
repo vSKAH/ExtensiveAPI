@@ -32,7 +32,7 @@ public interface IDelayedDataProvider<T> {
      * @param repository Nitrite ObjectRepository
      * @param keyId      The id of the column
      * @param key        The reference key for execute update
-     * @param object     The object object put in ObjectRepository
+     * @param object     The object put in ObjectRepository
      */
     default void updateObject(ObjectRepository<T> repository, String keyId, String key, T object) {
         Executors.newCachedThreadPool().submit(() -> {

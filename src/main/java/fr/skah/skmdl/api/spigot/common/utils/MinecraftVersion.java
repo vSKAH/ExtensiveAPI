@@ -1,5 +1,6 @@
-package fr.skah.skmdl.api.spigot;
+package fr.skah.skmdl.api.spigot.common.utils;
 
+import fr.skah.skmdl.api.spigot.ModulesPlugin;
 import org.bukkit.Bukkit;
 
 import java.util.logging.Level;
