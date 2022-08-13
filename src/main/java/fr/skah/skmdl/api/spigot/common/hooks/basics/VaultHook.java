@@ -25,6 +25,11 @@ public class VaultHook implements Hook<Economy> {
         return "net.milkbowl.vault.economy.Economy";
     }
 
+    /**
+     * If Vault is enabled, get the Economy plugin that Vault is using
+     *
+     * @return A boolean value.
+     */
     @Override
     public boolean registerHook() {
         if(!pluginEnabled()) return false;
@@ -34,6 +39,11 @@ public class VaultHook implements Hook<Economy> {
         return true;
     }
 
+    /**
+     * This function returns the Economy object that is used by Vault.
+     *
+     * @return The vaultEconomy object.
+     */
     @Override
     public Economy get() {
         return vaultEconomy;

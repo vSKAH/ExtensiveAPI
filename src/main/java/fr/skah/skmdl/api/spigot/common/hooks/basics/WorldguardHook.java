@@ -9,6 +9,9 @@ package fr.skah.skmdl.api.spigot.common.hooks.basics;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import fr.skah.skmdl.api.spigot.common.hooks.Hook;
 
+/**
+ * This class is a hook for WorldGuard.
+ */
 public class WorldguardHook implements Hook<WorldGuardPlugin> {
 
     @Override
@@ -26,6 +29,11 @@ public class WorldguardHook implements Hook<WorldGuardPlugin> {
         return pluginEnabled();
     }
 
+    /**
+     * This function returns the WorldGuardPlugin instance.
+     *
+     * @return The WorldGuardPlugin instance.
+     */
     @Override
     public WorldGuardPlugin get() {
         return WorldGuardPlugin.inst();

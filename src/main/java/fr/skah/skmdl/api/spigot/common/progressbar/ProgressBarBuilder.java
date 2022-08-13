@@ -6,6 +6,8 @@ package fr.skah.skmdl.api.spigot.common.progressbar;
  *  * @Author Jimmy
  */
 
+import org.bukkit.ChatColor;
+
 public class ProgressBarBuilder {
 
     private ProgressBarOrientation progressBarOrientation;
@@ -98,18 +100,18 @@ public class ProgressBarBuilder {
             // It checks if the progress bar orientation is right to left.
             if(progressBarOrientation == ProgressBarOrientation.RIGHT_LEFT) {
                 // It's adding the progress color to the progress bar.
-                for (int i = 0; i < coloredCharacter; i++) stringBuilder.append('§').append(progressColor).append(characterUsed);
+                for (int i = 0; i < coloredCharacter; i++) stringBuilder.append('&').append(progressColor).append(characterUsed);
                 // It's adding the pattern color to the progress bar.
-                for (int i = 0; i < (progressMaxValue - coloredCharacter); i++) stringBuilder.append('§').append(patternColor).append(characterUsed);
+                for (int i = 0; i < (progressMaxValue - coloredCharacter); i++) stringBuilder.append('&').append(patternColor).append(characterUsed);
             }
             // It checks if the progress bar orientation is left to right.
             if(progressBarOrientation == ProgressBarOrientation.LEFT_RIGHT) {
                 // It's adding the pattern color to the progress bar.
-                for (int i = 0; i < (progressMaxValue - coloredCharacter); i++) stringBuilder.append('§').append(patternColor).append(characterUsed);
+                for (int i = 0; i < (progressMaxValue - coloredCharacter); i++) stringBuilder.append('&').append(patternColor).append(characterUsed);
                 // It's adding the progress color to the progress bar.
-                for (int i = 0; i < coloredCharacter; i++) stringBuilder.append('§').append(progressColor).append(characterUsed);
+                for (int i = 0; i < coloredCharacter; i++) stringBuilder.append('&').append(progressColor).append(characterUsed);
             }
-            return stringBuilder.toString();
+            return ChatColor.translateAlternateColorCodes('&', stringBuilder.toString());
         }
 
 
@@ -118,18 +120,18 @@ public class ProgressBarBuilder {
             // It checks if the progress bar orientation is right to left.
             if(progressBarOrientation == ProgressBarOrientation.RIGHT_LEFT) {
                 for (int i = progressMaxValue; i > 0; i--) {
-                    if (i == progressValue) stringBuilder.append('§').append(progressColor).append(characterUsed);
-                    else stringBuilder.append('§').append(patternColor).append(characterUsed);
+                    if (i == progressValue) stringBuilder.append('&').append(progressColor).append(characterUsed);
+                    else stringBuilder.append('&').append(patternColor).append(characterUsed);
                 }
             }
             // It checks if the progress bar orientation is left to right.
             if(progressBarOrientation == ProgressBarOrientation.LEFT_RIGHT) {
                 for (int i = 0; i < progressMaxValue; i++) {
-                    if (i == progressValue) stringBuilder.append('§').append(progressColor).append(characterUsed);
-                    else stringBuilder.append('§').append(patternColor).append(characterUsed);
+                    if (i == progressValue) stringBuilder.append('&').append(progressColor).append(characterUsed);
+                    else stringBuilder.append('&').append(patternColor).append(characterUsed);
                 }
             }
-            return stringBuilder.toString();
+            return ChatColor.translateAlternateColorCodes('&', stringBuilder.toString());
         }
 
         return "error";

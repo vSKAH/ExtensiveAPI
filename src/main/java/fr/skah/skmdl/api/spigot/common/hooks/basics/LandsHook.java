@@ -10,6 +10,9 @@ import fr.skah.skmdl.api.spigot.ModulesPlugin;
 import fr.skah.skmdl.api.spigot.common.hooks.Hook;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 
+/**
+ * This class is a hook for the Lands plugin.
+ */
 public class LandsHook implements Hook<LandsIntegration> {
 
     private LandsIntegration lands;
