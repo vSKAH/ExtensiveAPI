@@ -18,6 +18,11 @@ import java.util.Objects;
 @CommandAlias("Module")
 public class ModuleCommand extends BaseCommand {
 
+    /**
+     * It displays a list of commands related to modules
+     *
+     * @param sender The CommandSender who executed the command.
+     */
     @Default
     @CommandPermission("skmdl.modules.manage")
     @Description("Affiche la liste des commandes liées aux modules")
@@ -28,9 +33,14 @@ public class ModuleCommand extends BaseCommand {
         sender.sendMessage("§6>> §eModule reload [Nom du Module]");
         sender.sendMessage("§6>> §eModules");
         sender.sendMessage("§7§m-----------------------------------");
-
     }
 
+    /**
+     * It loads a module from a jar file
+     *
+     * @param sender The CommandSender who executed the command.
+     * @param moduleName The name of the module to register.
+     */
     @CommandCompletion("@modules")
     @Subcommand("register")
     @CommandPermission("skmdl.modules.manage")
@@ -46,6 +56,13 @@ public class ModuleCommand extends BaseCommand {
     }
 
 
+    /**
+     * This function unregisters a module.
+     *
+     * @param sender The CommandSender who executed the command.
+     * @param moduleName The name of the module to unregister.
+     * @return A boolean
+     */
     @CommandCompletion("@modules")
     @Subcommand("unregister")
     @CommandPermission("skmdl.modules.manage")
@@ -69,6 +86,12 @@ public class ModuleCommand extends BaseCommand {
     }
 
 
+    /**
+     * It unregisters a module, then registers it again
+     *
+     * @param sender The CommandSender who executed the command.
+     * @param moduleName The name of the module to reload.
+     */
     @CommandCompletion("@modules")
     @Subcommand("reload")
     @CommandPermission("skmdl.modules.manage")
@@ -83,6 +106,11 @@ public class ModuleCommand extends BaseCommand {
 
     }
 
+    /**
+     * Open the module inventory for the player.
+     *
+     * @param player The player who executed the command
+     */
     @CommandAlias("Modules")
     @CommandPermission("skmdl.modules.manage")
     @Description("Permet de d'activer / désactiver un module")

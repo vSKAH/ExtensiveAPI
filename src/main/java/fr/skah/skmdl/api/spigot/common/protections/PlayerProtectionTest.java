@@ -26,15 +26,25 @@ public class PlayerProtectionTest {
         this.hooks = ModulesPlugin.getInstance().getHooks();
     }
 
+    /**
+     * If the block is not bedrock, liquid, a sign, a banner, or wood, then return the result of the testBreak function
+     *
+     * @param location The location of the block you want to break.
+     * @param player The player who is breaking the block
+     * @return A boolean value.
+     */
     public boolean testBreakHammer(Location location, Player player) {
         final Block block = location.getBlock();
 
         final Material material = block.getType();
         final String materialName = material.name();
 
+        // It's checking if the server is running on a version of Minecraft that is lower than 1.13.
         if (!MinecraftVersion.atLeast(MinecraftVersion.V.v1_13)) {
+            // It's checking if the block is bedrock, liquid, or a spawner.
             if (material == Material.BEDROCK || block.isLiquid() || material == Material.SPAWNER) return false;
         }
+        // It's checking if the server is running on a version of Minecraft that is at least 1.13.
         else if (material == Material.BEDROCK || block.isLiquid() || material == Material.getMaterial("MOB_SPAWNER")) return false;
         if (material == Material.CHEST || material == Material.TRAPPED_CHEST) return false;
 
@@ -47,6 +57,13 @@ public class PlayerProtectionTest {
         return testBreak(location, player);
     }
 
+    /**
+     * If the block is not air, liquid, or a chest, and the player is allowed to break it, return true
+     *
+     * @param location The location of the block that is being broken.
+     * @param player The player who is breaking the block
+     * @return A boolean value.
+     */
     public boolean testBreak(Location location, Player player) {
 
         if (location.getWorld().getName().equalsIgnoreCase("SPAWN")) return false;
@@ -55,6 +72,7 @@ public class PlayerProtectionTest {
 
         if (block.isLiquid() || block.getType() == Material.CHEST) return false;
 
+        // Checking if the plugin is hooked to Lands.
         if (hooks.isHooked("Lands")) {
             LandsIntegration landsIntegration = (LandsIntegration) hooks.getLoaded().get("Lands").get();
             Land land = landsIntegration.getLand(location);
@@ -62,6 +80,7 @@ public class PlayerProtectionTest {
                 return false;
         }
 
+        // Checking if the plugin is hooked to WorldGuard.
         if (hooks.isHooked("WorldGuard")) {
             WorldGuardPlugin worldGuardIntegration = (WorldGuardPlugin) hooks.getLoaded().get("WorldGuard").get();
             if (!worldGuardIntegration.createProtectionQuery().testBlockBreak(null, block)) return false;
@@ -71,7 +90,14 @@ public class PlayerProtectionTest {
     }
 
 
+    /**
+     * If WorldGuard is loaded, return whether the player can be damaged
+     *
+     * @param player The player to test.
+     * @return A boolean value, true = can be damaged.
+     */
     public boolean testPvp(Player player) {
+        // It's checking if the plugin is hooked to WorldGuard.
         if (hooks.isHooked("WorldGuard")) {
             WorldGuardPlugin worldGuardIntegration = (WorldGuardPlugin) hooks.getLoaded().get("WorldGuard").get();
             return worldGuardIntegration.createProtectionQuery().testEntityDamage(null, player);

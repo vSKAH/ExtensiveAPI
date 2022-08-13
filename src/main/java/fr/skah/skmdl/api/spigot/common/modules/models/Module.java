@@ -10,6 +10,8 @@ import co.aikar.commands.BaseCommand;
 import fr.skah.skmdl.api.spigot.ModulesPlugin;
 import fr.skah.skmdl.api.spigot.common.modules.enums.ModuleState;
 import fr.skah.skmdl.api.spigot.common.modules.manage.ModuleManager;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -22,25 +24,30 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-
+@Getter @Setter
 public abstract class Module {
 
     private ModuleOption moduleOptions;
     private String moduleFileName;
-
     private ModuleState moduleState;
     private Logger logger;
     private File moduleConfigurationFolder;
 
     private final Set<Listener> listeners = new HashSet<>();
     private final Set<BaseCommand> commands = new HashSet<>();
-    private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
 
+    /**
+     * This function is called when the module is loaded.
+     */
     public void onStartup() {
         setLogger(LoggerFactory.getLogger(moduleOptions.getModuleName()));
         moduleConfigurationFolder = new File(ModulesPlugin.getInstance().getDataFolder(), "modules/".concat(moduleOptions.getModuleName()));
     }
 
+    /**
+     * It registers all the listeners and commands in the module, sets the module state to enabled, and prints the module
+     * information
+     */
     public void onEnable() {
         ModulesPlugin plugin = ModulesPlugin.getInstance();
         listeners.parallelStream().forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, plugin));
@@ -49,14 +56,20 @@ public abstract class Module {
         printModuleInformation();
     }
 
+    /**
+     * It unregisters all listeners, unregisters all commands, shuts down the executor service, and sets the module state
+     * to disabled
+     */
     public void onDisable() {
         listeners.parallelStream().forEach(HandlerList::unregisterAll);
         commands.parallelStream().forEach(command -> ModulesPlugin.getInstance().getCommandLoader().getPaperCommandManager().unregisterCommand(command));
-        getScheduledExecutorService().shutdown();
         setModuleState(ModuleState.DISABLED);
         printModuleInformation();
     }
 
+    /**
+     * It removes the module from the module manager, and clears the listeners and commands
+     */
     public void onUnregister() {
         onDisable();
         listeners.clear();
@@ -64,22 +77,11 @@ public abstract class Module {
         ModuleManager.getModules().remove(moduleOptions.getModuleName());
     }
 
-    public ModuleState getModuleState() {
-        return moduleState;
-    }
 
-    public void setModuleState(ModuleState moduleState) {
-        this.moduleState = moduleState;
-    }
-
-    public Logger getLogger() {
-        return logger;
-    }
-
-    public void setLogger(Logger logger) {
-        this.logger = logger;
-    }
-
+    /**
+     * It prints the module's name, description, version, author(s), whether it can be disabled, and its current
+     * state
+     */
     private void printModuleInformation() {
         logger.info("-----------------------------------");
         logger.info(" Name: ".concat(moduleOptions.getModuleName()));
@@ -89,37 +91,5 @@ public abstract class Module {
         logger.info(" Can Be Disabled: " + (moduleOptions.isCanBeDisabled() ? "yes" : "no"));
         logger.info(" State: " + (moduleState == ModuleState.ENABLED ? "Enabled" : "Disabled"));
         logger.info("-----------------------------------");
-    }
-
-    public ModuleOption getModuleOptions() {
-        return moduleOptions;
-    }
-
-    public void setModuleOptions(ModuleOption moduleOptions) {
-        this.moduleOptions = moduleOptions;
-    }
-
-    public File getModuleConfigurationFolder() {
-        return moduleConfigurationFolder;
-    }
-
-    public Set<Listener> getListeners() {
-        return listeners;
-    }
-
-    public Set<BaseCommand> getCommands() {
-        return commands;
-    }
-
-    public String getModuleFileName() {
-        return moduleFileName;
-    }
-
-    public void setModuleFileName(String moduleFileName) {
-        this.moduleFileName = moduleFileName;
-    }
-
-    public ScheduledExecutorService getScheduledExecutorService() {
-        return scheduledExecutorService;
     }
 }

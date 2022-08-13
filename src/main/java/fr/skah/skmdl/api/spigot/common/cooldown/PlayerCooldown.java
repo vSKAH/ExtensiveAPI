@@ -13,16 +13,19 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 public class PlayerCooldown implements Cooldown<Player> {
     @Override
+    // It's adding a timer to the player.
     public void addTimer(Player player, String cooldownIdentifier, long time) {
         player.setMetadata(cooldownIdentifier, new FixedMetadataValue(ModulesPlugin.getInstance(), (time * 1000) + System.currentTimeMillis()));
     }
 
     @Override
+    // It's checking if the player has a timer.
     public boolean isInTimer(Player player, String cooldownIdentifier) {
         return player.hasMetadata(cooldownIdentifier) && player.getMetadata(cooldownIdentifier).size() > 0 && player.getMetadata(cooldownIdentifier).get(0).asLong() > System.currentTimeMillis();
     }
 
     @Override
+    // It's getting the time left of the timer.
     public long getTime(Player player, String cooldownIdentifier) {
         return !player.hasMetadata(cooldownIdentifier) ? 0 : (player.getMetadata(cooldownIdentifier).get(0).asLong() - System.currentTimeMillis()) / 1000;
     }

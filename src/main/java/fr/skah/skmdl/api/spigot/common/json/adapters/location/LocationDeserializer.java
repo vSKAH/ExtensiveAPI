@@ -18,6 +18,13 @@ import java.io.IOException;
 
 public class LocationDeserializer extends JsonDeserializer<Location> {
 
+    /**
+     * It reads the JSON tree, and returns a new Location object with the values from the JSON tree
+     *
+     * @param jsonParser The JsonParser that is used to parse the JSON.
+     * @param deserializationContext The context of the deserialization.
+     * @return A Location object
+     */
     @Override
     public Location deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         final ObjectCodec objectCodec = jsonParser.getCodec();

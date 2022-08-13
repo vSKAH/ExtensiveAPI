@@ -51,6 +51,7 @@ public final class MinecraftVersion {
         /**
          * Is this library tested with this Minecraft version?
          */
+        @lombok.Getter
         private final boolean tested;
 
         /**
@@ -73,12 +74,12 @@ public final class MinecraftVersion {
             this.tested = tested;
         }
 
+
         /**
-         * Attempts to get the version from number
+         * If the number is equal to the minor version number, return the version, otherwise throw an exception.
          *
-         * @param number
-         * @return value enum
-         * @throws RuntimeException if number not found
+         * @param number The version number to parse.
+         * @return The enum value that matches the number passed in.
          */
         private static V parse(int number) {
             for (final V v : values())
@@ -97,52 +98,59 @@ public final class MinecraftVersion {
         }
 
 
-        public boolean isTested() {
-            return tested;
-        }
     }
 
     /**
-     * Does the current Minecraft version equal the given version?
+     * Returns true if the version is equal to the version passed in.
      *
-     * @param version
-     * @return
+     * @param version The version to compare with.
+     * @return The return type is boolean.
      */
     public static boolean equals(V version) {
         return compareWith(version) == 0;
     }
 
+
     /**
-     * Is the current Minecraft version older than the given version?
+     * Returns true if the current version is older than the given version.
      *
-     * @param version
-     * @return
+     * @param version The version to compare with.
+     * @return A boolean value.
      */
     public static boolean olderThan(V version) {
         return compareWith(version) < 0;
     }
 
+
     /**
-     * Is the current Minecraft version newer than the given version?
+     * Returns true if the current version is newer than the given version.
      *
-     * @param version
-     * @return
+     * @param version The version to compare with.
+     * @return A boolean value.
      */
     public static boolean newerThan(V version) {
         return compareWith(version) > 0;
     }
 
+
     /**
-     * Is the current Minecraft version at equals or newer than the given version?
+     * Returns true if the current version is equal to or newer than the given version.
      *
-     * @param version
-     * @return
+     * @param version The version to compare to.
+     * @return A boolean value.
      */
     public static boolean atLeast(V version) {
         return equals(version) || newerThan(version);
     }
 
-    // Compares two versions by the number
+    /**
+     * If the current version is less than the version passed in, return a negative number, if the current version is
+     * greater than the version passed in, return a positive number, if the current version is equal to the version passed
+     * in, return 0.
+     *
+     * @param version The version of the API you want to check against.
+     * @return The difference between the current minor version number and the version number passed in.
+     */
     private static int compareWith(V version) {
         try {
             return getCurrent().minorVersionNumber - version.minorVersionNumber;
@@ -154,10 +162,11 @@ public final class MinecraftVersion {
         }
     }
 
+
     /**
-     * Return the class versioning such as v1_14_R1
+     * If the server version is "craftbukkit", return an empty string, otherwise return the server version
      *
-     * @return
+     * @return The server version.
      */
     public static String getServerVersion() {
         return serverVersion.equals("craftbukkit") ? "" : serverVersion;

@@ -8,6 +8,8 @@ package fr.skah.skmdl.api.spigot.common.maths;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
+import lombok.Getter;
+import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -15,6 +17,8 @@ import org.bukkit.entity.Player;
 import java.io.Serializable;
 import java.util.List;
 
+@Getter
+@ToString
 public class Cuboid implements Serializable {
 
     private String worldName;
@@ -41,7 +45,7 @@ public class Cuboid implements Serializable {
         this(cuboid.getWorldName(), cuboid.getX1(), cuboid.getY1(), cuboid.getZ1(), cuboid.getX2(), cuboid.getY2(), cuboid.getZ2());
     }
 
-    //Cuboid from location
+    // It's creating a cuboid from two locations.
     public Cuboid(Location location1, Location location2) {
         this.worldName = location1.getWorld().getName();
         this.x1 = Math.min(location1.getBlockX(), location2.getBlockX());
@@ -53,22 +57,44 @@ public class Cuboid implements Serializable {
     }
 
 
-    //Check if X Y Z is inside the cuboid
+    /**
+     * If the x, y, and z coordinates are within the bounds of the box, return true, otherwise return false.
+     *
+     * @param x The x coordinate of the block
+     * @param y The y coordinate of the block to check.
+     * @param z The z-coordinate of the block.
+     * @return A boolean value.
+     */
     public boolean contains(int x, int y, int z) {
         return x >= this.x1 && x <= this.x2 && y >= this.y1 && y <= this.y2 && z >= this.z1 && z <= this.z2;
     }
 
-    //Check if a location is inside the cuboid
+    /**
+     * If the world name is the same and the coordinates are within the region, return true.
+     *
+     * @param location The location to check.
+     * @return A boolean value.
+     */
     public boolean contains(Location location) {
         return this.worldName.equals(location.getWorld().getName()) && this.contains(location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
-    //Check if a player is inside the cuboid
+
+    /**
+     * Returns true if the player is in the region.
+     *
+     * @param player The player to check.
+     * @return A boolean value.
+     */
     public boolean contains(Player player) {
         return this.contains(player.getLocation());
     }
 
-    //Check all player inside the cuboid and return list of them
+    /**
+     * Returns a list of all players inside the region.
+     *
+     * @return A list of players inside the region.
+     */
     @JsonIgnore
     public List<Player> getPlayersInside() {
         List<Player> list = Lists.newArrayList();
@@ -79,44 +105,4 @@ public class Cuboid implements Serializable {
     }
 
 
-    public String getWorldName() {
-        return worldName;
-    }
-
-    public int getX1() {
-        return x1;
-    }
-
-    public int getY1() {
-        return y1;
-    }
-
-    public int getZ1() {
-        return z1;
-    }
-
-    public int getX2() {
-        return x2;
-    }
-
-    public int getY2() {
-        return y2;
-    }
-
-    public int getZ2() {
-        return z2;
-    }
-
-    @Override
-    public String toString() {
-        return "Cuboid{" +
-                "worldName='" + worldName + '\'' +
-                ", x1=" + x1 +
-                ", y1=" + y1 +
-                ", z1=" + z1 +
-                ", x2=" + x2 +
-                ", y2=" + y2 +
-                ", z2=" + z2 +
-                '}';
-    }
 }

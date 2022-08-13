@@ -10,17 +10,22 @@ import fr.skah.skmdl.api.spigot.common.hooks.basics.JobsHook;
 import fr.skah.skmdl.api.spigot.common.hooks.basics.LandsHook;
 import fr.skah.skmdl.api.spigot.common.hooks.basics.VaultHook;
 import fr.skah.skmdl.api.spigot.common.hooks.basics.WorldguardHook;
+import lombok.Getter;
 
 import java.util.HashMap;
 
 public class Hooks {
 
+    @Getter
     private final HashMap<String, Hook> pluginHooks = new HashMap<>();
 
     public Hooks() {
         hookDefaultsPlugins();
     }
 
+    /**
+     * Hook the default plugins.
+     */
     private void hookDefaultsPlugins() {
         hookPlugin(new WorldguardHook());
         hookPlugin(new VaultHook());
@@ -28,14 +33,22 @@ public class Hooks {
         hookPlugin(new JobsHook());
     }
 
+    /**
+     * If the hook is registered, add it to the pluginHooks map
+     *
+     * @param hook The hook to register.
+     */
     public void hookPlugin(Hook hook) {
         if (hook.registerHook()) pluginHooks.put(hook.getHookName(), hook);
     }
 
-    public HashMap<String, Hook> getLoaded() {
-        return pluginHooks;
-    }
 
+    /**
+     * If the hook is not null, and the plugin is enabled, and the class exists, then return true
+     *
+     * @param name The name of the plugin you want to check.
+     * @return A boolean value.
+     */
     public boolean isHooked(String name) {
         try {
             Hook hook = pluginHooks.get(name);
