@@ -21,13 +21,13 @@ public class ModuleClassLoader extends URLClassLoader {
     @Getter
     private final Module module;
 
-   // It's loading the class from the jar file.
-   public ModuleClassLoader(File moduleFile, ClassLoader parent, ModuleOption moduleOptions) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    // It's loading the class from the jar file.
+    public ModuleClassLoader(File moduleFile, ClassLoader parent, ModuleOption moduleOptions) throws ClassNotFoundException, NoSuchMethodException, MalformedURLException, InvocationTargetException, InstantiationException, IllegalAccessException {
         super(new URL[]{moduleFile.toURI().toURL()}, parent);
-            Class<?> jarClass = Class.forName(moduleOptions.getModuleMainClass(), true, this);
-            Class<? extends Module> moduleClass;
-            moduleClass = jarClass.asSubclass(Module.class);
-            module = moduleClass.getDeclaredConstructor().newInstance();
+        Class<?> jarClass = Class.forName(moduleOptions.getModuleMainClass(), true, this);
+        Class<? extends Module> moduleClass;
+        moduleClass = jarClass.asSubclass(Module.class);
+        module = moduleClass.getDeclaredConstructor().newInstance();
     }
 
 }

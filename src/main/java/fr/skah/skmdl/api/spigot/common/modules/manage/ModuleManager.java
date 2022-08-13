@@ -7,6 +7,7 @@ package fr.skah.skmdl.api.spigot.common.modules.manage;
  */
 
 import com.google.common.collect.Maps;
+import fr.skah.skmdl.api.spigot.ModulesPlugin;
 import fr.skah.skmdl.api.spigot.common.modules.enums.ModuleState;
 import fr.skah.skmdl.api.spigot.common.modules.models.Module;
 import fr.skah.skmdl.api.spigot.common.modules.models.ModuleOption;
@@ -27,9 +28,16 @@ public class ModuleManager {
      * @param module The module to register.
      */
     public static void registerModule(Module module) {
-        module.onStartup();
-        modules.put(module.getModuleOptions().getModuleName(), module);
-        loadModule(module.getModuleOptions().getModuleName());
+        if (module != null) {
+            String moduleName = module.getModuleOptions().getModuleName();
+
+            modules.put(moduleName, module);
+            loadModule(moduleName);
+
+            module.onStartup();
+            module.onEnable();
+
+        }
     }
 
     /**
@@ -39,14 +47,14 @@ public class ModuleManager {
      */
     public static void loadModule(String moduleName) {
         Module module = modules.get(moduleName);
-            for (String pluginDependency : module.getModuleOptions().getPluginDependencies()) {
-                Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginDependency);
-                if (plugin == null || !plugin.isEnabled()) {
-                    module.getLogger().warn("Impossible de charger le module " + moduleName + ". Il manque " + pluginDependency);
-                    return;
-                }
+        for (String pluginDependency : module.getModuleOptions().getPluginDependencies()) {
+            Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginDependency);
+            if (plugin == null || !plugin.isEnabled()) {
+                ModulesPlugin.getInstance().getLogger().warning("Impossible de charger le module " + moduleName + ". Il manque " + pluginDependency);
+                return;
             }
-        modules.get(moduleName).onEnable();
+        }
+        ModulesPlugin.getInstance().getLogger().info("Le module " + moduleName + " a pu charger toutes ses dépendances  !");
     }
 
     /**

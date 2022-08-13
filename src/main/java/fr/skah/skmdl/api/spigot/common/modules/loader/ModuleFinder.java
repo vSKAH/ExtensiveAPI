@@ -26,12 +26,6 @@ public class ModuleFinder {
     // It's creating a new File object that points to the modules folder.
     private static final File MODULES_FOLDER = new File(ModulesPlugin.getPlugin(ModulesPlugin.class).getDataFolder(), "modules");
 
-    /**
-     * If the modules folder doesn't exist, create it. Then, for each file in the modules folder that ends with .jar, add
-     * the module to the list.
-     *
-     * @return A list of all the modules in the modules folder.
-     */
     public static List<Module> getAllModules() {
         if (!MODULES_FOLDER.exists()) MODULES_FOLDER.mkdirs();
         List<Module> modules = new ArrayList<>();
@@ -41,13 +35,6 @@ public class ModuleFinder {
         return modules;
     }
 
-    /**
-     * It creates a new ModuleClassLoader, which is a custom class loader that loads the module from the jar file, and then
-     * returns the module
-     *
-     * @param jarName The name of the jar file.
-     * @return A Module object
-     */
     public static Module getModuleFromFile(String jarName) {
 
         File moduleFile = new File(MODULES_FOLDER, jarName);
@@ -57,18 +44,13 @@ public class ModuleFinder {
             module.setModuleOptions(moduleOptions);
             module.setModuleFileName(jarName);
             return module;
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | MalformedURLException |
+                 InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    /**
-     * It reads the Module.json file from the jar file and returns a ModuleOption object
-     *
-     * @param file The file to be read
-     * @return A ModuleOption object
-     */
     private static ModuleOption getModuleOption(File file) {
         try {
             JarFile jarFile = new JarFile(file);
@@ -80,5 +62,4 @@ public class ModuleFinder {
         }
         return null;
     }
-
 }

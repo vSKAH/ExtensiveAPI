@@ -7,6 +7,8 @@ package fr.skah.skmdl.api.spigot.common.modules.enums;
  */
 
 public enum ModuleState {
+    STARTUP,
+
     ENABLED,
     DISABLED
 }

@@ -100,7 +100,8 @@ public class ArmorListeners implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void playerInteractEvent(PlayerInteractEvent e) {
         //Get hand
-        if (!MinecraftVersion.atLeast(MinecraftVersion.V.v1_9)) {
+
+        if (MinecraftVersion.atLeast(MinecraftVersion.V.v1_9)) {
             if (e.getHand() != EquipmentSlot.HAND) return;
         }
         if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL)
@@ -109,7 +110,7 @@ public class ArmorListeners implements Listener {
         Player player = e.getPlayer();
         //get item in hand
         ArmorType newArmorType;
-        if (!MinecraftVersion.atLeast(MinecraftVersion.V.v1_9)) {
+        if (MinecraftVersion.atLeast(MinecraftVersion.V.v1_9)) {
             newArmorType = ArmorType.matchType(e.getPlayer().getInventory().getItemInMainHand());
         } else {
             newArmorType = ArmorType.matchType(e.getPlayer().getInventory().getItemInHand());

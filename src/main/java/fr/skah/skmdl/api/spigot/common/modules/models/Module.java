@@ -12,6 +12,7 @@ import fr.skah.skmdl.api.spigot.common.modules.enums.ModuleState;
 import fr.skah.skmdl.api.spigot.common.modules.manage.ModuleManager;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -24,7 +25,7 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-@Getter @Setter
+@Getter @Setter @ToString
 public abstract class Module {
 
     private ModuleOption moduleOptions;
@@ -40,6 +41,7 @@ public abstract class Module {
      * This function is called when the module is loaded.
      */
     public void onStartup() {
+        setModuleState(ModuleState.STARTUP);
         setLogger(LoggerFactory.getLogger(moduleOptions.getModuleName()));
         moduleConfigurationFolder = new File(ModulesPlugin.getInstance().getDataFolder(), "modules/".concat(moduleOptions.getModuleName()));
     }

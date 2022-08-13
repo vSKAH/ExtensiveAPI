@@ -53,6 +53,7 @@ public class ModulesPlugin extends JavaPlugin {
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-core", "2.13.2"));
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-databind", "2.13.2.2"));
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-annotations", "2.13.2"));
+        dependencyManager.preLoad(new Dependency("com.google.guava", "guava", "31.1-jre"));
 
         dependencyManager.dl(getDependenciesFolder()).injectJar(getDependenciesFolder());
 
@@ -71,9 +72,10 @@ public class ModulesPlugin extends JavaPlugin {
         //Hook basics plugins
         hooks = new Hooks();
 
-
         //register and load Modules
-        ModuleFinder.getAllModules().parallelStream().forEach(ModuleManager::registerModule);
+        for (Module allModule : ModuleFinder.getAllModules()) {
+            ModuleManager.registerModule(allModule);
+        }
 
     }
 

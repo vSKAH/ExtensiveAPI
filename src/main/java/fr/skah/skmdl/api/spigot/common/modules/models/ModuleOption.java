@@ -9,12 +9,14 @@ package fr.skah.skmdl.api.spigot.common.modules.models;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ModuleOption {
 
     // It's a class that contains all the information about the module.
