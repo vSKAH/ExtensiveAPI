@@ -8,6 +8,14 @@ import java.nio.file.StandardCopyOption;
 
 public class ConfigurationExporter {
 
+    /**
+     * If the target file exists, replace it with the input stream. If it doesn't exist, create it
+     *
+     * @param targetFile The file to create.
+     * @param in The input stream of the file you want to copy.
+     * @param replace If the file already exists, should it be replaced?
+     * @return The file that was created.
+     */
     public static File createConfig(File targetFile, InputStream in, boolean replace) throws IOException {
         if (replace && targetFile.exists()) {
             Files.copy(in, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -17,6 +25,12 @@ public class ConfigurationExporter {
         return targetFile;
     }
 
+    /**
+     * If the file doesn't exist, create it
+     *
+     * @param file The file to create.
+     * @return A file object.
+     */
     public static File createFile(final File file) throws IOException {
         if (!file.exists()) {
             file.getParentFile().mkdirs();
@@ -25,6 +39,12 @@ public class ConfigurationExporter {
         return file;
     }
 
+    /**
+     * If the folder doesn't exist, create it
+     *
+     * @param folder The folder to create.
+     * @return A file object.
+     */
     public static File createFolders(final File folder) {
         if (!folder.exists()) {
             folder.getParentFile().mkdirs();
@@ -32,6 +52,12 @@ public class ConfigurationExporter {
         return folder;
     }
 
+    /**
+     * If the folder doesn't exist, create it.
+     *
+     * @param folder The folder to create.
+     * @return A File object
+     */
     public static File createFolder(final File folder) {
         if (!folder.exists()) {
             folder.mkdirs();

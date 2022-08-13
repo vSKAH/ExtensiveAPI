@@ -8,18 +8,27 @@ package fr.skah.skmdl.api.commons.json;
 
 import fr.skah.skmdl.api.spigot.ModulesPlugin;
 import fr.skah.skmdl.api.spigot.common.json.MinecraftObjectMapper;
+import lombok.Getter;
 
 import java.io.File;
 import java.io.IOException;
 
 public abstract class IDataSerialisable<T> {
 
+    @Getter
     private final MinecraftObjectMapper minecraftObjectMapper;
 
     public IDataSerialisable() {
         this.minecraftObjectMapper = new MinecraftObjectMapper();
     }
 
+    /**
+     * It loads a file and returns the object of the class that was passed in
+     *
+     * @param file The file to load from
+     * @param tClass The class of the object you want to load.
+     * @return A MinecraftObjectMapper object
+     */
     public T load(File file, Class<T> tClass) {
         try {
             T type = getMinecraftObjectMapper().getObjectMapper().readValue(file, tClass);
@@ -33,6 +42,12 @@ public abstract class IDataSerialisable<T> {
         return null;
     }
 
+    /**
+     * It saves an object to a file
+     *
+     * @param file The file to save the object to.
+     * @param object The object to save
+     */
     public void save(File file, Object object) {
         try {
             getMinecraftObjectMapper().getObjectMapper().writeValue(file, object);
@@ -44,7 +59,4 @@ public abstract class IDataSerialisable<T> {
         }
     }
 
-    public MinecraftObjectMapper getMinecraftObjectMapper() {
-        return minecraftObjectMapper;
-    }
 }

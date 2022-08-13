@@ -31,7 +31,6 @@ public class DependencyDownloader {
         MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
 
         try (DigestInputStream dis = new DigestInputStream(new FileInputStream(file), sha1)) {
-            while (dis.read() != -1) ;
             sha1 = dis.getMessageDigest();
         }
 
@@ -44,13 +43,14 @@ public class DependencyDownloader {
 
     }
 
+
     /**
-     * This function check if the dependency is already downloaded or not and download it if needed
+     * Download a dependency to a file, and if the download is successful, run the afterDownload function
      *
-     * @param dependency    the object Depency that contains group, artifact name and version of the jar
-     * @param outputDir     the directory where the dependency will be downloaded
-     * @param afterDownload
-     * @return the dependency object
+     * @param dependency The dependency to download
+     * @param outputDir The directory where the dependency will be downloaded to.
+     * @param afterDownload A callback that will be called after the download is complete.
+     * @return A Dependency object.
      */
     public Dependency downloadDependency(Dependency dependency, File outputDir, Consumer<File> afterDownload) {
         String name = dependency.getArtifactId() + "-" + dependency.getVersion() + ".jar";
@@ -122,12 +122,10 @@ public class DependencyDownloader {
     public boolean checksumDependency(Dependency dependency, File dependecyFile) {
         try {
             InputStream stream;
-            if(dependency.isOnlyLink())
-            stream = new URL(dependency.getURLNameWithoutId().concat(".sha1")).openStream();
-            else
-            stream = new URL(dependency.getURLName() + ".sha1").openStream();
-            final String urlSHa1 = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))
-                    .lines().collect(Collectors.joining("\n"));
+            if (dependency.isOnlyLink()) stream = new URL(dependency.getURLNameWithoutId().concat(".sha1")).openStream();
+            else stream = new URL(dependency.getURLName() + ".sha1").openStream();
+            final String urlSHa1 = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8)).lines()
+                    .collect(Collectors.joining("\n"));
             final String dependencySha1 = calcSHA1(dependecyFile).toLowerCase();
 
             if (!urlSHa1.equals(dependencySha1)) {

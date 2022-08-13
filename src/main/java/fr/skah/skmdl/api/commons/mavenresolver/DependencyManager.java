@@ -35,10 +35,11 @@ public class DependencyManager {
         }
     }
 
+
     /**
-     * This function allow to put the dependency in a list before being downloaded in parallel.
+     * If the dependency is not already in the list of dependencies to load, add it to the list
      *
-     * @param dependency The object of the dependency we want to download
+     * @param dependency The dependency to load.
      */
     public void preLoad(Dependency dependency) {
         if (!this.toLoad.contains(dependency)) {
@@ -46,10 +47,12 @@ public class DependencyManager {
         }
     }
 
+
     /**
-     * This function start the process to download and inject the dependencies.
+     * Downloads all the dependencies to the specified folder, and then returns the DependencyManager instance.
      *
-     * @param libsFolder the folder where the dependency will be placed
+     * @param libsFolder The folder where the dependencies will be downloaded to.
+     * @return The DependencyManager object.
      */
     public DependencyManager dl(File libsFolder) {
         synchronized (this.dependencyDownloader) {
@@ -59,13 +62,21 @@ public class DependencyManager {
         return this;
     }
 
+    /**
+     * It takes a folder, and injects all the jar files in that folder into the classpath
+     *
+     * @param jarFilefolder The folder where the jar files are located.
+     */
     public void injectJar(File jarFilefolder) {
-        try {
-            for (File file : jarFilefolder.listFiles()) {
+        File[] files = jarFilefolder.listFiles();
+        if (files == null || files.length == 0) return;
+
+        for (File file : files) {
+            try {
                 this.method.invoke(this.classLoader, file.toURI().toURL());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

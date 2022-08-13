@@ -1,5 +1,8 @@
 package fr.skah.skmdl.api.commons.mavenresolver;
 
+import lombok.Getter;
+
+@Getter
 public class Dependency {
 
     private final String groupId;
@@ -51,35 +54,4 @@ public class Dependency {
         return getRepository();
     }
 
-    /**
-     * @return the group of the dependency
-     */
-    public String getGroupId() {
-        return this.groupId;
-    }
-
-    /**
-     * @return the name of the dependency
-     */
-    public String getArtifactId() {
-        return this.artifactId;
-    }
-
-    /**
-     * @return the version of the dependency
-     */
-    public String getVersion() {
-        return this.version;
-    }
-
-    /**
-     * @return the repository of the dependency
-     */
-    public String getRepository() {
-        return this.repository;
-    }
-
-    public boolean isOnlyLink() {
-        return onlyLink;
-    }
 }

@@ -16,7 +16,6 @@ import fr.skah.skmdl.api.spigot.common.smartinventory.InventoryManager;
 import fr.skah.skmdl.api.spigot.common.modules.loader.ModuleFinder;
 import fr.skah.skmdl.api.spigot.common.modules.manage.ModuleManager;
 import fr.skah.skmdl.api.spigot.common.modules.models.Module;
-import fr.skah.skmdl.api.spigot.common.utils.MinecraftVersion;
 import fr.skah.skmdl.api.spigot.common.events.armors.ArmorListeners;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -36,6 +35,10 @@ public class ModulesPlugin extends JavaPlugin {
 
     private Hooks hooks;
 
+    /**
+     * > We create a new instance of the plugin, download and load dependencies, init SmartInventory, init Aikar commands,
+     * register armor equit event, hook basics plugins, register and load Modules
+     */
     @Override
     public void onEnable() {
 
@@ -75,16 +78,30 @@ public class ModulesPlugin extends JavaPlugin {
     }
 
 
+    /**
+     * When the plugin is disabled, unregister all modules and shutdown the scheduler.
+     */
     @Override
     public void onDisable() {
         ModuleManager.getModules().values().parallelStream().forEach(Module::onUnregister);
         ModuleScheduler.shutdownNow();
     }
 
+    /**
+     * If the instance variable is null, create a new ModulesPlugin object and assign it to the instance variable. Then
+     * return the instance variable.
+     *
+     * @return The instance of the ModulesPlugin class.
+     */
     public static ModulesPlugin getInstance() {
         return instance;
     }
 
+    /**
+     * This function returns the inventoryManager variable.
+     *
+     * @return The inventoryManager object.
+     */
     public static InventoryManager getInventoryManager() {
         return inventoryManager;
     }
