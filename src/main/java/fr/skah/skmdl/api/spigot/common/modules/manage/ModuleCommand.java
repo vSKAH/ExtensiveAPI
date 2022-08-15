@@ -38,7 +38,7 @@ public class ModuleCommand extends BaseCommand {
     /**
      * It loads a module from a jar file
      *
-     * @param sender The CommandSender who executed the command.
+     * @param sender     The CommandSender who executed the command.
      * @param moduleName The name of the module to register.
      */
     @CommandCompletion("@modules")
@@ -51,6 +51,7 @@ public class ModuleCommand extends BaseCommand {
             sender.sendMessage("Le module est déjà chargé !");
             return;
         }
+
         ModuleManager.registerModule(Objects.requireNonNull(ModuleFinder.getModuleFromFile(moduleWithJar)));
         sender.sendMessage("Le module vient d'être chargé !");
     }
@@ -59,7 +60,7 @@ public class ModuleCommand extends BaseCommand {
     /**
      * This function unregisters a module.
      *
-     * @param sender The CommandSender who executed the command.
+     * @param sender     The CommandSender who executed the command.
      * @param moduleName The name of the module to unregister.
      * @return A boolean
      */
@@ -89,7 +90,7 @@ public class ModuleCommand extends BaseCommand {
     /**
      * It unregisters a module, then registers it again
      *
-     * @param sender The CommandSender who executed the command.
+     * @param sender     The CommandSender who executed the command.
      * @param moduleName The name of the module to reload.
      */
     @CommandCompletion("@modules")
@@ -99,7 +100,12 @@ public class ModuleCommand extends BaseCommand {
     public void reloadModule(CommandSender sender, String moduleName) {
         final Module module = ModuleManager.getModules().get(moduleName);
 
-        if(module != null) {
+        if (!module.getModuleOptions().isCanBeDisabled()) {
+            sender.sendMessage("Le module ne peut pas être désactivé !");
+            return;
+        }
+
+        if (module != null) {
             unregisterModule(sender, moduleName);
             registerModule(sender, module.getModuleFileName().replace(".jar", ""));
         }
