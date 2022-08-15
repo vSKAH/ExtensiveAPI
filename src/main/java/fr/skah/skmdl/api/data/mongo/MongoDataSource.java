@@ -6,14 +6,11 @@ package fr.skah.skmdl.api.data.mongo;
  *  * @Author Jimmy  / SKAH#7513
  */
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import fr.skah.skmdl.api.data.IDataSource;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 
 import java.util.HashMap;
 

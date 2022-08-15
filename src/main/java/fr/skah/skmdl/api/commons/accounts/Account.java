@@ -66,7 +66,7 @@ public class Account implements IAccountIdentifier, Cloneable {
      */
     public Document generateDocument() throws AccountEmptyDocumentException {
         if (data.isEmpty())
-            throw new AccountEmptyDocumentException("Document can't be generated because the map data is null or empty !");
+            throw new AccountEmptyDocumentException("Document can't be generated from data map because the map data is null or empty !");
         Document document = new Document(data);
         if (!document.containsKey("uuid")) document.append("uuid", playerUniqueId.toString());
         return document;
@@ -88,14 +88,6 @@ public class Account implements IAccountIdentifier, Cloneable {
         return datas;
     }
 
-    /**
-     * This function saves an account to the database.
-     *
-     * @param document The document to be saved.
-     */
-    public void saveAccount(Document document) throws AccountEmptyDocumentException {
-
-    }
 
     /**
      * If the object is cloneable, then clone it, otherwise throw a CloneNotSupportedException.
