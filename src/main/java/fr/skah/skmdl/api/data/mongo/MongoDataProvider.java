@@ -30,37 +30,45 @@ public abstract class MongoDataProvider {
         this.mongoCollection = MongoDataSource.getInstance().getMongoDatabase(databaseName).getCollection(collectionName);
     }
 
-    public Document getSyncDocumentFromUniqueId(UUID uniqueId) {
+    public Document syncGetDocumentFromUniqueId(UUID uniqueId) {
         return mongoCollection.find(Filters.eq("uuid", uniqueId.toString())).first();
     }
 
-    public CompletableFuture<Document> getAsyncDocumentFromUniqueId(UUID uniqueId) {
-        return CompletableFuture.supplyAsync(() -> getSyncDocumentFromUniqueId(uniqueId), ModuleScheduler.EXECUTOR_SERVICE);
+    public CompletableFuture<Document> asyncGetDocumentFromUniqueId(UUID uniqueId) {
+        return CompletableFuture.supplyAsync(() -> syncGetDocumentFromUniqueId(uniqueId), ModuleScheduler.EXECUTOR_SERVICE);
     }
 
-    public Boolean insertSyncDocument(Document document) {
+    public Boolean syncInsertDocument(Document document) {
         return mongoCollection.insertOne(document).wasAcknowledged();
     }
 
-    public CompletableFuture<Boolean> insertAsyncDocument(Document document) {
-        return CompletableFuture.supplyAsync(() -> insertSyncDocument(document), ModuleScheduler.EXECUTOR_SERVICE);
+    public CompletableFuture<Boolean> asyncInsertDocument(Document document) {
+        return CompletableFuture.supplyAsync(() -> syncInsertDocument(document), ModuleScheduler.EXECUTOR_SERVICE);
     }
 
-    public boolean replaceSyncDocument(UUID uuid, Document document) {
-        return mongoCollection.replaceOne(Filters.eq("uuid", uuid.toString()), document).wasAcknowledged();
+    public boolean syncReplaceDocument(UUID uniqueId, Document document) {
+        return mongoCollection.replaceOne(Filters.eq("uuid", uniqueId.toString()), document).wasAcknowledged();
     }
 
-    public CompletableFuture<Boolean> replaceAsyncDocument(UUID uuid, Document document) {
-        return CompletableFuture.supplyAsync(() -> replaceSyncDocument(uuid, document), ModuleScheduler.EXECUTOR_SERVICE);
+    public CompletableFuture<Boolean> asyncReplaceDocument(UUID uniqueId, Document document) {
+        return CompletableFuture.supplyAsync(() -> syncReplaceDocument(uniqueId, document), ModuleScheduler.EXECUTOR_SERVICE);
     }
 
-    public MongoCursor<Document> getSyncAllDocuments() {
+    public boolean syncDeleteDocument(UUID uniqueId) {
+        return mongoCollection.deleteOne(Filters.eq("uuid", uniqueId.toString())).wasAcknowledged();
+    }
+
+    public CompletableFuture<Boolean> asyncDeleteDocument(UUID uniqueId) {
+        return CompletableFuture.supplyAsync(() -> mongoCollection.deleteOne(Filters.eq("uuid", uniqueId.toString())).wasAcknowledged());
+    }
+
+
+    public MongoCursor<Document> syncGetAllDocuments() {
         return mongoCollection.find().iterator();
     }
 
-    public CompletableFuture<MongoCursor<Document>> getAsyncAllDocuments() {
-        return CompletableFuture.supplyAsync(this::getSyncAllDocuments, ModuleScheduler.EXECUTOR_SERVICE);
-
+    public CompletableFuture<MongoCursor<Document>> asyncGetAllDocuments() {
+        return CompletableFuture.supplyAsync(this::syncGetAllDocuments, ModuleScheduler.EXECUTOR_SERVICE);
     }
 
 }
