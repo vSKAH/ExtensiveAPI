@@ -33,6 +33,10 @@ public class MongoDataSource implements IDataSource {
         instance = this;
     }
 
+    /**
+     * Create a MongoClientSettings object, set the application name, set the connection pool settings, and create a
+     * MongoClient object.
+     */
     @Override
     public void openDataSource() {
         MongoClientSettings.Builder mongoClientSettingsBuilder = MongoClientSettings.builder();
@@ -52,10 +56,21 @@ public class MongoDataSource implements IDataSource {
         mongoClient.close();
     }
 
+    /**
+     * This function takes a database name as a parameter and adds it to the mongoDatabases map.
+     *
+     * @param databaseName The name of the database you want to register.
+     */
     public void registerMongoDatabase(String databaseName) {
         mongoDatabases.put(databaseName, mongoClient.getDatabase(databaseName));
     }
 
+    /**
+     * If the database is already in the map, return it. Otherwise, create a new database and add it to the map.
+     *
+     * @param databaseName The name of the database you want to connect to.
+     * @return A MongoDatabase object
+     */
     public MongoDatabase getMongoDatabase(String databaseName) {
         return mongoDatabases.get(databaseName);
     }
