@@ -88,7 +88,7 @@ public class ModulesPlugin extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        ModuleManager.getModules().values().parallelStream().forEach(Module::onUnregister);
+        ModuleManager.getModules().values().forEach(Module::onUnregister);
         ModuleScheduler.shutdownNow();
     }
 

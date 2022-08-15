@@ -20,7 +20,7 @@ public interface IDataSource {
      *
      * @return A boolean value.
      */
-    boolean dataSourceIsOpen() throws SQLException;
+    boolean dataSourceIsOpen();
     /**
      * Closes the data source
      */

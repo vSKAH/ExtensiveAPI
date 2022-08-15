@@ -11,6 +11,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import fr.skah.skmdl.api.commons.configuration.ConfigurationExporter;
 import fr.skah.skmdl.api.data.IDataSource;
 import lombok.Getter;
+import lombok.SneakyThrows;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,8 +41,12 @@ public class SQLDataSource implements IDataSource {
 
     @Override
     // It checks if the data source is open or not.
-    public boolean dataSourceIsOpen() throws SQLException {
-        return this.hikariDataSource != null && !this.hikariDataSource.getConnection().isClosed();
+    public boolean dataSourceIsOpen() {
+        try {
+            return this.hikariDataSource != null && !this.hikariDataSource.getConnection().isClosed();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -49,13 +54,7 @@ public class SQLDataSource implements IDataSource {
      */
     @Override
     public void closeDataSource() {
-        try {
-            if (this.dataSourceIsOpen()) {
-                this.hikariDataSource.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        if (this.dataSourceIsOpen()) this.hikariDataSource.close();
     }
 
 }
