@@ -6,28 +6,30 @@ package fr.skah.skmdl.api.spigot.common.modules.loader;
  *  * @Author Jimmy
  */
 
+import fr.skah.skmdl.api.spigot.ModulesPlugin;
 import fr.skah.skmdl.api.spigot.common.modules.models.Module;
 import fr.skah.skmdl.api.spigot.common.modules.models.ModuleOption;
 import lombok.Getter;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
 public class ModuleClassLoader extends URLClassLoader {
 
-    @Getter
-    private final Module module;
 
-    // It's loading the class from the jar file.
-    public ModuleClassLoader(File moduleFile, ClassLoader parent, ModuleOption moduleOptions) throws ClassNotFoundException, NoSuchMethodException, MalformedURLException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        super(new URL[]{moduleFile.toURI().toURL()}, parent);
-        Class<?> jarClass = Class.forName(moduleOptions.getModuleMainClass(), true, this);
-        Class<? extends Module> moduleClass;
-        moduleClass = jarClass.asSubclass(Module.class);
-        module = moduleClass.getDeclaredConstructor().newInstance();
+    public ModuleClassLoader(URL[] urls) {
+        super(urls, ModulesPlugin.getInstance().getClass().getClassLoader());
     }
 
+    public Module loadModule(ModuleOption moduleOptions) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Class<?> jarClass = Class.forName(moduleOptions.getModuleMainClass(), true, this);
+        Class<? extends Module> moduleClass = jarClass.asSubclass(Module.class);
+        return moduleClass.getDeclaredConstructor().newInstance();
+    }
+
+    @Override
+    protected void addURL(URL url) {
+        super.addURL(url);
+    }
 }

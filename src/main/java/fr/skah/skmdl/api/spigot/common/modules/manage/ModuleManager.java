@@ -32,10 +32,10 @@ public class ModuleManager {
             String moduleName = module.getModuleOptions().getModuleName();
 
             modules.put(moduleName, module);
-            loadModule(moduleName);
-
-            module.onStartup();
-            module.onEnable();
+            if (loadDependency(moduleName)) {
+                module.onStartup();
+                module.onEnable();
+            }
 
         }
     }
@@ -45,16 +45,21 @@ public class ModuleManager {
      *
      * @param moduleName The name of the module to load.
      */
-    public static void loadModule(String moduleName) {
+    public static boolean loadDependency(String moduleName) {
         Module module = modules.get(moduleName);
         for (String pluginDependency : module.getModuleOptions().getPluginDependencies()) {
             Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginDependency);
             if (plugin == null || !plugin.isEnabled()) {
                 ModulesPlugin.getInstance().getLogger().warning("Impossible de charger le module " + moduleName + ". Il manque " + pluginDependency);
-                return;
+                return false;
             }
         }
         ModulesPlugin.getInstance().getLogger().info("Le module " + moduleName + " a pu charger toutes ses dépendances  !");
+        return true;
+    }
+
+    public static void loadModule(Module module) {
+        module.onEnable();
     }
 
     /**
@@ -78,7 +83,11 @@ public class ModuleManager {
         ModuleOption moduleOption = module.getModuleOptions();
         if (!moduleOption.isCanBeDisabled()) return module;
         if (module.getModuleState() == ModuleState.ENABLED) ModuleManager.unloadModule(moduleName);
-        else ModuleManager.loadModule(moduleOption.getModuleName());
+        else if (module.getModuleState() == ModuleState.DISABLED) {
+            if (ModuleManager.loadDependency(moduleOption.getModuleName())) {
+                ModuleManager.loadModule(module);
+            }
+        }
         return module;
     }
 
