@@ -10,6 +10,7 @@ import co.aikar.commands.PaperCommandManager;
 import fr.skah.skmdl.api.commons.async.ModuleScheduler;
 import fr.skah.skmdl.api.commons.mavenresolver.Dependency;
 import fr.skah.skmdl.api.commons.mavenresolver.DependencyManager;
+import fr.skah.skmdl.api.data.mongo.MongoDataSource;
 import fr.skah.skmdl.api.spigot.common.commands.CommandLoader;
 import fr.skah.skmdl.api.spigot.common.hooks.Hooks;
 import fr.skah.skmdl.api.spigot.common.smartinventory.InventoryManager;
@@ -30,10 +31,13 @@ public class ModulesPlugin extends JavaPlugin {
     private static ModulesPlugin instance;
 
     private static InventoryManager inventoryManager;
+    private DependencyManager dependencyManager;
     private File dependenciesFolder;
     private CommandLoader commandLoader;
 
     private Hooks hooks;
+
+    private MongoDataSource mongoDataSource;
 
     /**
      * > We create a new instance of the plugin, download and load dependencies, init SmartInventory, init Aikar commands,
@@ -47,7 +51,7 @@ public class ModulesPlugin extends JavaPlugin {
 
         //Download load and init Dependencies.
         dependenciesFolder = new File(getDataFolder().getAbsolutePath().replace(getInstance().getName(), "SKAH-DEPENDENCIES"));
-        DependencyManager dependencyManager = new DependencyManager(this.getClass());
+        dependencyManager = new DependencyManager(this.getClass());
 
         //Download from custom repository
         dependencyManager.preLoad(new Dependency("io.papermc", "paperlib", "1.0.7", "https://papermc.io/repo/repository/maven-public/", false));
@@ -57,7 +61,7 @@ public class ModulesPlugin extends JavaPlugin {
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-core", "2.13.2"));
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-databind", "2.13.2.2"));
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-annotations", "2.13.2"));
-        dependencyManager.preLoad(new Dependency("com.google.guava", "guava", "31.1-jre"));
+
         dependencyManager.dl(getDependenciesFolder()).injectJar(getDependenciesFolder());
 
         //Init SmartInventory
@@ -82,12 +86,21 @@ public class ModulesPlugin extends JavaPlugin {
 
     }
 
+    public void registerMongoDataSource(String hostname) {
+        if (mongoDataSource == null || !mongoDataSource.getMongoHostname().equalsIgnoreCase(hostname)) {
+            mongoDataSource = new MongoDataSource(hostname);
+            mongoDataSource.openDataSource();
+            getLogger().info("MongoDataSource has enabled ! ");
+        }
+    }
+
 
     /**
      * When the plugin is disabled, unregister all modules and shutdown the scheduler.
      */
     @Override
     public void onDisable() {
+        if(mongoDataSource != null && mongoDataSource.dataSourceIsOpen()) mongoDataSource.closeDataSource();
         ModuleManager.getModules().values().forEach(Module::onUnregister);
         ModuleScheduler.shutdownNow();
     }

@@ -28,9 +28,12 @@ public class MongoDataSource implements IDataSource {
 
     private final HashMap<String, MongoDatabase> mongoDatabases = new HashMap<>();
 
+    private final String mongoHostname;
 
-    public MongoDataSource() {
+
+    public MongoDataSource(String mongoHostname) {
         instance = this;
+        this.mongoHostname = mongoHostname;
     }
 
     /**
@@ -39,11 +42,7 @@ public class MongoDataSource implements IDataSource {
      */
     @Override
     public void openDataSource() {
-        MongoClientSettings.Builder mongoClientSettingsBuilder = MongoClientSettings.builder();
-        mongoClientSettingsBuilder.applicationName("SKMDL_PLUGIN:" + Bukkit.getServer().getName() + ':' + Bukkit.getServer().getIp());
-        mongoClientSettingsBuilder.applyToConnectionPoolSettings(builder -> builder.minSize(10).maxSize(1000));
-        mongoClientSettingsBuilder.applyConnectionString(new ConnectionString("mongodb://host:port/"));
-        mongoClient = MongoClients.create(MongoClientSettings.builder().build());
+        mongoClient = MongoClients.create("mongodb://" + mongoHostname + "/");
     }
 
     @Override

@@ -14,11 +14,14 @@ public class DependencyManager {
     private Method method;
     private final List<Dependency> toLoad;
 
+    private final List<String> loaded;
+
     /**
      * @param mainClass The main class of the application / plugin (Spigot, BungeeCoord, ...)
      */
     public DependencyManager(Class<?> mainClass) {
         this.toLoad = new ArrayList<>();
+        this.loaded = new ArrayList<>();
 
         if (mainClass.getClassLoader() instanceof URLClassLoader) {
             this.classLoader = (URLClassLoader) mainClass.getClassLoader();
@@ -62,7 +65,10 @@ public class DependencyManager {
     public void injectJar(File jarFilefolder) {
         try {
             for (File file : jarFilefolder.listFiles()) {
-                this.method.invoke(this.classLoader, file.toURI().toURL());
+                if (!loaded.contains(file.getName())) {
+                    this.method.invoke(this.classLoader, file.toURI().toURL());
+                    this.loaded.add(file.getName());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

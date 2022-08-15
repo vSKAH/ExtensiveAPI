@@ -7,7 +7,7 @@ package fr.skah.skmdl.api.commons.accounts;
  */
 
 import fr.skah.skmdl.api.commons.accounts.exception.AccountEmptyDocumentException;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.bson.Document;
 
 import java.util.HashMap;
@@ -15,20 +15,19 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
 public class Account implements IAccountIdentifier, Cloneable {
     // It's a lombok annotation that allows you to specify which fields are included in the equals and hashCode methods.
     @EqualsAndHashCode.Include
     // It's a private variable that stores the UUID of the player.
-    private final UUID playerUniqueId;
+    private UUID playerUniqueId;
     // It's a map that stores all the data of the account.
-    private final Map<String, Object> data;
+    private Map<String, Object> data = new HashMap<>();
 
-    // It's the constructor of the class.
-    public Account(UUID playerUniqueId) {
-        this.data = new HashMap<>();
-        this.playerUniqueId = playerUniqueId;
-    }
 
     /**
      * Returns the UUID of the player.
@@ -53,7 +52,7 @@ public class Account implements IAccountIdentifier, Cloneable {
     /**
      * This function sets the value of the key in the data map to the value passed in.
      *
-     * @param key The key to store the data under.
+     * @param key   The key to store the data under.
      * @param value The value to be stored in the map.
      */
     public void setDataToMap(final String key, final Object value) {
