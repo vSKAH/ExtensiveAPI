@@ -49,12 +49,15 @@ public class ModulesPlugin extends JavaPlugin {
         dependenciesFolder = new File(getDataFolder().getAbsolutePath().replace(getInstance().getName(), "SKAH-DEPENDENCIES"));
         DependencyManager dependencyManager = new DependencyManager(this.getClass());
 
+        //Download from custom repository
+        dependencyManager.preLoad(new Dependency("io.papermc", "paperlib", "1.0.7", "https://papermc.io/repo/repository/maven-public/", false));
         dependencyManager.preLoad(new Dependency("", "command-api", "", "https://repo.aikar.co/nexus/content/groups/aikar/co/aikar/acf-paper/0.5.1-SNAPSHOT/acf-paper-0.5.1-20211222.025603-2.jar", true));
+
+        //Download from maven central
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-core", "2.13.2"));
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-databind", "2.13.2.2"));
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-annotations", "2.13.2"));
         dependencyManager.preLoad(new Dependency("com.google.guava", "guava", "31.1-jre"));
-
         dependencyManager.dl(getDependenciesFolder()).injectJar(getDependenciesFolder());
 
         //Init SmartInventory
