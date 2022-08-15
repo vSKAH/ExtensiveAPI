@@ -6,20 +6,23 @@ package fr.skah.skmdl.api.commons.accounts;
  *  * @Author jimmy  / vSKAH#0075
  */
 
-import com.google.common.base.Objects;
+import fr.skah.skmdl.api.commons.accounts.exception.AccountEmptyDocumentException;
+import lombok.EqualsAndHashCode;
+import org.bson.Document;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class Account implements IAccountIdentifier, Cloneable
-{
-    private UUID playerUniqueId;
-    private Map<String, Object> playerData;
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class Account implements IAccountIdentifier, Cloneable {
+    @EqualsAndHashCode.Include
+    private final UUID playerUniqueId;
+    private final Map<String, Object> data;
 
     public Account(UUID playerUniqueId) {
-        this.playerData = new HashMap<>();
+        this.data = new HashMap<>();
         this.playerUniqueId = playerUniqueId;
     }
 
@@ -29,36 +32,42 @@ public class Account implements IAccountIdentifier, Cloneable
     }
 
     public Optional<Object> getDataFromMap(final String key) {
-        return this.playerData.containsKey(key) ? Optional.of(this.playerData.get(key)) : Optional.empty();
+        return this.data.containsKey(key) ? Optional.of(this.data.get(key)) : Optional.empty();
     }
 
     public void setDataToMap(final String key, final Object value) {
-        this.playerData.put(key, value);
+        this.data.put(key, value);
+    }
+
+    public Document generateDocument() throws AccountEmptyDocumentException {
+        if (data.isEmpty())
+            throw new AccountEmptyDocumentException("Document can't be generated because the map data is null or empty !");
+        Document document = new Document(data);
+        if (!document.containsKey("uuid")) document.append("uuid", playerUniqueId.toString());
+        return document;
+    }
+
+    public HashMap<String, Object> loadFromDocument(Document document) throws AccountEmptyDocumentException {
+        if (document == null || document.isEmpty())
+            throw new AccountEmptyDocumentException("Document can't be loaded because he is null or empty !");
+        HashMap<String, Object> datas = new HashMap<>();
+        for (Map.Entry<String, Object> entry : document.entrySet()) {
+            if (!entry.getKey().equals("uuid")) datas.put(entry.getKey(), entry.getValue());
+        }
+        return datas;
+    }
+
+    public void saveAccount(Document document) throws AccountEmptyDocumentException {
+
     }
 
     public Account clone() {
         try {
-            return (Account)super.clone();
-        }
-        catch (CloneNotSupportedException e) {
+            return (Account) super.clone();
+        } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof final Account account)) {
-            return false;
-        }
-        return Objects.equal(this.getPlayerUniqueId(), account.getPlayerUniqueId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(this.getPlayerUniqueId());
-    }
 }
