@@ -51,16 +51,25 @@ public class ModulesPlugin extends JavaPlugin {
 
         //Download load and init Dependencies.
         dependenciesFolder = new File(getDataFolder().getAbsolutePath().replace(getInstance().getName(), "SKAH-DEPENDENCIES"));
-        dependencyManager = new DependencyManager();
+        dependencyManager = new DependencyManager(this.getClass());
 
         //Download from custom repository
         dependencyManager.preLoad(new Dependency("io.papermc", "paperlib", "1.0.7", "https://papermc.io/repo/repository/maven-public/", false));
         dependencyManager.preLoad(new Dependency("", "command-api", "", "https://repo.aikar.co/nexus/content/groups/aikar/co/aikar/acf-paper/0.5.1-SNAPSHOT/acf-paper-0.5.1-20211222.025603-2.jar", true));
 
-        //Download from maven central
+        //Download Jackson from maven central
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-core", "2.13.2"));
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-databind", "2.13.2.2"));
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-annotations", "2.13.2"));
+
+        //MongoDB From Maven Central
+        dependencyManager.preLoad(new Dependency("org.mongodb", "mongodb-driver-sync", "4.7.1"));
+        dependencyManager.preLoad(new Dependency("org.mongodb", "bson", "4.7.1"));
+        dependencyManager.preLoad(new Dependency("org.mongodb", "mongodb-driver-core", "4.7.1"));
+        dependencyManager.preLoad(new Dependency("org.mongodb", "bson-record-codec", "4.7.1"));
+
+
+
 
         dependencyManager.dl(getDependenciesFolder()).injectJar(getDependenciesFolder());
 

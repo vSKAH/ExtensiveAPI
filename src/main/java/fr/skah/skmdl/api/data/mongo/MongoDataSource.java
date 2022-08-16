@@ -11,8 +11,12 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import fr.skah.skmdl.api.data.IDataSource;
 import lombok.Getter;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @Getter
@@ -27,10 +31,19 @@ public class MongoDataSource implements IDataSource {
 
     private final String mongoHostname;
 
+    private Logger mongoLogger;
+
 
     public MongoDataSource(String mongoHostname) {
         instance = this;
         this.mongoHostname = mongoHostname;
+    }
+
+    private void changeMongoLoggerLevel(Level level) {
+        if (mongoLogger == null) {
+            mongoLogger = Logger.getLogger("org.mongodb.driver.connection");
+            mongoLogger.setLevel(level);
+        }
     }
 
     /**

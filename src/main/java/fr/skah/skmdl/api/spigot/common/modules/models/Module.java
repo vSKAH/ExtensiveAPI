@@ -25,7 +25,9 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 public abstract class Module {
 
     private ModuleOption moduleOptions;
@@ -85,13 +87,15 @@ public abstract class Module {
      * state
      */
     private void printModuleInformation() {
-        logger.info("-----------------------------------");
-        logger.info(" Name: ".concat(moduleOptions.getModuleName()));
-        logger.info(" Description: ".concat(moduleOptions.getModuleDescription()));
-        logger.info(" Version: ".concat(moduleOptions.getModuleVersion()));
-        logger.info(" Author(s): ".concat(moduleOptions.getModuleAuthor()));
-        logger.info(" Can Be Disabled: " + (moduleOptions.isCanBeDisabled() ? "yes" : "no"));
-        logger.info(" State: " + (moduleState == ModuleState.ENABLED ? "Enabled" : "Disabled"));
-        logger.info("-----------------------------------");
+        if (logger != null) {
+            logger.info("-----------------------------------");
+            logger.info(" Name: ".concat(moduleOptions.getModuleName()));
+            logger.info(" Description: ".concat(moduleOptions.getModuleDescription()));
+            logger.info(" Version: ".concat(moduleOptions.getModuleVersion()));
+            logger.info(" Author(s): ".concat(moduleOptions.getModuleAuthor()));
+            logger.info(" Can Be Disabled: " + (moduleOptions.isCanBeDisabled() ? "yes" : "no"));
+            logger.info(" State: " + (moduleState == ModuleState.ENABLED ? "Enabled" : "Disabled"));
+            logger.info("-----------------------------------");
+        }
     }
 }
