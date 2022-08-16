@@ -52,8 +52,10 @@ public class ModuleCommand extends BaseCommand {
             return;
         }
 
-        ModuleManager.registerModule(Objects.requireNonNull(ModuleFinder.getModuleFromFile(moduleWithJar)));
-        sender.sendMessage("Le module vient d'être chargé !");
+        ModuleFinder.reloadClassLoader().thenAccept(consumer -> {
+            ModuleManager.registerModule(Objects.requireNonNull(ModuleFinder.getModuleFromFile(moduleWithJar)));
+            sender.sendMessage("Le module vient d'être chargé !");
+        });
     }
 
 

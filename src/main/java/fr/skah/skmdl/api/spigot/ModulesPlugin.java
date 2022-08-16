@@ -51,7 +51,7 @@ public class ModulesPlugin extends JavaPlugin {
 
         //Download load and init Dependencies.
         dependenciesFolder = new File(getDataFolder().getAbsolutePath().replace(getInstance().getName(), "SKAH-DEPENDENCIES"));
-        dependencyManager = new DependencyManager(this.getClass());
+        dependencyManager = new DependencyManager();
 
         //Download from custom repository
         dependencyManager.preLoad(new Dependency("io.papermc", "paperlib", "1.0.7", "https://papermc.io/repo/repository/maven-public/", false));
