@@ -69,8 +69,6 @@ public class ModulesPlugin extends JavaPlugin {
         dependencyManager.preLoad(new Dependency("org.mongodb", "bson-record-codec", "4.7.1"));
 
 
-
-
         dependencyManager.dl(getDependenciesFolder()).injectJar(getDependenciesFolder());
 
         //Init SmartInventory
@@ -109,7 +107,7 @@ public class ModulesPlugin extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        if(mongoDataSource != null && mongoDataSource.dataSourceIsOpen()) mongoDataSource.closeDataSource();
+        if (mongoDataSource != null && mongoDataSource.dataSourceIsOpen()) mongoDataSource.closeDataSource();
         ModuleManager.getModules().values().forEach(Module::onUnregister);
         ModuleScheduler.shutdownNow();
     }

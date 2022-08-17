@@ -133,7 +133,7 @@ public abstract class MongoDataProvider {
      * @return A CompletableFuture that will return a Boolean.
      */
     public CompletableFuture<Boolean> asyncDeleteDocument(UUID uniqueId) {
-        return CompletableFuture.supplyAsync(() -> mongoCollection.deleteOne(Filters.eq("uuid", uniqueId.toString())).wasAcknowledged());
+        return CompletableFuture.supplyAsync(() -> syncDeleteDocument(uniqueId));
     }
 
 

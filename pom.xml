@@ -60,6 +60,7 @@
             <scope>provided</scope>
         </dependency>
 
+
         <dependency>
             <groupId>org.spigotmc.</groupId>
             <artifactId>spigot-api</artifactId>
@@ -157,7 +158,14 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.9</version>
+        </dependency>
+
     </dependencies>
+
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
