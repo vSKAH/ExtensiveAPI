@@ -9,6 +9,7 @@ package fr.skah.skmdl.api.data.mongo;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.InsertManyOptions;
+import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.InsertManyResult;
 import fr.skah.skmdl.api.commons.async.ModuleScheduler;
 import lombok.Getter;
@@ -37,6 +38,7 @@ public abstract class MongoDataProvider {
         this.mongoCollection = MongoDataSource.getInstance().getMongoDatabase(databaseName).getCollection(collectionName);
     }
 
+    //Get one Document Part
 
     public Document syncGetDocumentFromFilter(Bson filter) {
         return mongoCollection.find(filter).first();
@@ -45,6 +47,8 @@ public abstract class MongoDataProvider {
     public CompletableFuture<Document> asyncGetDocumentFromUniqueId(Bson filter) {
         return CompletableFuture.supplyAsync(() -> syncGetDocumentFromFilter(filter), ModuleScheduler.EXECUTOR_SERVICE);
     }
+
+    // Insert documents part
 
     public boolean syncInsertDocument(Document document) {
         return mongoCollection.insertOne(document).wasAcknowledged();
@@ -61,8 +65,10 @@ public abstract class MongoDataProvider {
     }
 
     public void asyncInsertMultipleDocuments(List<Document> documents, boolean ordered, BiConsumer<Boolean, Map<Integer, BsonValue>> consumer) {
-        CompletableFuture.runAsync(() -> syncInsertMultipleDocuments(documents, ordered, consumer),  ModuleScheduler.EXECUTOR_SERVICE);
+        CompletableFuture.runAsync(() -> syncInsertMultipleDocuments(documents, ordered, consumer), ModuleScheduler.EXECUTOR_SERVICE);
     }
+
+    //Replace document part
 
     public boolean syncReplaceDocument(Bson filter, Document document) {
         return mongoCollection.replaceOne(filter, document).wasAcknowledged();
@@ -72,6 +78,25 @@ public abstract class MongoDataProvider {
         return CompletableFuture.supplyAsync(() -> syncReplaceDocument(filter, document), ModuleScheduler.EXECUTOR_SERVICE);
     }
 
+
+    //Update document part
+    public boolean syncUpdateOneDocument(Bson filter, Document document, boolean upsert) {
+        return mongoCollection.updateOne(filter, document, new UpdateOptions().upsert(upsert)).wasAcknowledged();
+    }
+
+    public CompletableFuture<Boolean> asyncUpdateOneDocument(Bson filter, Document document, boolean upsert) {
+        return CompletableFuture.supplyAsync(() -> syncUpdateOneDocument(filter, document, upsert), ModuleScheduler.EXECUTOR_SERVICE);
+    }
+
+    public boolean syncUpdateManyDocuments(Bson filter, List<Document> documents, boolean upsert) {
+        return mongoCollection.updateMany(filter, documents, new UpdateOptions().upsert(upsert)).wasAcknowledged();
+    }
+
+    public CompletableFuture<Boolean> asyncUpdateManyDocuments(Bson filter, List<Document> documents, boolean upsert) {
+        return CompletableFuture.supplyAsync(() -> syncUpdateManyDocuments(filter, documents, upsert), ModuleScheduler.EXECUTOR_SERVICE);
+    }
+
+    //Delete document part
     public boolean syncDeleteDocument(Bson filter) {
         return mongoCollection.deleteOne(filter).wasAcknowledged();
     }
@@ -81,6 +106,7 @@ public abstract class MongoDataProvider {
         return CompletableFuture.supplyAsync(() -> syncDeleteDocument(filter), ModuleScheduler.EXECUTOR_SERVICE);
     }
 
+    //Get multiple multiple document part
 
     public MongoCursor<Document> syncGetAllDocuments(Bson filter) {
         if (filter == null)
