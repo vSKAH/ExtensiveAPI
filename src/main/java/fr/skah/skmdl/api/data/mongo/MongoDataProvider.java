@@ -61,7 +61,7 @@ public abstract class MongoDataProvider {
     }
 
     public void asyncInsertMultipleDocuments(List<Document> documents, boolean ordered, BiConsumer<Boolean, Map<Integer, BsonValue>> consumer) {
-        CompletableFuture.runAsync(() -> syncInsertMultipleDocuments(documents, ordered, consumer));
+        CompletableFuture.runAsync(() -> syncInsertMultipleDocuments(documents, ordered, consumer),  ModuleScheduler.EXECUTOR_SERVICE);
     }
 
     public boolean syncReplaceDocument(Bson filter, Document document) {
@@ -78,7 +78,7 @@ public abstract class MongoDataProvider {
 
 
     public CompletableFuture<Boolean> asyncDeleteDocument(Bson filter) {
-        return CompletableFuture.supplyAsync(() -> syncDeleteDocument(filter));
+        return CompletableFuture.supplyAsync(() -> syncDeleteDocument(filter), ModuleScheduler.EXECUTOR_SERVICE);
     }
 
 
