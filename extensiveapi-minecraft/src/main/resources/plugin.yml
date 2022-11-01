@@ -1,0 +1,13 @@
+name: ModulesCore
+description: A Module core plugin by vSKAH
+main: fr.skoupi.extensiveapi.minecraft.ModulesPlugin
+author: SKAH#7513
+version: 2.0
+api-version: 1.16
+load: POSTWORLD
+softdepend:
+  - Jobs
+  - Lands
+  - NBTAPI
+  - Worldguard
+  - Vault

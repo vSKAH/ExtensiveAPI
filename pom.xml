@@ -4,144 +4,36 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.skah</groupId>
-    <artifactId>SKMDL</artifactId>
-    <packaging>jar</packaging>
-    <version>2.0</version>
+    <groupId>fr.skoupi</groupId>
+    <artifactId>extensiveapi</artifactId>
+    <packaging>pom</packaging>
+    <version>3.0-SNAPSHOT-A1</version>
+    <modules>
+        <module>extensiveapi-databases</module>
+        <module>extensiveapi-minecraft</module>
+        <module>extensiveapi-core</module>
+    </modules>
 
     <repositories>
-
-        <repository>
-            <id>aikar</id>
-            <url>https://repo.aikar.co/content/groups/aikar/</url>
-        </repository>
-
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
-        </repository>
-
-        <repository>
-            <id>sk89q-repo</id>
-            <url>https://maven.enginehub.org/repo/</url>
-        </repository>
-
-
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-
-        <repository>
-            <id>minecraft-repo</id>
-            <url>https://libraries.minecraft.net/</url>
-        </repository>
-
-        <repository>
-            <id>papermc</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
     </repositories>
 
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.17.1-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.papermc</groupId>
-            <artifactId>paperlib</artifactId>
-            <version>1.0.7</version>
-            <scope>provided</scope>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.spigotmc.</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.13.3</version>
+            <version>2.13.4</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.3</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>co.aikar</groupId>
-            <artifactId>acf-paper</artifactId>
-            <version>0.5.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Hooks -->
-
-        <dependency>
-            <groupId>com.github.MilkBowl</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>1.7.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.sk89q</groupId>
-            <artifactId>worldguard</artifactId>
-            <version>6.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.angeschossen</groupId>
-            <artifactId>LandsAPI</artifactId>
-            <version>5.13.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>5.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-sync</artifactId>
-            <version>4.7.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.dizitart</groupId>
-            <artifactId>nitrite</artifactId>
-            <version>3.4.4</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
-            <version>3.17.5</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.Zrips</groupId>
-            <artifactId>Jobs</artifactId>
-            <version>v4.17.2</version>
+            <version>2.14.0-rc1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -151,12 +43,6 @@
             <version>1.18.24</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.mojang</groupId>
-            <artifactId>authlib</artifactId>
-            <version>3.11.49</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
 
