@@ -15,7 +15,6 @@ import fr.skoupi.extensiveapi.minecraft.commands.CommandLoader;
 import fr.skoupi.extensiveapi.minecraft.hooks.Hooks;
 import fr.skoupi.extensiveapi.minecraft.modules.ModuleScheduler;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.InventoryManager;
-import fr.skoupi.extensiveapi.minecraft.modules.loader.ModuleFinder;
 import fr.skoupi.extensiveapi.minecraft.modules.manage.ModuleManager;
 import fr.skoupi.extensiveapi.minecraft.modules.models.Module;
 import fr.skoupi.extensiveapi.minecraft.armors.ArmorListeners;
@@ -24,6 +23,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 @Getter
@@ -94,20 +94,13 @@ public class ModulesPlugin extends JavaPlugin {
 		hooks = new Hooks();
 
 		//register and load Modules
-		Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> {
-			for (Module allModule : ModuleFinder.getAllModules())
-			{
-				ModuleManager.registerModule(allModule);
-				try
-				{
-					Thread.sleep(1000);
-				} catch (InterruptedException e)
-				{
-					throw new RuntimeException(e);
-				}
-			}
 
-		}, 40L);
+		AtomicInteger t = new AtomicInteger(ModuleManager.getModules().values().size());
+		Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+			Module module = ModuleManager.getModules().values().toArray(new Module[0])[t.getAndDecrement()];
+			ModuleManager.registerModule(module);
+		}, 60L, 100L);
+
 	}
 
 	public void registerMongoDataSource (String hostname)
