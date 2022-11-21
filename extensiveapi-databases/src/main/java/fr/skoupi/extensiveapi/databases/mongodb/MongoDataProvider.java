@@ -26,98 +26,118 @@ import java.util.function.BiConsumer;
 @Getter
 public abstract class MongoDataProvider {
 
-    // It's just a variable declaration.
-    private final String databaseName;
-    private final String collectionName;
+	// It's just a variable declaration.
+	private final String databaseName;
+	private final String collectionName;
 
-    private final MongoCollection<Document> mongoCollection;
+	private final MongoCollection<Document> mongoCollection;
 
-    // It's the constructor of the class.
-    public MongoDataProvider(String databaseName, String collectionName) {
-        this.databaseName = databaseName;
-        this.collectionName = collectionName;
-        this.mongoCollection = MongoDataSource.getInstance().getMongoDatabase(databaseName).getCollection(collectionName);
-    }
+	// It's the constructor of the class.
+	public MongoDataProvider (String databaseName, String collectionName)
+	{
+		this.databaseName = databaseName;
+		this.collectionName = collectionName;
+		this.mongoCollection = MongoDataSource.getInstance().getMongoDatabase(databaseName).getCollection(collectionName);
+	}
 
-    //Get one Document Part
+	//Get one Document Part
 
-    public Document syncGetDocumentFromFilter(Bson filter) {
-        return mongoCollection.find(filter).first();
-    }
+	public Document syncGetDocumentFromFilter (Bson filter)
+	{
+		return mongoCollection.find(filter).first();
+	}
 
-    public CompletableFuture<Document> asyncGetDocumentFromUniqueId(Bson filter, ExecutorService executorService) {
-        return CompletableFuture.supplyAsync(() -> syncGetDocumentFromFilter(filter), executorService);
-    }
+	public void asyncGetDocumentFromUniqueId (Bson filter, ExecutorService executorService, CompletableFuture<Document> documentFuture)
+	{
+		executorService.submit(() -> documentFuture.complete(syncGetDocumentFromFilter(filter)));
+	}
 
-    // Insert documents part
+	// Insert documents part
 
-    public boolean syncInsertDocument(Document document) {
-        return mongoCollection.insertOne(document).wasAcknowledged();
-    }
+	public boolean syncInsertDocument (Document document)
+	{
+		return mongoCollection.insertOne(document).wasAcknowledged();
+	}
 
-    public CompletableFuture<Boolean> asyncInsertDocument(Document document, ExecutorService executorService) {
-        return CompletableFuture.supplyAsync(() -> syncInsertDocument(document), executorService);
-    }
-
-
-    public void syncInsertMultipleDocuments(List<Document> documents, boolean ordered, BiConsumer<Boolean, Map<Integer, BsonValue>> consumer) {
-        InsertManyResult result = mongoCollection.insertMany(documents, new InsertManyOptions().ordered(ordered));
-        consumer.accept(result.wasAcknowledged(), result.getInsertedIds());
-    }
-
-    public void asyncInsertMultipleDocuments(List<Document> documents, boolean ordered, BiConsumer<Boolean, Map<Integer, BsonValue>> consumer, ExecutorService executorService) {
-        CompletableFuture.runAsync(() -> syncInsertMultipleDocuments(documents, ordered, consumer), executorService);
-    }
-
-    //Replace document part
-
-    public boolean syncReplaceDocument(Bson filter, Document document) {
-        return mongoCollection.replaceOne(filter, document).wasAcknowledged();
-    }
-
-    public CompletableFuture<Boolean> asyncReplaceDocument(Bson filter, Document document, ExecutorService executorService) {
-        return CompletableFuture.supplyAsync(() -> syncReplaceDocument(filter, document), executorService);
-    }
+	public void asyncInsertDocument (Document document, ExecutorService executorService, CompletableFuture<Boolean> future)
+	{
+		executorService.submit(() -> future.complete(syncInsertDocument(document)));
+	}
 
 
-    //Update document part
-    public boolean syncUpdateOneDocument(Bson filter, Document document, boolean upsert) {
-        return mongoCollection.updateOne(filter, document, new UpdateOptions().upsert(upsert)).wasAcknowledged();
-    }
+	public void syncInsertMultipleDocuments (List<Document> documents, boolean ordered, BiConsumer<Boolean, Map<Integer, BsonValue>> consumer)
+	{
+		InsertManyResult result = mongoCollection.insertMany(documents, new InsertManyOptions().ordered(ordered));
+		consumer.accept(result.wasAcknowledged(), result.getInsertedIds());
+	}
 
-    public CompletableFuture<Boolean> asyncUpdateOneDocument(Bson filter, Document document, boolean upsert, ExecutorService executorService) {
-        return CompletableFuture.supplyAsync(() -> syncUpdateOneDocument(filter, document, upsert), executorService);
-    }
+	public void asyncInsertMultipleDocuments (List<Document> documents, boolean ordered, BiConsumer<Boolean, Map<Integer, BsonValue>> consumer, ExecutorService executorService, CompletableFuture<BiConsumer<Boolean, Map<Integer, BsonValue>>> future)
+	{
+		executorService.submit(() -> {
+			syncInsertMultipleDocuments(documents, ordered, consumer);
+			future.complete(consumer);
+		}, executorService);
 
-    public boolean syncUpdateManyDocuments(Bson filter, List<Document> documents, boolean upsert) {
-        return mongoCollection.updateMany(filter, documents, new UpdateOptions().upsert(upsert)).wasAcknowledged();
-    }
+	}
 
-    public CompletableFuture<Boolean> asyncUpdateManyDocuments(Bson filter, List<Document> documents, boolean upsert, ExecutorService executorService) {
-        return CompletableFuture.supplyAsync(() -> syncUpdateManyDocuments(filter, documents, upsert), executorService);
-    }
+	//Replace document part
 
-    //Delete document part
-    public boolean syncDeleteDocument(Bson filter) {
-        return mongoCollection.deleteOne(filter).wasAcknowledged();
-    }
+	public boolean syncReplaceDocument (Bson filter, Document document)
+	{
+		return mongoCollection.replaceOne(filter, document).wasAcknowledged();
+	}
 
-
-    public CompletableFuture<Boolean> asyncDeleteDocument(Bson filter, ExecutorService executorService) {
-        return CompletableFuture.supplyAsync(() -> syncDeleteDocument(filter), executorService);
-    }
-
-    //Get multiple multiple document part
-
-    public MongoCursor<Document> syncGetAllDocuments(Bson filter) {
-        if (filter == null)
-            return mongoCollection.find().iterator();
-        return mongoCollection.find(filter).iterator();
-    }
+	public void asyncReplaceDocument (Bson filter, Document document, ExecutorService executorService, CompletableFuture<Boolean> future)
+	{
+		executorService.submit(() -> future.complete(syncReplaceDocument(filter, document)));
+	}
 
 
-    public CompletableFuture<MongoCursor<Document>> asyncGetAllDocuments(Bson filter, ExecutorService executorService) {
-        return CompletableFuture.supplyAsync(() -> syncGetAllDocuments(filter), executorService);
-    }
+	//Update document part
+	public boolean syncUpdateOneDocument (Bson filter, Document document, boolean upsert)
+	{
+		return mongoCollection.updateOne(filter, document, new UpdateOptions().upsert(upsert)).wasAcknowledged();
+	}
+
+	public void asyncUpdateOneDocument (Bson filter, Document document, boolean upsert, ExecutorService executorService, CompletableFuture<Boolean> future)
+	{
+		executorService.submit(() -> future.complete(syncUpdateOneDocument(filter, document, upsert)));
+	}
+
+	public boolean syncUpdateManyDocuments (Bson filter, List<Document> documents, boolean upsert)
+	{
+		return mongoCollection.updateMany(filter, documents, new UpdateOptions().upsert(upsert)).wasAcknowledged();
+	}
+
+	public void asyncUpdateManyDocuments (Bson filter, List<Document> documents, boolean upsert, ExecutorService executorService, CompletableFuture<Boolean> future)
+	{
+		executorService.submit(() -> future.complete(syncUpdateManyDocuments(filter, documents, upsert)));
+	}
+
+	//Delete document part
+	public boolean syncDeleteDocument (Bson filter)
+	{
+		return mongoCollection.deleteOne(filter).wasAcknowledged();
+	}
+
+
+	public void asyncDeleteDocument (Bson filter, ExecutorService executorService, CompletableFuture<Boolean> future)
+	{
+		executorService.submit(() -> future.complete(syncDeleteDocument(filter)));
+	}
+
+	//Get multiple multiple document part
+
+	public MongoCursor<Document> syncGetAllDocuments (Bson filter)
+	{
+		if (filter == null) return mongoCollection.find().iterator();
+		return mongoCollection.find(filter).iterator();
+	}
+
+
+	public void asyncGetAllDocuments (Bson filter, ExecutorService executorService, CompletableFuture<MongoCursor<Document>> future)
+	{
+		executorService.submit(() -> future.complete(syncGetAllDocuments(filter)));
+	}
 
 }
