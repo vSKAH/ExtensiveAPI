@@ -6,6 +6,10 @@ package fr.skoupi.extensiveapi.databases.mongodb.accounts.exception;
  * Created with IntelliJ IDEA
  * For the project ExtensiveAPI
  */
+
+/**
+ * > This class is an exception that is thrown when an account document is empty
+ */
 public class AccountEmptyDocumentException extends Exception {
 
     public AccountEmptyDocumentException(String message) {

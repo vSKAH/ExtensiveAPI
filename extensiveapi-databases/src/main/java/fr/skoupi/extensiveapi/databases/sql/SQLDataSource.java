@@ -52,10 +52,8 @@ public class SQLDataSource implements IDataSource {
 		}
 	}
 
-	/**
-	 * > This function closes the data source if it is open
-	 */
 	@Override
+	// It closes the data source.
 	public void closeDataSource ()
 	{
 		if (this.dataSourceIsOpen()) this.hikariDataSource.close();

@@ -44,11 +44,19 @@ public class MongoDataSource implements IDataSource {
         mongoClient = MongoClients.create("mongodb://" + mongoHostname);
     }
 
+    /**
+     * > If the mongoClient is not null, then the data source is open
+     *
+     * @return A boolean value.
+     */
     @Override
     public boolean dataSourceIsOpen() {
         return mongoClient != null;
     }
 
+    /**
+     * Closes the connection to the MongoDB database.
+     */
     @Override
     public void closeDataSource() {
         mongoClient.close();

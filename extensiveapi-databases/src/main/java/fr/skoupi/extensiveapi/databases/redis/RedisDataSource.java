@@ -52,6 +52,9 @@ public class RedisDataSource implements IDataSource {
 		return !redissonClient.isShuttingDown() && !redissonClient.isShutdown() && redissonClient != null;
 	}
 
+	/**
+	 * > Close the Redisson data source
+	 */
 	@Override
 	public void closeDataSource ()
 	{
