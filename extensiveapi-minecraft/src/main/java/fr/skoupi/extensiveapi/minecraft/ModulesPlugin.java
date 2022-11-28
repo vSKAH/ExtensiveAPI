@@ -63,8 +63,9 @@ public class ModulesPlugin extends JavaPlugin {
 		dependencyManager.preLoad(new Dependency("", "command-api", "", "https://repo.aikar.co/nexus/content/groups/aikar/co/aikar/acf-paper/0.5.1-SNAPSHOT/acf-paper-0.5.1-20211222.025603-2.jar", true));
 
 		//Download Jackson from maven central
-		dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-core", "2.13.4"));
-		dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-databind", "2.14.0-rc1"));
+		dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-core", "2.14.0"));
+		dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-annotations", "2.14.0"));
+		dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-databind", "2.14.0"));
 
 		//MongoDB From Maven Central
 		dependencyManager.preLoad(new Dependency("org.mongodb", "mongodb-driver-sync", "4.7.1"));
