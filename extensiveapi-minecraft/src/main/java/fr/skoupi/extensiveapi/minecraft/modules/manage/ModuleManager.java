@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 import fr.skoupi.extensiveapi.minecraft.ModulesPlugin;
 import fr.skoupi.extensiveapi.minecraft.modules.enums.ModuleState;
 import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleDependencyException;
+import fr.skoupi.extensiveapi.minecraft.modules.loader.ModuleFinder;
 import fr.skoupi.extensiveapi.minecraft.modules.models.Module;
 import fr.skoupi.extensiveapi.minecraft.modules.models.ModuleOption;
 import lombok.Getter;
@@ -34,18 +35,20 @@ public class ModuleManager {
 		if (module != null)
 		{
 			String moduleName = module.getModuleOptions().getModuleName();
-
-			modules.put(moduleName, module);
-			try
+			if (!getModules().containsKey(moduleName))
 			{
-				if (loadDependency(moduleName))
+				modules.put(moduleName, module);
+				try
 				{
-					module.onStartup();
-					module.onEnable();
+					if (loadPluginDependency(moduleName))
+					{
+						module.onStartup();
+						module.onEnable();
+					}
+				} catch (ModuleDependencyException e)
+				{
+					e.printStackTrace();
 				}
-			} catch (ModuleDependencyException e)
-			{
-				e.printStackTrace();
 			}
 		}
 	}
@@ -55,7 +58,7 @@ public class ModuleManager {
 	 *
 	 * @param moduleName The name of the module to load.
 	 */
-	private static boolean loadDependency (String moduleName) throws ModuleDependencyException
+	private static boolean loadPluginDependency (String moduleName) throws ModuleDependencyException
 	{
 		Module module = modules.get(moduleName);
 		for (String pluginDependency : module.getModuleOptions().getPluginDependencies())
@@ -64,6 +67,18 @@ public class ModuleManager {
 			if (plugin == null || !plugin.isEnabled())
 				throw new ModuleDependencyException(moduleName, pluginDependency);
 		}
+
+		for (String modulesDependency : module.getModuleOptions().getModulesDependencies())
+		{
+			for (Module allModule : ModuleFinder.getAllModules())
+			{
+				if (modulesDependency.equals(allModule.getModuleOptions().getModuleName()))
+				{
+					registerModule(allModule);
+				}
+			}
+		}
+
 		ModulesPlugin.getInstance().getLogger().info("Le module " + moduleName + " a pu charger toutes ses dépendances  !");
 		return true;
 	}
@@ -86,7 +101,7 @@ public class ModuleManager {
 		{
 			try
 			{
-				if (ModuleManager.loadDependency(moduleOption.getModuleName())) module.onEnable();
+				if (ModuleManager.loadPluginDependency(moduleOption.getModuleName())) module.onEnable();
 			} catch (ModuleDependencyException e)
 			{
 				throw new RuntimeException(e);

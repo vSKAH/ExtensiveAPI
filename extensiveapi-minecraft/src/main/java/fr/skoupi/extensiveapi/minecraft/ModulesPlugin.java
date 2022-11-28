@@ -22,9 +22,12 @@ import fr.skoupi.extensiveapi.minecraft.armors.ArmorListeners;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -99,12 +102,20 @@ public class ModulesPlugin extends JavaPlugin {
 
 		List<Module> modules = ModuleFinder.getAllModules();
 		AtomicInteger t = new AtomicInteger(modules.size());
-		Bukkit.getScheduler().runTaskTimerAsynchronously(this, run -> {
-			Module module = modules.get(t.getAndDecrement());
-			ModuleManager.registerModule(module);
-			if(t.get() == 0)
-				run.cancel();
-		}, 60L, 100L);
+		AtomicInteger id = new AtomicInteger();
+		id.set(Bukkit.getScheduler().runTaskTimerAsynchronously(this, new BukkitRunnable() {
+			@Override
+			public void run ()
+			{
+				if (t.get() <= 0) {
+					Bukkit.getScheduler().cancelTask(id.get());
+					return;
+				}
+				Module module = modules.get(t.decrementAndGet());
+				if(!ModuleManager.getModules().containsKey(module.getModuleOptions().getModuleName()))
+				ModuleManager.registerModule(module);
+			}
+		}, 20 * 5, 20 * 3).getTaskId());
 
 	}
 

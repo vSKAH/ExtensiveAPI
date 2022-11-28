@@ -28,6 +28,7 @@ public class ModuleOption {
     private String moduleVersion;
     private String moduleMainClass;
     private List<String> pluginDependencies;
+    private List<String> modulesDependencies;
 
 
 }
