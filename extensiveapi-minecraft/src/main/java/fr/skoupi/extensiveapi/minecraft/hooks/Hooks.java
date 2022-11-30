@@ -7,10 +7,7 @@ package fr.skoupi.extensiveapi.minecraft.hooks;
  * For the project ExtensiveAPI
  */
 
-import fr.skoupi.extensiveapi.minecraft.hooks.basics.JobsHook;
-import fr.skoupi.extensiveapi.minecraft.hooks.basics.LandsHook;
-import fr.skoupi.extensiveapi.minecraft.hooks.basics.VaultHook;
-import fr.skoupi.extensiveapi.minecraft.hooks.basics.WorldguardHook;
+import fr.skoupi.extensiveapi.minecraft.hooks.basics.*;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -32,6 +29,7 @@ public class Hooks {
         hookPlugin(new VaultHook());
         hookPlugin(new LandsHook());
         hookPlugin(new JobsHook());
+        hookPlugin(new RosePlayerPoints());
     }
 
     /**

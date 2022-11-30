@@ -37,6 +37,11 @@
             <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
 
+        <repository>
+            <id>rosewood-repo</id>
+            <url>https://repo.rosewooddev.io/repository/public/</url>
+        </repository>
+
     </repositories>
 
     <dependencies>
@@ -116,6 +121,13 @@
             <groupId>com.github.Zrips</groupId>
             <artifactId>Jobs</artifactId>
             <version>v4.17.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.black_ixx</groupId>
+            <artifactId>playerpoints</artifactId>
+            <version>3.2.4</version>
             <scope>provided</scope>
         </dependency>
 
