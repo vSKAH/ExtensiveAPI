@@ -20,7 +20,7 @@ public class RosePlayerPoints implements Hook<PlayerPoints> {
 	@Override
 	public String getHookName ()
 	{
-		return "RosePlayerPoints";
+		return "PlayerPoints";
 	}
 
 	@Override
