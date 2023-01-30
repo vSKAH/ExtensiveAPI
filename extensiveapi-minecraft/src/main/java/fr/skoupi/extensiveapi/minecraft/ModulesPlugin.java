@@ -23,11 +23,9 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.List;
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -98,7 +96,6 @@ public class ModulesPlugin extends JavaPlugin {
 
 		//Hook basics plugins
 		hooks = new Hooks();
-
 		//register and load Modules
 
 		List<Module> modules = ModuleFinder.getAllModules();
@@ -116,7 +113,7 @@ public class ModulesPlugin extends JavaPlugin {
 				if(!ModuleManager.getModules().containsKey(module.getModuleOptions().getModuleName()))
 				ModuleManager.registerModule(module);
 			}
-		}, 20 * 5, 20 * 3).getTaskId());
+		}, 20 * 4, 20 * 2).getTaskId());
 
 	}
 

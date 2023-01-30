@@ -125,9 +125,6 @@ public class SkullCreator {
             ModulesPlugin.getInstance().getLogger().warning("This method can be used only in 1.12+");
             return item;
         }
-        notNull(item, "item");
-        notNull(id, "id");
-
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         meta.setOwningPlayer(Bukkit.getOfflinePlayer(id));
         item.setItemMeta(meta);
@@ -143,9 +140,6 @@ public class SkullCreator {
      * @return The head associated with the URL.
      */
     public static ItemStack itemWithUrl(ItemStack item, String url) {
-        notNull(item, "item");
-        notNull(url, "url");
-
         return itemWithBase64(item, urlToBase64(url));
     }
 
@@ -157,13 +151,9 @@ public class SkullCreator {
      * @return The head with a custom texture.
      */
     public static ItemStack itemWithBase64(ItemStack item, String base64) {
-        notNull(item, "item");
-        notNull(base64, "base64");
-
-        if (!(item.getItemMeta() instanceof SkullMeta)) {
+        if (!(item.getItemMeta() instanceof SkullMeta meta)) {
             return null;
         }
-        SkullMeta meta = (SkullMeta) item.getItemMeta();
         mutateItemMeta(meta, base64);
         item.setItemMeta(meta);
 
@@ -198,8 +188,6 @@ public class SkullCreator {
             ModulesPlugin.getInstance().getLogger().warning("This method can be used only in 1.12+");
             return;
         }
-        notNull(block, "block");
-        notNull(id, "id");
 
         setToSkull(block);
         Skull state = (Skull) block.getState();
@@ -214,9 +202,6 @@ public class SkullCreator {
      * @param url   The mojang URL to set it to use.
      */
     public static void blockWithUrl(Block block, String url) {
-        notNull(block, "block");
-        notNull(url, "url");
-
         blockWithBase64(block, urlToBase64(url));
     }
 
@@ -227,9 +212,6 @@ public class SkullCreator {
      * @param base64 The base64 to set it to use.
      */
     public static void blockWithBase64(Block block, String base64) {
-        notNull(block, "block");
-        notNull(base64, "base64");
-
         setToSkull(block);
         Skull state = (Skull) block.getState();
         mutateBlockState(state, base64);

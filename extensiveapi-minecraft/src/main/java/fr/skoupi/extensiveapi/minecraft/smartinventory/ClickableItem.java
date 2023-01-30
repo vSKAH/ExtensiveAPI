@@ -3,9 +3,10 @@ package fr.skoupi.extensiveapi.minecraft.smartinventory;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.Serializable;
 import java.util.function.Consumer;
 
-public class ClickableItem {
+public class ClickableItem implements Serializable {
 
     private final ItemStack item;
     private final Consumer<InventoryClickEvent> consumer;

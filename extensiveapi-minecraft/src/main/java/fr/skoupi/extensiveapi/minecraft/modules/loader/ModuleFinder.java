@@ -8,6 +8,9 @@ package fr.skoupi.extensiveapi.minecraft.modules.loader;
  */
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+import fr.skoupi.extensiveapi.core.mavenresolver.URLClassLoaderAccess;
 import fr.skoupi.extensiveapi.minecraft.ModulesPlugin;
 import fr.skoupi.extensiveapi.minecraft.modules.exceptions.InvalidModuleException;
 import fr.skoupi.extensiveapi.minecraft.modules.models.Module;
@@ -17,10 +20,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -28,7 +30,10 @@ public class ModuleFinder {
 
 	// It's creating a new File object that points to the module's folder.
 	private static final File MODULES_FOLDER = new File(ModulesPlugin.getPlugin(ModulesPlugin.class).getDataFolder(), "modules");
-	public static ModuleClassLoader classLoader = new ModuleClassLoader(new URL[]{});
+	@SuppressWarnings("Guava")
+	public static final Supplier<URLClassLoaderAccess> URL_INJECTOR = Suppliers.memoize(() -> URLClassLoaderAccess.create((URLClassLoader) ModulesPlugin.class.getClassLoader()));
+
+	public static ModuleClassLoader classLoader = new ModuleClassLoader();
 
 
 	private static ModuleOption getModuleOption (File file)
@@ -45,7 +50,7 @@ public class ModuleFinder {
 		return null;
 	}
 
-	public static CompletableFuture<Void> reloadClassLoader ()
+/*	public static CompletableFuture<Void> reloadClassLoader ()
 	{
 		return CompletableFuture.runAsync(() -> {
 			classLoader = new ModuleClassLoader(new URL[]{});
@@ -55,6 +60,8 @@ public class ModuleFinder {
 		});
 
 	}
+
+ */
 
 	public static Module getModuleFromFile (String jarName)
 	{

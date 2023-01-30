@@ -1,17 +1,21 @@
 package fr.skoupi.extensiveapi.core.mavenresolver;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+
 import java.io.File;
-import java.lang.reflect.Method;
-import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DependencyManager {
 
-	private final URLClassLoader classLoader;
+	@SuppressWarnings("Guava")
+	private static final Supplier<URLClassLoaderAccess> URL_INJECTOR = Suppliers.memoize(() -> URLClassLoaderAccess.create((URLClassLoader) DependencyManager.class.getClassLoader()));
+
+	//private final URLClassLoader classLoader;
 	private final DependencyDownloader dependencyDownloader;
-	private Method method;
+//	private Method method;
 	private final List<Dependency> toLoad;
 
 	private final List<String> loaded;
@@ -23,24 +27,7 @@ public class DependencyManager {
 	{
 		this.toLoad = new ArrayList<>();
 		this.loaded = new ArrayList<>();
-
-		if (mainClass.getClassLoader() instanceof URLClassLoader)
-		{
-			this.classLoader = (URLClassLoader) mainClass.getClassLoader();
-		} else
-		{
-			throw new ClassCastException("Error while loading URLClassLoader");
-		}
 		this.dependencyDownloader = new DependencyDownloader();
-
-		try
-		{
-			this.method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-			this.method.setAccessible(true);
-		} catch (NoSuchMethodException e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -79,7 +66,8 @@ public class DependencyManager {
 			{
 				if (!loaded.contains(file.getName()))
 				{
-					this.method.invoke(this.classLoader, file.toURI().toURL());
+					URL_INJECTOR.get().addURL(file.toURI().toURL());
+				//	this.method.invoke(this.classLoader, file.toURI().toURL());
 					this.loaded.add(file.getName());
 				}
 			}

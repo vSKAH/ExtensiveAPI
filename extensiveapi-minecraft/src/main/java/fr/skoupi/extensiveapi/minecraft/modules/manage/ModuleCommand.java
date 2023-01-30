@@ -52,11 +52,12 @@ public class ModuleCommand extends BaseCommand {
             sender.sendMessage("Le module est déjà chargé !");
             return;
         }
-
-        ModuleFinder.reloadClassLoader().thenAccept(consumer -> {
+       // ModuleFinder.reloadClassLoader().thenAccept(consumer -> {
             ModuleManager.registerModule(Objects.requireNonNull(ModuleFinder.getModuleFromFile(moduleWithJar)));
             sender.sendMessage("Le module vient d'être chargé !");
-        });
+       // });
+
+
     }
 
 
