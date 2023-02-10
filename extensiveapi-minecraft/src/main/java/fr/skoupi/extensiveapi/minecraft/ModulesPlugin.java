@@ -13,6 +13,7 @@ import fr.skoupi.extensiveapi.core.mavenresolver.DependencyManager;
 import fr.skoupi.extensiveapi.databases.mongodb.MongoDataSource;
 import fr.skoupi.extensiveapi.minecraft.commands.CommandLoader;
 import fr.skoupi.extensiveapi.minecraft.hooks.Hooks;
+import fr.skoupi.extensiveapi.minecraft.listeners.CancelConnectionEvent;
 import fr.skoupi.extensiveapi.minecraft.modules.ModuleScheduler;
 import fr.skoupi.extensiveapi.minecraft.modules.loader.ModuleFinder;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.InventoryManager;
@@ -20,6 +21,7 @@ import fr.skoupi.extensiveapi.minecraft.modules.manage.ModuleManager;
 import fr.skoupi.extensiveapi.minecraft.modules.models.Module;
 import fr.skoupi.extensiveapi.minecraft.armors.ArmorListeners;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -42,7 +44,12 @@ public class ModulesPlugin extends JavaPlugin {
 	private Hooks hooks;
 
 	private MongoDataSource mongoDataSource;
+	@Getter
+	private boolean loadingIsDone;
 
+	@Getter
+	@Setter
+	private boolean useArmorEvent = false;
 	/**
 	 * > We create a new instance of the plugin, download and load dependencies,
 	 */
@@ -91,8 +98,7 @@ public class ModulesPlugin extends JavaPlugin {
 		commandLoader.registerDefault();
 
 
-		//Register armor equip event
-		Bukkit.getPluginManager().registerEvents(new ArmorListeners(), this);
+		Bukkit.getPluginManager().registerEvents(new CancelConnectionEvent(), this);
 
 		//Hook basics plugins
 		hooks = new Hooks();
@@ -106,14 +112,18 @@ public class ModulesPlugin extends JavaPlugin {
 			public void run ()
 			{
 				if (t.get() <= 0) {
+					loadingIsDone = true;
 					Bukkit.getScheduler().cancelTask(id.get());
 					return;
 				}
 				Module module = modules.get(t.decrementAndGet());
 				if(!ModuleManager.getModules().containsKey(module.getModuleOptions().getModuleName()))
-				ModuleManager.registerModule(module);
+					ModuleManager.registerModule(module);
 			}
 		}, 20 * 4, 20 * 2).getTaskId());
+
+		if(useArmorEvent)
+			Bukkit.getPluginManager().registerEvents(new ArmorListeners(), this);
 
 	}
 
