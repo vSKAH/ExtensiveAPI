@@ -120,7 +120,7 @@ public class ModulesPlugin extends JavaPlugin {
 				if(!ModuleManager.getModules().containsKey(module.getModuleOptions().getModuleName()))
 					ModuleManager.registerModule(module);
 			}
-		}, 20 * 4, 20 * 2).getTaskId());
+		}, 20 * 5, 10).getTaskId());
 
 		if(useArmorEvent)
 			Bukkit.getPluginManager().registerEvents(new ArmorListeners(), this);
