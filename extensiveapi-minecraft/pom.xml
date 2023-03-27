@@ -5,11 +5,12 @@
     <parent>
         <artifactId>extensiveapi</artifactId>
         <groupId>fr.skoupi</groupId>
-        <version>3.0-SNAPSHOT-A1</version>
+        <version>3.0-SNAPSHOT-B1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>extensiveapi-minecraft</artifactId>
+    <version>3.0-SNAPSHOT-B1</version>
 
     <repositories>
         <repository>
@@ -68,6 +69,13 @@
         </dependency>
 
         <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-api</artifactId>
+            <version>1.16-R0.4</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.mojang</groupId>
             <artifactId>authlib</artifactId>
             <version>3.11.49</version>
@@ -84,13 +92,13 @@
         <dependency>
             <groupId>fr.skoupi</groupId>
             <artifactId>extensiveapi-core</artifactId>
-            <version>3.0-SNAPSHOT-A1</version>
+            <version>3.0-SNAPSHOT-B1</version>
         </dependency>
 
         <dependency>
             <groupId>fr.skoupi</groupId>
             <artifactId>extensiveapi-databases</artifactId>
-            <version>3.0-SNAPSHOT-A1</version>
+            <version>3.0-SNAPSHOT-B1</version>
         </dependency>
 
         <!-- Hooks -->
@@ -129,8 +137,6 @@
             <version>3.2.4</version>
             <scope>provided</scope>
         </dependency>
-
-
     </dependencies>
 
     <properties>

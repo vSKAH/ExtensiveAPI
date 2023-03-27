@@ -9,6 +9,7 @@ package fr.skoupi.extensiveapi.databases.redis;
 
 import fr.skoupi.extensiveapi.databases.IDataSource;
 import lombok.Getter;
+import lombok.Setter;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
@@ -22,7 +23,8 @@ public class RedisDataSource implements IDataSource {
 	private static RedisDataSource instance;
 	private final File redissonConfigurationFile;
 	@Getter
-	private RedissonClient redissonClient;
+	@Setter
+	protected RedissonClient redissonClient;
 
 	public RedisDataSource (File redissonConfigurationFile)
 	{

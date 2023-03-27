@@ -11,7 +11,7 @@ import java.util.List;
 public class DependencyManager {
 
     @SuppressWarnings("Guava")
-    private static final Supplier<URLClassLoaderAccess> URL_INJECTOR = Suppliers.memoize(() -> URLClassLoaderAccess.create((URLClassLoader) DependencyManager.class.getClassLoader()));
+    public static final Supplier<URLClassLoaderAccess> URL_INJECTOR = Suppliers.memoize(() -> URLClassLoaderAccess.create((URLClassLoader) DependencyManager.class.getClassLoader()));
 
     //private final URLClassLoader classLoader;
     private final DependencyDownloader dependencyDownloader;

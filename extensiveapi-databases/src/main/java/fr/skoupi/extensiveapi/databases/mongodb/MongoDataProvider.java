@@ -13,6 +13,7 @@ import com.mongodb.client.model.InsertManyOptions;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.InsertManyResult;
 import lombok.Getter;
+import lombok.Setter;
 import org.bson.BsonValue;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -25,19 +26,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.BiConsumer;
 
 @Getter
-public abstract class MongoDataProvider {
+public class MongoDataProvider {
 
     // It's just a variable declaration.
     private final String databaseName;
     private final String collectionName;
-
-    private final MongoCollection<Document> mongoCollection;
+    @Setter
+    private MongoCollection<Document> mongoCollection;
 
     // It's a constructor.
     public MongoDataProvider(String databaseName, String collectionName) {
-        this.databaseName = databaseName;
-        this.collectionName = collectionName;
-        this.mongoCollection = MongoDataSource.getInstance().getMongoDatabase(databaseName).getCollection(collectionName);
+        this(databaseName, collectionName, null);
     }
 
     //It's another constructor, but with codec registry.
@@ -45,7 +44,8 @@ public abstract class MongoDataProvider {
     public MongoDataProvider(String databaseName, String collectionName, CodecRegistry codecRegistry) {
         this.databaseName = databaseName;
         this.collectionName = collectionName;
-        this.mongoCollection = MongoDataSource.getInstance().getMongoDatabase(databaseName).getCollection(collectionName).withCodecRegistry(codecRegistry);
+        if (codecRegistry != null)
+            this.mongoCollection = MongoDataSource.getInstance().getMongoDatabase(databaseName).getCollection(collectionName).withCodecRegistry(codecRegistry);
     }
 
     /**
