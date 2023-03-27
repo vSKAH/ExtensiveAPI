@@ -127,7 +127,7 @@ public class ModulesPlugin extends JavaPlugin {
     }
 
     public void registerMongoDataSource(String hostname) {
-        if (mongoDataSource == null || !mongoDataSource.getMongoHostname().equalsIgnoreCase(hostname)) {
+        if (mongoDataSource == null) {
             mongoDataSource = new MongoDataSource(hostname);
             mongoDataSource.openDataSource();
             getLogger().info("MongoDataSource has enabled ! ");
