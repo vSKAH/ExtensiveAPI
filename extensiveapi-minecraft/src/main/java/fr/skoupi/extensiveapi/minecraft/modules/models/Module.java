@@ -10,6 +10,8 @@ package fr.skoupi.extensiveapi.minecraft.modules.models;
 import co.aikar.commands.BaseCommand;
 import fr.skoupi.extensiveapi.minecraft.ModulesPlugin;
 import fr.skoupi.extensiveapi.minecraft.modules.enums.ModuleState;
+import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleEnablingException;
+import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleStartupException;
 import fr.skoupi.extensiveapi.minecraft.modules.manage.ModuleManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,14 +36,12 @@ public abstract class Module {
     private ModuleState moduleState;
     private Logger logger;
     private File moduleConfigurationFolder;
-
     private final Set<Listener> listeners = new HashSet<>();
     private final Set<BaseCommand> commands = new HashSet<>();
-
     /**
      * This function is called when the module is loaded.
      */
-    public void onStartup() {
+    public void onStartup() throws ModuleStartupException {
         setModuleState(ModuleState.STARTUP);
         setLogger(LoggerFactory.getLogger(moduleOptions.getModuleName()));
         moduleConfigurationFolder = new File(ModulesPlugin.getInstance().getDataFolder(), "modules/".concat(moduleOptions.getModuleName()));
@@ -51,7 +51,7 @@ public abstract class Module {
      * It registers all the listeners and commands in the module, sets the module state to enabled, and prints the module
      * information
      */
-    public void onEnable() {
+    public void onEnable() throws ModuleEnablingException {
         ModulesPlugin plugin = ModulesPlugin.getInstance();
         listeners.parallelStream().forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, plugin));
         commands.parallelStream().forEach(command -> plugin.getCommandLoader().paperCommandManager().registerCommand(command));

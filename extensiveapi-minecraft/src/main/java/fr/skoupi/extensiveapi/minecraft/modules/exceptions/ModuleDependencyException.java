@@ -7,7 +7,7 @@ package fr.skoupi.extensiveapi.minecraft.modules.exceptions;
  * For the project ExtensiveAPI
 
  * Created At 04/11/2022 15:53:56 */
-public class ModuleDependencyException extends Exception {
+public class ModuleDependencyException extends Throwable {
 
 	public ModuleDependencyException (String moduleName, String dependency)
 	{

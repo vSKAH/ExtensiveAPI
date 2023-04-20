@@ -9,11 +9,16 @@ package fr.skoupi.extensiveapi.minecraft.modules.manage;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleDependencyException;
+import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleEnablingException;
+import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleStartupException;
 import fr.skoupi.extensiveapi.minecraft.modules.loader.ModuleFinder;
 import fr.skoupi.extensiveapi.minecraft.modules.models.Module;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Objects;
 
 @CommandAlias("Module")
@@ -52,12 +57,12 @@ public class ModuleCommand extends BaseCommand {
             sender.sendMessage("Le module est déjà chargé !");
             return;
         }
-       // ModuleFinder.reloadClassLoader().thenAccept(consumer -> {
-            ModuleManager.registerModule(Objects.requireNonNull(ModuleFinder.getModuleFromFile(moduleWithJar)));
+        try {
+            ModuleManager.registerModule(Objects.requireNonNull(ModuleFinder.buildModuleFromFile(moduleWithJar)));
             sender.sendMessage("Le module vient d'être chargé !");
-       // });
-
-
+        } catch (ModuleEnablingException | ModuleStartupException | ModuleDependencyException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -75,6 +80,7 @@ public class ModuleCommand extends BaseCommand {
     public boolean unregisterModule(CommandSender sender, String moduleName) {
 
         final Module module = ModuleManager.getModules().get(moduleName);
+
         if (module == null) {
             sender.sendMessage("Le module n'est pas chargé !");
             return false;
@@ -86,6 +92,11 @@ public class ModuleCommand extends BaseCommand {
         }
 
         module.onUnregister();
+        try {
+            ModuleFinder.classLoader.unloadModule(new File(module.getModuleFileName()).toURI().toURL());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
         sender.sendMessage("Le module vient d'être déchargé !");
         return true;
     }

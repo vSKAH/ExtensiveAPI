@@ -15,6 +15,9 @@ import fr.skoupi.extensiveapi.minecraft.commands.CommandLoader;
 import fr.skoupi.extensiveapi.minecraft.hooks.Hooks;
 import fr.skoupi.extensiveapi.minecraft.listeners.CancelConnectionEvent;
 import fr.skoupi.extensiveapi.minecraft.modules.ModuleScheduler;
+import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleDependencyException;
+import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleEnablingException;
+import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleStartupException;
 import fr.skoupi.extensiveapi.minecraft.modules.loader.ModuleFinder;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.InventoryManager;
 import fr.skoupi.extensiveapi.minecraft.modules.manage.ModuleManager;
@@ -45,6 +48,7 @@ public class ModulesPlugin extends JavaPlugin {
 
     private MongoDataSource mongoDataSource;
     @Getter
+    @Setter
     private boolean loadingIsDone;
 
     @Getter
@@ -102,24 +106,10 @@ public class ModulesPlugin extends JavaPlugin {
 
         //Hook basics plugins
         hooks = new Hooks();
-        //register and load Modules
 
-        List<Module> modules = ModuleFinder.getAllModules();
-        AtomicInteger t = new AtomicInteger(modules.size());
-        AtomicInteger id = new AtomicInteger();
-        id.set(Bukkit.getScheduler().runTaskTimerAsynchronously(this, new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (t.get() <= 0) {
-                    loadingIsDone = true;
-                    Bukkit.getScheduler().cancelTask(id.get());
-                    return;
-                }
-                Module module = modules.get(t.decrementAndGet());
-                if (!ModuleManager.getModules().containsKey(module.getModuleOptions().getModuleName()))
-                    ModuleManager.registerModule(module);
-            }
-        }, 20 * 5, 10).getTaskId());
+        //register and load Modules
+        ModuleManager.registerModules();
+
 
         if (useArmorEvent)
             Bukkit.getPluginManager().registerEvents(new ArmorListeners(), this);

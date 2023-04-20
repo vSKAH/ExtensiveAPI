@@ -8,6 +8,9 @@ package fr.skoupi.extensiveapi.minecraft.modules.manage;
  */
 
 import fr.skoupi.extensiveapi.minecraft.itemstack.ItemBuilder;
+import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleDependencyException;
+import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleEnablingException;
+import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleStartupException;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.ClickableItem;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.SmartInventory;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.content.InventoryContents;
@@ -87,7 +90,12 @@ public class ModuleInventory implements InventoryProvider {
         if (event.getCurrentItem() == null) return;
         if (!event.getCurrentItem().hasItemMeta()) return;
         String moduleName = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
-        Module module = ModuleManager.changeModuleState(moduleName);
+        Module module;
+        try {
+            module = ModuleManager.toggleModule(moduleName);
+        } catch (ModuleDependencyException | ModuleEnablingException | ModuleStartupException e) {
+            throw new RuntimeException(e);
+        }
         ModuleOption moduleOption = module.getModuleOptions();
         event.getInventory().setItem(event.getSlot(), getModuleItem(moduleName, moduleOption.getModuleDescription(), moduleOption.getModuleVersion(), module.getModuleState(), moduleOption.isCanBeDisabled()).build());
         ((Player) event.getWhoClicked()).updateInventory();

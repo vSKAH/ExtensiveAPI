@@ -2,6 +2,7 @@ package fr.skoupi.extensiveapi.core.mavenresolver;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import fr.skoupi.extensiveapi.core.classloader.URLClassLoaderAccess;
 
 import java.io.File;
 import java.net.URLClassLoader;

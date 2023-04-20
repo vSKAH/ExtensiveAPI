@@ -23,7 +23,7 @@
  *  SOFTWARE.
  */
 
-package fr.skoupi.extensiveapi.core.mavenresolver;
+package fr.skoupi.extensiveapi.core.classloader;
 
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -64,7 +64,9 @@ public abstract class URLClassLoaderAccess {
      *
      * @param url the URL to add
      */
-    public abstract void addURL( URL url);
+    public abstract void addURL(URL url);
+
+    public abstract void removeURL(URL url);
 
     /**
      * Accesses using sun.misc.Unsafe, supported on Java 9+.
@@ -118,9 +120,15 @@ public abstract class URLClassLoaderAccess {
         }
 
         @Override
-        public void addURL( URL url) {
+        public void addURL(URL url) {
             this.unopenedURLs.add(url);
             this.pathURLs.add(url);
+        }
+
+        @Override
+        public void removeURL(URL url) {
+            this.unopenedURLs.remove(url);
+            this.pathURLs.remove(url);
         }
     }
 
@@ -132,7 +140,12 @@ public abstract class URLClassLoaderAccess {
         }
 
         @Override
-        public void addURL( URL url) {
+        public void addURL(URL url) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void removeURL(URL url) {
             throw new UnsupportedOperationException();
         }
     }

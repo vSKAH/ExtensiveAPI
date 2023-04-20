@@ -5,12 +5,12 @@
     <parent>
         <artifactId>extensiveapi</artifactId>
         <groupId>fr.skoupi</groupId>
-        <version>3.0-SNAPSHOT-B1</version>
+        <version>3.0-SNAPSHOT-B2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>extensiveapi-minecraft</artifactId>
-    <version>3.0-SNAPSHOT-B1</version>
+    <version>${project.parent.version}</version>
 
     <repositories>
         <repository>
