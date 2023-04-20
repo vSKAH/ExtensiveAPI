@@ -19,6 +19,8 @@ import fr.skoupi.extensiveapi.minecraft.modules.models.ModuleOption;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -50,23 +52,25 @@ public class ModuleManager {
         ConcurrentLinkedQueue<Module> allModules = ModuleFinder.getAllModules();
         AtomicInteger taskId = new AtomicInteger();
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(ModulesPlugin.getInstance(), bukkitTask -> {
-            taskId.set(bukkitTask.getTaskId());
-            Module module = allModules.poll();
+        taskId.set(Bukkit.getScheduler().runTaskTimerAsynchronously(ModulesPlugin.getInstance(), new BukkitRunnable() {
+            @Override
+            public void run() {
+                Module module = allModules.poll();
 
-            if (module == null) {
-                ModulesPlugin.getInstance().setLoadingIsDone(true);
-                Bukkit.getScheduler().cancelTask(taskId.get());
-                return;
-            }
-            if (!ModuleManager.getModules().containsKey(module.getModuleOptions().getModuleName())) {
-                try {
-                    ModuleManager.registerModule(module);
-                } catch (ModuleEnablingException | ModuleStartupException | ModuleDependencyException e) {
-                    throw new RuntimeException(e);
+                if (module == null) {
+                    ModulesPlugin.getInstance().setLoadingIsDone(true);
+                    Bukkit.getScheduler().cancelTask(taskId.get());
+                    return;
+                }
+                if (!ModuleManager.getModules().containsKey(module.getModuleOptions().getModuleName())) {
+                    try {
+                        ModuleManager.registerModule(module);
+                    } catch (ModuleEnablingException | ModuleStartupException | ModuleDependencyException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
-        }, 20 * 5, 10);
+        }, 20 * 5, 10).getTaskId());
     }
 
     /**

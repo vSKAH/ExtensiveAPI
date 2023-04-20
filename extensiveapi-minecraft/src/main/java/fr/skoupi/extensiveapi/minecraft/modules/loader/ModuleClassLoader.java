@@ -21,7 +21,7 @@ import java.net.URLClassLoader;
 public class ModuleClassLoader {
 
     @SuppressWarnings("Guava")
-    private static final Supplier<URLClassLoaderAccess> URL_INJECTOR = Suppliers.memoize(() -> URLClassLoaderAccess.create((URLClassLoader) ModulesPlugin.class.getClassLoader()));
+    public static final Supplier<URLClassLoaderAccess> URL_INJECTOR = Suppliers.memoize(() -> URLClassLoaderAccess.create((URLClassLoader) ModulesPlugin.class.getClassLoader()));
 
     public Module loadModule(URL url, ModuleOption moduleOptions) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         URL_INJECTOR.get().addURL(url);

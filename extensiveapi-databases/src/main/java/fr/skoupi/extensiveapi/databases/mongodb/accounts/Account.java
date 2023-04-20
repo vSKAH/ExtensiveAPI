@@ -7,14 +7,16 @@ package fr.skoupi.extensiveapi.databases.mongodb.accounts;
  * For the project ExtensiveAPI
  */
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.model.Filters;
+import fr.skoupi.extensiveapi.databases.mongodb.MongoDataProvider;
 import fr.skoupi.extensiveapi.databases.mongodb.accounts.exception.AccountEmptyDocumentException;
 import lombok.*;
 import org.bson.Document;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +24,7 @@ import java.util.UUID;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
+@BsonDiscriminator(key = "_cls", value = "Account")
 public class Account implements Cloneable {
     // It's a lombok annotation that allows you to specify which fields are included in the equals and hashCode methods.
     @EqualsAndHashCode.Include
@@ -69,16 +72,10 @@ public class Account implements Cloneable {
      * @param document The document to load
      * @return A HashMap with all the data of the document.
      */
-    public HashMap<String, Object> loadFromDocument(Document document) throws AccountEmptyDocumentException {
+    public Map<String, Object> loadFromDocument(Document document) throws AccountEmptyDocumentException, JsonProcessingException {
         if (document == null || document.isEmpty())
             throw new AccountEmptyDocumentException("Document can't be loaded because he is null or empty !");
-        HashMap<String, Object> datas = new HashMap<>();
-
-        for (Map.Entry<String, Object> entry : document.entrySet()) {
-            if (entry.getKey().equals("_id") || entry.getKey().equals("uuid")) continue;
-            datas.put(entry.getKey(), entry.getValue());
-        }
-        return datas;
+        return new ObjectMapper().readValue(document.toJson(), Account.class).getData();
     }
 
 

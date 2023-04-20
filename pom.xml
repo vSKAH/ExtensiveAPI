@@ -7,7 +7,7 @@
     <groupId>fr.skoupi</groupId>
     <artifactId>extensiveapi</artifactId>
     <packaging>pom</packaging>
-    <version>3.0-SNAPSHOT-B2</version>
+    <version>3.0-SNAPSHOT-B3</version>
     <modules>
         <module>extensiveapi-databases</module>
         <module>extensiveapi-minecraft</module>

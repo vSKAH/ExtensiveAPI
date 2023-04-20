@@ -35,6 +35,8 @@ import java.util.Collection;
  */
 public abstract class URLClassLoaderAccess {
 
+    private final URLClassLoader classLoader;
+
     /**
      * Creates a {@link URLClassLoaderAccess} for the given class loader.
      *
@@ -42,14 +44,13 @@ public abstract class URLClassLoaderAccess {
      * @return the access object
      */
     public static URLClassLoaderAccess create(URLClassLoader classLoader) {
+
         if (Unsafe.isSupported()) {
             return new Unsafe(classLoader);
         } else {
             return Noop.INSTANCE;
         }
     }
-
-    private final URLClassLoader classLoader;
 
     protected URLClassLoaderAccess(URLClassLoader classLoader) {
         this.classLoader = classLoader;
