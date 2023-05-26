@@ -2,7 +2,7 @@ package fr.skoupi.extensiveapi.minecraft.itemstack;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import fr.skoupi.extensiveapi.minecraft.ModulesPlugin;
+import fr.skoupi.extensiveapi.minecraft.ExtensiveCore;
 import fr.skoupi.extensiveapi.minecraft.utils.MinecraftVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -122,7 +122,7 @@ public class SkullCreator {
      */
     public static ItemStack itemWithUuid(ItemStack item, UUID id) {
         if(!MinecraftVersion.atLeast(MinecraftVersion.V.v1_12)) {
-            ModulesPlugin.getInstance().getLogger().warning("This method can be used only in 1.12+");
+            ExtensiveCore.getInstance().getLogger().warning("This method can be used only in 1.12+");
             return item;
         }
         SkullMeta meta = (SkullMeta) item.getItemMeta();
@@ -185,7 +185,7 @@ public class SkullCreator {
      */
     public static void blockWithUuid(Block block, UUID id) {
         if(!MinecraftVersion.atLeast(MinecraftVersion.V.v1_12)) {
-            ModulesPlugin.getInstance().getLogger().warning("This method can be used only in 1.12+");
+            ExtensiveCore.getInstance().getLogger().warning("This method can be used only in 1.12+");
             return;
         }
 

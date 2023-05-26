@@ -1,6 +1,6 @@
 package fr.skoupi.extensiveapi.minecraft.smartinventory;
 
-import fr.skoupi.extensiveapi.minecraft.ModulesPlugin;
+import fr.skoupi.extensiveapi.minecraft.ExtensiveCore;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.content.InventoryContents;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.content.InventoryProvider;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.opener.InventoryOpener;
@@ -225,7 +225,7 @@ public class SmartInventory {
 			if (this.provider == null)
 				throw new IllegalStateException("The provider of the SmartInventory.Builder must be set.");
 
-			InventoryManager manager = this.manager != null ? this.manager : ModulesPlugin.getInventoryManager();
+			InventoryManager manager = this.manager != null ? this.manager : ExtensiveCore.getInventoryManager();
 
 			if (manager == null)
 				throw new IllegalStateException("The manager of the SmartInventory.Builder must be set, " + "or the SmartInvs should be loaded as a plugin.");

@@ -7,49 +7,35 @@ package fr.skoupi.extensiveapi.minecraft;
  * For the project ExtensiveAPI
  */
 
+import co.aikar.commands.BaseCommand;
 import co.aikar.commands.PaperCommandManager;
 import fr.skoupi.extensiveapi.core.mavenresolver.Dependency;
 import fr.skoupi.extensiveapi.core.mavenresolver.DependencyManager;
-import fr.skoupi.extensiveapi.databases.mongodb.MongoDataSource;
 import fr.skoupi.extensiveapi.minecraft.commands.CommandLoader;
 import fr.skoupi.extensiveapi.minecraft.hooks.Hooks;
-import fr.skoupi.extensiveapi.minecraft.listeners.CancelConnectionEvent;
-import fr.skoupi.extensiveapi.minecraft.modules.ModuleScheduler;
-import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleDependencyException;
-import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleEnablingException;
-import fr.skoupi.extensiveapi.minecraft.modules.exceptions.ModuleStartupException;
-import fr.skoupi.extensiveapi.minecraft.modules.loader.ModuleFinder;
+
 import fr.skoupi.extensiveapi.minecraft.smartinventory.InventoryManager;
-import fr.skoupi.extensiveapi.minecraft.modules.manage.ModuleManager;
-import fr.skoupi.extensiveapi.minecraft.modules.models.Module;
 import fr.skoupi.extensiveapi.minecraft.armors.ArmorListeners;
+import fr.skoupi.extensiveapi.minecraft.utils.ExtensiveThreadPool;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.TimeUnit;
 
 
 @Getter
-public class ModulesPlugin extends JavaPlugin {
+public class ExtensiveCore extends JavaPlugin {
 
-    private static ModulesPlugin instance;
-
+    private static ExtensiveCore instance;
     private static InventoryManager inventoryManager;
     private DependencyManager dependencyManager;
     private File dependenciesFolder;
     private CommandLoader commandLoader;
-
     private Hooks hooks;
-
-    private MongoDataSource mongoDataSource;
-    @Getter
-    @Setter
-    private boolean loadingIsDone;
 
     @Getter
     @Setter
@@ -64,17 +50,16 @@ public class ModulesPlugin extends JavaPlugin {
         instance = this;
 
         //Download load and init Dependencies.
-        dependenciesFolder = new File(getDataFolder().getAbsolutePath().replace(getInstance().getName(), "SKAH-DEPENDENCIES"));
+        dependenciesFolder = new File(getDataFolder(), "SKAH-DEPENDENCIES");
         dependencyManager = new DependencyManager(this.getClass());
 
         //Download from custom repository
         dependencyManager.preLoad(new Dependency("io.papermc", "paperlib", "1.0.7", "https://papermc.io/repo/repository/maven-public/", false));
-        dependencyManager.preLoad(new Dependency("", "command-api", "", "https://repo.aikar.co/nexus/content/groups/aikar/co/aikar/acf-paper/0.5.1-SNAPSHOT/acf-paper-0.5.1-20211222.025603-2.jar", true));
 
         //Download Jackson from maven central
-        dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-core", "2.14.0"));
+        dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-core", "2.14.2"));
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-annotations", "2.14.0"));
-        dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-databind", "2.14.0"));
+        dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-databind", "2.14.2"));
         dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", "2.14.0"));
 
         dependencyManager.preLoad(new Dependency("org.mongodb", "mongodb-driver-sync", "4.7.1"));
@@ -83,7 +68,6 @@ public class ModulesPlugin extends JavaPlugin {
         dependencyManager.preLoad(new Dependency("org.mongodb", "bson-record-codec", "4.7.1"));
 
         dependencyManager.preLoad(new Dependency("org.redisson", "redisson", "3.20.0"));
-        dependencyManager.preLoad(new Dependency("org.yaml", "snakeyaml", "1.26"));
         dependencyManager.dl(getDependenciesFolder()).injectJar(getDependenciesFolder());
     }
 
@@ -101,27 +85,13 @@ public class ModulesPlugin extends JavaPlugin {
         commandLoader = new CommandLoader(new PaperCommandManager(this));
         commandLoader.registerDefault();
 
-
-        Bukkit.getPluginManager().registerEvents(new CancelConnectionEvent(), this);
-
         //Hook basics plugins
         hooks = new Hooks();
-
-        //register and load Modules
-        ModuleManager.registerModules();
-
 
         if (useArmorEvent)
             Bukkit.getPluginManager().registerEvents(new ArmorListeners(), this);
 
-    }
-
-    public void registerMongoDataSource(String hostname) {
-        if (mongoDataSource == null) {
-            mongoDataSource = new MongoDataSource(hostname);
-            mongoDataSource.openDataSource();
-            getLogger().info("MongoDataSource has enabled ! ");
-        }
+        ExtensiveThreadPool.RUNNABLE_EXECUTOR.scheduleAtFixedRate(new CommandLoader.unregisterCommandTask(), 5, 5, TimeUnit.SECONDS);
     }
 
 
@@ -130,9 +100,7 @@ public class ModulesPlugin extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        if (mongoDataSource != null && mongoDataSource.dataSourceIsOpen()) mongoDataSource.closeDataSource();
-        ModuleManager.getModules().values().forEach(Module::onUnregister);
-        ModuleScheduler.shutdownNow();
+        ExtensiveThreadPool.shutdownNow();
     }
 
     /**
@@ -141,7 +109,7 @@ public class ModulesPlugin extends JavaPlugin {
      *
      * @return The instance of the ModulesPlugin class.
      */
-    public static ModulesPlugin getInstance() {
+    public static ExtensiveCore getInstance() {
         return instance;
     }
 
@@ -155,4 +123,23 @@ public class ModulesPlugin extends JavaPlugin {
     }
 
 
+    public void registerCommand(BaseCommand baseCommand) {
+        commandLoader.getPaperCommandManager().registerCommand(baseCommand);
+    }
+
+    public void registerCommands(BaseCommand... baseCommands) {
+        for (BaseCommand baseCommand : baseCommands) {
+            registerCommand(baseCommand);
+        }
+    }
+
+    public void registerListener(JavaPlugin plugin, Listener listener) {
+        Bukkit.getPluginManager().registerEvents(listener, plugin);
+    }
+
+    public void registerListeners(JavaPlugin plugin, Listener... listeners) {
+        for (Listener listener : listeners) {
+            registerListener(plugin, listener);
+        }
+    }
 }

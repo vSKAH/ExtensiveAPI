@@ -5,7 +5,7 @@
     <parent>
         <artifactId>extensiveapi</artifactId>
         <groupId>fr.skoupi</groupId>
-        <version>3.0-SNAPSHOT-B3</version>
+        <version>3.0-SNAPSHOT-B4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -86,19 +86,18 @@
             <groupId>co.aikar</groupId>
             <artifactId>acf-paper</artifactId>
             <version>0.5.1-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>fr.skoupi</groupId>
             <artifactId>extensiveapi-core</artifactId>
-            <version>3.0-SNAPSHOT-B1</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>fr.skoupi</groupId>
             <artifactId>extensiveapi-databases</artifactId>
-            <version>3.0-SNAPSHOT-B1</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- Hooks -->
@@ -140,9 +139,40 @@
     </dependencies>
 
     <properties>
-        <maven.compiler.source>16</maven.compiler.source>
-        <maven.compiler.target>16</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                    <relocations>
+                        <relocation>
+                            <pattern>co.aikar.commands</pattern>
+                            <shadedPattern>fr.skoupi.extensiveapi.minecraft.acf.commands</shadedPattern> <!-- Replace this -->
+                        </relocation>
+                        <relocation>
+                            <pattern>co.aikar.locales</pattern>
+                            <shadedPattern>fr.skoupi.extensiveapi.minecraft.acf.locales</shadedPattern> <!-- Replace this -->
+                        </relocation>
+                    </relocations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

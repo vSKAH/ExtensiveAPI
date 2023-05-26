@@ -8,7 +8,7 @@ package fr.skoupi.extensiveapi.minecraft.protections;
  */
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import fr.skoupi.extensiveapi.minecraft.ModulesPlugin;
+import fr.skoupi.extensiveapi.minecraft.ExtensiveCore;
 import fr.skoupi.extensiveapi.minecraft.hooks.Hooks;
 import fr.skoupi.extensiveapi.minecraft.utils.MinecraftVersion;
 import lombok.NonNull;
@@ -26,7 +26,7 @@ public class PlayerProtectionTest {
 
 	public PlayerProtectionTest ()
 	{
-		this.hooks = ModulesPlugin.getInstance().getHooks();
+		this.hooks = ExtensiveCore.getInstance().getHooks();
 	}
 
 	/**

@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class Hooks {
 
     @Getter
-    private final HashMap<String, Hook> loaded = new HashMap<>();
+    private final HashMap<String, Hook<?>> loaded = new HashMap<>();
 
     public Hooks() {
         hookDefaultsPlugins();
@@ -37,7 +37,7 @@ public class Hooks {
      *
      * @param hook The hook to register.
      */
-    public void hookPlugin(Hook hook) {
+    public void hookPlugin(Hook<?> hook) {
         if (hook.registerHook()) loaded.put(hook.getHookName(), hook);
     }
 
@@ -50,7 +50,7 @@ public class Hooks {
      */
     public boolean isHooked(String name) {
         try {
-            Hook hook = loaded.get(name);
+            Hook<?> hook = loaded.get(name);
             return hook.getClasz() == null ? hook.pluginEnabled() : hook.pluginEnabled() && hook.getClasz() != null && hook.classExists();
         } catch (Exception e) {
             return false;

@@ -35,17 +35,19 @@ public class MongoDataProvider {
     private MongoCollection<Document> mongoCollection;
 
     // It's a constructor.
-    public MongoDataProvider(String databaseName, String collectionName) {
-        this(databaseName, collectionName, null);
+    public MongoDataProvider(MongoDataSource dataSource, String databaseName, String collectionName) {
+        this(dataSource, databaseName, collectionName, null);
     }
 
     //It's another constructor, but with codec registry.
     //Codec registry is used to serialize and deserialize custom plain old java objects.
-    public MongoDataProvider(String databaseName, String collectionName, CodecRegistry codecRegistry) {
+    public MongoDataProvider(MongoDataSource dataSource, String databaseName, String collectionName, CodecRegistry codecRegistry) {
         this.databaseName = databaseName;
         this.collectionName = collectionName;
         if (codecRegistry != null)
-            this.mongoCollection = MongoDataSource.getInstance().getMongoDatabase(databaseName).getCollection(collectionName).withCodecRegistry(codecRegistry);
+            this.mongoCollection = dataSource.getMongoClient().getDatabase(databaseName).getCollection(collectionName).withCodecRegistry(codecRegistry);
+        else
+            this.mongoCollection = dataSource.getMongoClient().getDatabase(databaseName).getCollection(collectionName);
     }
 
     /**
@@ -58,6 +60,12 @@ public class MongoDataProvider {
         return mongoCollection.find(filter).first();
     }
 
+
+    public Document syncGetDocumentFromFilter(Bson filter, Bson projections) {
+        return mongoCollection.find(filter).projection(projections).first();
+    }
+
+
     /**
      * "This function takes a filter, an executor service, and a completable future, and then submits a task to the executor
      * service that completes the future with the result of the synchronous get document from filter function."
@@ -69,7 +77,23 @@ public class MongoDataProvider {
      * @param documentFuture  This is the future object that will be completed with the document.
      */
     public void asyncGetDocumentFromUniqueId(Bson filter, ExecutorService executorService, CompletableFuture<Document> documentFuture) {
-        executorService.submit(() -> documentFuture.complete(syncGetDocumentFromFilter(filter)));
+        executorService.submit(() -> {
+            try {
+                documentFuture.complete(syncGetDocumentFromFilter(filter));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void asyncGetDocumentFromUniqueId(Bson filter, Bson projection, ExecutorService executorService, CompletableFuture<Document> documentFuture) {
+        executorService.submit(() -> {
+            try {
+                documentFuture.complete(syncGetDocumentFromFilter(filter, projection));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 
@@ -95,7 +119,13 @@ public class MongoDataProvider {
      * @param future          The future object that will be completed when the operation is done.
      */
     public void asyncInsertDocument(Document document, ExecutorService executorService, CompletableFuture<Boolean> future) {
-        executorService.submit(() -> future.complete(syncInsertDocument(document)));
+        executorService.submit(() -> {
+            try {
+                future.complete(syncInsertDocument(document));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 
@@ -131,7 +161,13 @@ public class MongoDataProvider {
      * @param executorService The executor service to use for the asynchronous operation.
      */
     public void asyncInsertMultipleDocuments(List<Document> documents, boolean ordered, BiConsumer<Boolean, Map<Integer, BsonValue>> consumer, ExecutorService executorService) {
-        executorService.submit(() -> syncInsertMultipleDocuments(documents, ordered, consumer), executorService);
+        executorService.submit(() -> {
+            try {
+                syncInsertMultipleDocuments(documents, ordered, consumer);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -157,7 +193,13 @@ public class MongoDataProvider {
      * @param future          The future object that will be completed when the operation is done.
      */
     public void asyncReplaceDocument(Bson filter, Document document, ExecutorService executorService, CompletableFuture<Boolean> future) {
-        executorService.submit(() -> future.complete(syncReplaceDocument(filter, document)));
+        executorService.submit(() -> {
+            try {
+                future.complete(syncReplaceDocument(filter, document));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -189,7 +231,13 @@ public class MongoDataProvider {
      * @param future          The future object that will be completed when the update is done.
      */
     public void asyncUpdateOneDocument(Bson filter, Document document, boolean upsert, ExecutorService executorService, CompletableFuture<Boolean> future) {
-        executorService.submit(() -> future.complete(syncUpdateOneDocument(filter, document, upsert)));
+        executorService.submit(() -> {
+            try {
+                future.complete(syncUpdateOneDocument(filter, document, upsert));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -222,7 +270,13 @@ public class MongoDataProvider {
      * @param future          The future object that will be completed when the operation is done.
      */
     public void asyncUpdateManyDocuments(Bson filter, List<Document> documents, boolean upsert, ExecutorService executorService, CompletableFuture<Boolean> future) {
-        executorService.submit(() -> future.complete(syncUpdateManyDocuments(filter, documents, upsert)));
+        executorService.submit(() -> {
+            try {
+                future.complete(syncUpdateManyDocuments(filter, documents, upsert));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -244,7 +298,13 @@ public class MongoDataProvider {
      * @param future          The future object that will be completed when the operation is done.
      */
     public void asyncDeleteDocument(Bson filter, ExecutorService executorService, CompletableFuture<Boolean> future) {
-        executorService.submit(() -> future.complete(syncDeleteDocument(filter)));
+        executorService.submit(() -> {
+            try {
+                future.complete(syncDeleteDocument(filter));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -271,7 +331,13 @@ public class MongoDataProvider {
      * @param future          The future object that will be completed with the result of the operation.
      */
     public void asyncGetAllDocuments(Bson filter, ExecutorService executorService, CompletableFuture<MongoCursor<Document>> future) {
-        executorService.submit(() -> future.complete(syncGetAllDocuments(filter)));
+        executorService.submit(() -> {
+            try {
+                future.complete(syncGetAllDocuments(filter));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 }

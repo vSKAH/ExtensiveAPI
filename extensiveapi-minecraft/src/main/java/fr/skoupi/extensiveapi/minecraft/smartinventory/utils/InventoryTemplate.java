@@ -14,6 +14,7 @@ import fr.skoupi.extensiveapi.minecraft.smartinventory.content.InventoryContents
 import fr.skoupi.extensiveapi.minecraft.smartinventory.content.SlotIterator;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.content.SlotPos;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class InventoryTemplate {
 	public static void addCornersTemplate (InventoryContents contents, Material mat, int data, String name)
@@ -40,4 +41,5 @@ public class InventoryTemplate {
 		slotIterator.blacklist(SlotPos.of(3, 0));
 		slotIterator.blacklist(SlotPos.of(3, 1));
 	}
+
 }

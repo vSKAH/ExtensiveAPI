@@ -1,4 +1,4 @@
-package fr.skoupi.extensiveapi.minecraft.modules;
+package fr.skoupi.extensiveapi.minecraft.utils;
 
 /*  ModuleScheduler
  *  By: vSKAH <vskahhh@gmail.com>
@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-public class ModuleScheduler {
+public class ExtensiveThreadPool {
 
 	public static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2, r -> new Thread(r, "ModuleTask:" + r.getClass().getName()));
 	public static final ScheduledExecutorService RUNNABLE_EXECUTOR = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() * 2, r -> new Thread(r, "ModuleRunnable:" + r.getClass().getName()));

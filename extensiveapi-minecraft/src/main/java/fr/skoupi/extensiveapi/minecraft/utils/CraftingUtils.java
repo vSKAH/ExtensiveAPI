@@ -7,7 +7,7 @@ package fr.skoupi.extensiveapi.minecraft.utils;
  * For the project ExtensiveAPI
  */
 
-import fr.skoupi.extensiveapi.minecraft.ModulesPlugin;
+import fr.skoupi.extensiveapi.minecraft.ExtensiveCore;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -28,7 +28,7 @@ public class CraftingUtils {
             recipe = RECIPES_ITERATOR.next();
             if (recipe != null && recipe.getResult().getType() == material && recipe.getResult().getDurability() == s) {
                 RECIPES_ITERATOR.remove();
-                ModulesPlugin.getInstance().getLogger().info("Supression du craft de: " + recipe.getResult().getType());
+                ExtensiveCore.getInstance().getLogger().info("Supression du craft de: " + recipe.getResult().getType());
             }
         }
     }

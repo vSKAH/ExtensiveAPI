@@ -5,12 +5,12 @@
     <parent>
         <artifactId>extensiveapi</artifactId>
         <groupId>fr.skoupi</groupId>
-        <version>3.0-SNAPSHOT-B3</version>
+        <version>3.0-SNAPSHOT-B4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>extensiveapi-databases</artifactId>
-    <version>${parent.version}</version>
+    <version>${project.parent.version}</version>
 
     <dependencies>
         <dependency>
@@ -43,8 +43,8 @@
     </dependencies>
 
     <properties>
-        <maven.compiler.source>16</maven.compiler.source>
-        <maven.compiler.target>16</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

@@ -8,7 +8,7 @@ package fr.skoupi.extensiveapi.minecraft.cooldown;
  */
 
 import fr.skoupi.extensiveapi.core.cooldown.Cooldown;
-import fr.skoupi.extensiveapi.minecraft.ModulesPlugin;
+import fr.skoupi.extensiveapi.minecraft.ExtensiveCore;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -17,7 +17,7 @@ public class PlayerCooldown implements Cooldown<Player> {
     @Override
     // It's adding a timer to the player.
     public void addTimer(Player player, String cooldownIdentifier, long time) {
-        player.setMetadata(cooldownIdentifier, new FixedMetadataValue(ModulesPlugin.getInstance(), (time * 1000) + System.currentTimeMillis()));
+        player.setMetadata(cooldownIdentifier, new FixedMetadataValue(ExtensiveCore.getInstance(), (time * 1000) + System.currentTimeMillis()));
     }
 
     @Override

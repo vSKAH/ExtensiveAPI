@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.skoupi.extensiveapi.minecraft.ModulesPlugin;
+import fr.skoupi.extensiveapi.minecraft.ExtensiveCore;
 import fr.skoupi.extensiveapi.minecraft.utils.MinecraftVersion;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -112,7 +112,7 @@ public class ItemStackDeserializer extends JsonDeserializer<ItemStack> {
 				// It's just a warning that will be displayed in the console if the server is not running on 1.9+
 				else
 				{
-					ModulesPlugin.getInstance().getLogger().warning("This method can be used only in 1.9+");
+					ExtensiveCore.getInstance().getLogger().warning("This method can be used only in 1.9+");
 				}
 			}
 			// It's setting the ItemMeta to the ItemStack.

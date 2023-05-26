@@ -1,6 +1,6 @@
-name: ModulesCore
-description: A Module core plugin by vSKAH
-main: fr.skoupi.extensiveapi.minecraft.ModulesPlugin
+name: ExtensiveCore
+description: ExtensiveCore is a plugin that allows you to create easily plugins with a lot of features.
+main: fr.skoupi.extensiveapi.minecraft.ExtensiveCore
 author: SKAH#7513
 version: 2.0
 api-version: 1.16

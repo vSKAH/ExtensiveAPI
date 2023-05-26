@@ -7,7 +7,7 @@ package fr.skoupi.extensiveapi.minecraft.utils;
  * For the project ExtensiveAPI
  */
 
-import fr.skoupi.extensiveapi.minecraft.ModulesPlugin;
+import fr.skoupi.extensiveapi.minecraft.ExtensiveCore;
 import org.bukkit.Bukkit;
 
 import java.util.logging.Level;
@@ -181,7 +181,7 @@ public final class MinecraftVersion {
 
     // Initialize the version
     static {
-        final Logger logger = ModulesPlugin.getInstance().getLogger();
+        final Logger logger = ExtensiveCore.getInstance().getLogger();
 
         try {
             final String packageName = Bukkit.getServer().getClass().getPackage().getName();
@@ -210,7 +210,7 @@ public final class MinecraftVersion {
 
                 if (found != 1) {
                     logger.log(Level.SEVERE, () -> "Minecraft Version checker malfunction. Plugin disabled. Could not detect your server version. Detected: " + numericVersion + " Current: " + curr);
-                    ModulesPlugin.getInstance().getPluginLoader().disablePlugin(ModulesPlugin.getInstance());
+                    ExtensiveCore.getInstance().getPluginLoader().disablePlugin(ExtensiveCore.getInstance());
                 }
 
                 current = V.parse(Integer.parseInt(numericVersion.split("\\.")[1]));
@@ -220,7 +220,7 @@ public final class MinecraftVersion {
 
         } catch (final Throwable t) {
             logger.log(Level.SEVERE, t, () -> "Error detecting your Minecraft version. Plugin disabled. Check your server compatibility.");
-            ModulesPlugin.getInstance().getPluginLoader().disablePlugin(ModulesPlugin.getInstance());
+            ExtensiveCore.getInstance().getPluginLoader().disablePlugin(ExtensiveCore.getInstance());
         }
     }
 

@@ -7,7 +7,7 @@ package fr.skoupi.extensiveapi.minecraft.hooks.basics;
  * For the project ExtensiveAPI
  */
 
-import fr.skoupi.extensiveapi.minecraft.ModulesPlugin;
+import fr.skoupi.extensiveapi.minecraft.ExtensiveCore;
 import fr.skoupi.extensiveapi.minecraft.hooks.Hook;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 
@@ -21,7 +21,7 @@ public class LandsHook implements Hook<LandsIntegration> {
     @Override
     public boolean registerHook() {
         if(!pluginEnabled()) return false;
-        this.lands = new LandsIntegration(ModulesPlugin.getInstance());
+        this.lands = new LandsIntegration(ExtensiveCore.getInstance());
         return true;
     }
 
