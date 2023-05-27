@@ -136,6 +136,13 @@
             <version>3.2.4</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.Emibergo02</groupId>
+            <artifactId>RedisEconomy</artifactId>
+            <version>3.2-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <properties>

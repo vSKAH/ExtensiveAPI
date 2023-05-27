@@ -25,12 +25,12 @@ public interface Hook<R> {
      */
     String getClasz();
 
-     /**
-      * Register a hook for the specified event.
-      *
-      * @return A boolean value.
-      */
-     boolean registerHook();
+    /**
+     * Register a hook for the specified event.
+     *
+     * @return A boolean value.
+     */
+    boolean registerHook();
 
     /**
      * Returns the value of the property.
@@ -63,6 +63,6 @@ public interface Hook<R> {
      * @return The boolean value of whether the plugin is enabled and the class exists.
      */
     default boolean pluginEnabled() {
-        return Bukkit.getPluginManager().isPluginEnabled(getHookName()) && classExists();
+        return classExists() && Bukkit.getPluginManager().isPluginEnabled(getHookName());
     }
 }

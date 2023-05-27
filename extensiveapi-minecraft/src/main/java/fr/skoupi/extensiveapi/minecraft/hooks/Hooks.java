@@ -29,7 +29,8 @@ public class Hooks {
         hookPlugin(new VaultHook());
         hookPlugin(new LandsHook());
         hookPlugin(new JobsHook());
-        hookPlugin(new RosePlayerPoints());
+        hookPlugin(new RosePlayerPointsHook());
+        hookPlugin(new RedisEconomyHook());
     }
 
     /**
@@ -50,8 +51,7 @@ public class Hooks {
      */
     public boolean isHooked(String name) {
         try {
-            Hook<?> hook = loaded.get(name);
-            return hook.getClasz() == null ? hook.pluginEnabled() : hook.pluginEnabled() && hook.getClasz() != null && hook.classExists();
+            return loaded.get(name).pluginEnabled();
         } catch (Exception e) {
             return false;
         }

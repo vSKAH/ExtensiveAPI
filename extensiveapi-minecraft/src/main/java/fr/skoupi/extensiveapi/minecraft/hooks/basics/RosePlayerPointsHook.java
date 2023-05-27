@@ -8,12 +8,9 @@ package fr.skoupi.extensiveapi.minecraft.hooks.basics;
  */
 
 import fr.skoupi.extensiveapi.minecraft.hooks.Hook;
-import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPoints;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.RegisteredServiceProvider;
 
-public class RosePlayerPoints implements Hook<PlayerPoints> {
+public class RosePlayerPointsHook implements Hook<PlayerPoints> {
 
 	private PlayerPoints playerPoints;
 
