@@ -7,7 +7,6 @@ package fr.skoupi.extensiveapi.minecraft.hooks;
  * For the project ExtensiveAPI
  */
 
-import org.bukkit.Bukkit;
 
 public interface Hook<R> {
 
@@ -63,6 +62,6 @@ public interface Hook<R> {
      * @return The boolean value of whether the plugin is enabled and the class exists.
      */
     default boolean pluginEnabled() {
-        return classExists() && Bukkit.getPluginManager().isPluginEnabled(getHookName());
+        return classExists();
     }
 }

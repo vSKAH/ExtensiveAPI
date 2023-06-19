@@ -3,11 +3,11 @@ description: ExtensiveCore is a plugin that allows you to create easily plugins 
 main: fr.skoupi.extensiveapi.minecraft.ExtensiveCore
 author: SKAH#7513
 version: 2.0
-api-version: 1.16
-load: POSTWORLD
+load: STARTUP
 softdepend:
   - Jobs
   - Lands
   - NBTAPI
   - Worldguard
   - Vault
+  - Factions

@@ -9,6 +9,9 @@ package fr.skoupi.extensiveapi.minecraft;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.PaperCommandManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import fr.skoupi.extensiveapi.core.configuration.ConfigurationExporter;
 import fr.skoupi.extensiveapi.core.mavenresolver.Dependency;
 import fr.skoupi.extensiveapi.core.mavenresolver.DependencyManager;
 import fr.skoupi.extensiveapi.minecraft.commands.CommandLoader;
@@ -19,11 +22,16 @@ import fr.skoupi.extensiveapi.minecraft.armors.ArmorListeners;
 import fr.skoupi.extensiveapi.minecraft.utils.ExtensiveThreadPool;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -32,8 +40,6 @@ public class ExtensiveCore extends JavaPlugin {
 
     private static ExtensiveCore instance;
     private static InventoryManager inventoryManager;
-    private DependencyManager dependencyManager;
-    private File dependenciesFolder;
     private CommandLoader commandLoader;
     private Hooks hooks;
 
@@ -48,28 +54,36 @@ public class ExtensiveCore extends JavaPlugin {
     public void onLoad() {
         //Create plugin instance
         instance = this;
+        getDataFolder().mkdirs();
 
         //Download load and init Dependencies.
-        dependenciesFolder = new File(getDataFolder(), "SKAH-DEPENDENCIES");
-        dependencyManager = new DependencyManager(this.getClass());
+        File dependenciesFile = new File(getDataFolder(), "dependencies.json");
+        File dependenciesFolder = new File(getDataFolder(), "SKAH-DEPENDENCIES");
 
-        //Download from custom repository
-        dependencyManager.preLoad(new Dependency("io.papermc", "paperlib", "1.0.7", "https://papermc.io/repo/repository/maven-public/", false));
+        DependencyManager dependencyManager = new DependencyManager(this.getClass());
 
-        //Download Jackson from maven central
-        dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-core", "2.14.2"));
-        dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-annotations", "2.14.0"));
-        dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.core", "jackson-databind", "2.14.2"));
-        dependencyManager.preLoad(new Dependency("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", "2.14.0"));
+        try {
+            if (!dependenciesFile.exists()) {
+                ConfigurationExporter.createConfig(dependenciesFile, getClass().getResourceAsStream("/dependencies.json"), false);
+            }
 
-        dependencyManager.preLoad(new Dependency("org.mongodb", "mongodb-driver-sync", "4.7.1"));
-        dependencyManager.preLoad(new Dependency("org.mongodb", "bson", "4.7.1"));
-        dependencyManager.preLoad(new Dependency("org.mongodb", "mongodb-driver-core", "4.7.1"));
-        dependencyManager.preLoad(new Dependency("org.mongodb", "bson-record-codec", "4.7.1"));
+            Type listOfMyClassObject = new TypeToken<ArrayList<Dependency>>() {}.getType();
 
-        dependencyManager.preLoad(new Dependency("org.redisson", "redisson", "3.20.0"));
-        dependencyManager.dl(getDependenciesFolder()).injectJar(getDependenciesFolder());
+            Gson gson = new Gson();
+            List<Dependency> outputList = gson.fromJson(FileUtils.readFileToString(dependenciesFile, "UTF-8"), listOfMyClassObject);
+
+            for (Dependency dependency : outputList) {
+                dependencyManager.preLoad(dependency);
+                getLogger().info("Loading dependency: " + dependency.getArtifactId() + " v" + dependency.getVersion());
+            }
+            dependencyManager.dl(dependenciesFolder).injectJar(dependenciesFolder);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
+
 
     /**
      * > We init SmartInventory, init Aikar commands,

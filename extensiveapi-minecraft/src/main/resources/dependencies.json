@@ -1,0 +1,51 @@
+[ {
+  "group_id" : "io.papermc",
+  "artifact_id" : "paperlib",
+  "version" : "1.0.7",
+  "repository" : "https://papermc.io/repo/repository/maven-public/"
+}, {
+  "group_id" : "com.fasterxml.jackson.core",
+  "artifact_id" : "jackson-core",
+  "version" : "2.14.2",
+  "repository" : "https://repo1.maven.org/maven2/"
+}, {
+  "group_id" : "com.fasterxml.jackson.core",
+  "artifact_id" : "jackson-annotations",
+  "version" : "2.14.0",
+  "repository" : "https://repo1.maven.org/maven2/"
+}, {
+  "group_id" : "com.fasterxml.jackson.core",
+  "artifact_id" : "jackson-databind",
+  "version" : "2.14.2",
+  "repository" : "https://repo1.maven.org/maven2/"
+}, {
+  "group_id" : "com.fasterxml.jackson.dataformat",
+  "artifact_id" : "jackson-dataformat-yaml",
+  "version" : "2.14.0",
+  "repository" : "https://repo1.maven.org/maven2/"
+}, {
+  "group_id" : "org.mongodb",
+  "artifact_id" : "mongodb-driver-sync",
+  "version" : "4.7.1",
+  "repository" : "https://repo1.maven.org/maven2/"
+}, {
+  "group_id" : "org.mongodb",
+  "artifact_id" : "bson",
+  "version" : "4.7.1",
+  "repository" : "https://repo1.maven.org/maven2/"
+}, {
+  "group_id" : "org.mongodb",
+  "artifact_id" : "mongodb-driver-core",
+  "version" : "4.7.1",
+  "repository" : "https://repo1.maven.org/maven2/"
+}, {
+  "group_id" : "org.mongodb",
+  "artifact_id" : "bson-record-codec",
+  "version" : "4.7.1",
+  "repository" : "https://repo1.maven.org/maven2/"
+}, {
+  "group_id" : "org.redisson",
+  "artifact_id" : "redisson",
+  "version" : "3.22.0",
+  "repository" : "https://repo1.maven.org/maven2/"
+} ]

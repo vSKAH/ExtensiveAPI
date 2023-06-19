@@ -43,6 +43,9 @@ public class ItemStackSerializer extends StdSerializer<ItemStack> {
         // It writes the amount of the itemstack into the JSON object.
         jsonGenerator.writeNumberField("amount", itemStack.getAmount());
 
+        // It writes the durability of the itemstack into the JSON object.
+        jsonGenerator.writeNumberField("stack_durability", itemStack.getDurability());
+
         // It checks if the itemstack has a meta.
         if (itemStack.hasItemMeta()) {
 

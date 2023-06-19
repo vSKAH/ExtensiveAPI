@@ -31,6 +31,7 @@ public class Hooks {
         hookPlugin(new JobsHook());
         hookPlugin(new RosePlayerPointsHook());
         hookPlugin(new RedisEconomyHook());
+        hookPlugin(new FactionHook());
     }
 
     /**

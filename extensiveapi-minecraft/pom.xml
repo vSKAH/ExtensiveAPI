@@ -14,6 +14,11 @@
 
     <repositories>
         <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+
+        <repository>
             <id>sk89q-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
@@ -141,6 +146,14 @@
             <groupId>com.github.Emibergo02</groupId>
             <artifactId>RedisEconomy</artifactId>
             <version>3.2-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.github.SaberLLC</groupId>
+            <artifactId>Saber-Factions</artifactId>
+            <version>2.4.0-RC</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

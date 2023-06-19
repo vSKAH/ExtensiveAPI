@@ -61,8 +61,7 @@ public class DependencyDownloader {
             return dependency;
         }
 
-        if (dependency.isOnlyLink()) download(dependency.getRepository(), dependencyFile);
-        else download(dependency.getURLName(), dependencyFile);
+        download(dependency.getURLName(), dependencyFile);
 
         boolean fileExist2 = dependencyFile.exists() && dependencyFile.isFile();
         if (fileExist2) {
@@ -111,10 +110,7 @@ public class DependencyDownloader {
      */
     public boolean checksumDependency(Dependency dependency, File dependecyFile) {
         try {
-            InputStream stream;
-            if (dependency.isOnlyLink())
-                stream = new URL(dependency.getURLNameWithoutId().concat(".sha1")).openStream();
-            else stream = new URL(dependency.getURLName() + ".sha1").openStream();
+            InputStream stream = new URL(dependency.getURLName() + ".sha1").openStream();
             final String urlSHa1 = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
             final String dependencySha1 = calcSHA1(dependecyFile).toLowerCase();
 

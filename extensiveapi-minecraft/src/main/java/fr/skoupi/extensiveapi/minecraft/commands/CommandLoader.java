@@ -18,11 +18,12 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public record CommandLoader(@Getter PaperCommandManager paperCommandManager) {
 
-    private static final HashMap<String, List<BaseCommand>> commands = new HashMap<>();
+    private static final ConcurrentHashMap<String, List<BaseCommand>> commands = new ConcurrentHashMap<>();
 
     /**
      * We enable the `help` command, we register a completion for the `players` argument, we register a completion for the
@@ -40,6 +41,7 @@ public record CommandLoader(@Getter PaperCommandManager paperCommandManager) {
 
         if (commands.containsKey(plugin.getName())) {
             commands.get(plugin.getName()).add(command);
+            paperCommandManager.registerCommand(command);
             return;
         }
 
@@ -82,8 +84,7 @@ public record CommandLoader(@Getter PaperCommandManager paperCommandManager) {
                     if (plugin == null || !plugin.isEnabled())
                         ExtensiveCore.getInstance().getCommandLoader().unregisterCommands(commandsEntry.getKey());
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
