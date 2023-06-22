@@ -66,7 +66,6 @@ public class ExtensiveCore extends JavaPlugin {
             if (!dependenciesFile.exists()) {
                 ConfigurationExporter.createConfig(dependenciesFile, getClass().getResourceAsStream("/dependencies.json"), false);
             }
-
             Type listOfMyClassObject = new TypeToken<ArrayList<Dependency>>() {}.getType();
 
             Gson gson = new Gson();
@@ -76,7 +75,11 @@ public class ExtensiveCore extends JavaPlugin {
                 dependencyManager.preLoad(dependency);
                 getLogger().info("Loading dependency: " + dependency.getArtifactId() + " v" + dependency.getVersion());
             }
-            dependencyManager.dl(dependenciesFolder).injectJar(dependenciesFolder);
+            getLogger().info("Downloading dependencies...");
+            dependencyManager.dl(dependenciesFolder);
+            getLogger().info("Injecting dependencies...");
+            dependencyManager.injectJar(dependenciesFolder);
+            getLogger().info("Dependencies are loaded and injected !");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
