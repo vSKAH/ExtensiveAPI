@@ -1,6 +1,5 @@
 package fr.skoupi.extensiveapi.minecraft.smartinventory;
 
-import fr.skoupi.extensiveapi.minecraft.ExtensiveCore;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.content.InventoryContents;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.opener.ChestInventoryOpener;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.opener.InventoryOpener;
@@ -46,7 +45,7 @@ public class InventoryManager {
 
     public void init() {
         pluginManager.registerEvents(new InvListener(), plugin);
-        new InvTask().runTaskTimer(plugin, 30, 30);
+        new InvTask().runTaskTimer(plugin, 100, 100);
     }
 
     public Optional<InventoryOpener> findOpener(InventoryType type) {

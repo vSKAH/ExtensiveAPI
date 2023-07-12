@@ -39,8 +39,9 @@ public abstract class IDataSerialisable<T> {
      * @param file   The file to save the object to.
      * @param object The object to save
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void save(File file, Object object, ObjectMapper objectMapper) {
-        if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
+        file.getParentFile().mkdirs();
 
         try {
             objectMapper.writeValue(file, object);
