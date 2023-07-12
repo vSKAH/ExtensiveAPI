@@ -4,24 +4,31 @@ import fr.skoupi.extensiveapi.minecraft.smartinventory.ClickableItem;
 
 import java.util.Arrays;
 
+@SuppressWarnings("unused")
 public interface Pagination {
 
     ClickableItem[] getPageItems();
 
     int getPage();
+
     Pagination page(int page);
 
     boolean isFirst();
+
     boolean isLast();
 
     Pagination first();
+
     Pagination previous();
+
     Pagination next();
+
     Pagination last();
 
     Pagination addToIterator(SlotIterator iterator);
 
     Pagination setItems(ClickableItem... items);
+
     Pagination setItemsPerPage(int itemsPerPage);
 
 
@@ -69,7 +76,7 @@ public interface Pagination {
 
         @Override
         public Pagination previous() {
-            if(!isFirst())
+            if (!isFirst())
                 this.currentPage--;
 
             return this;
@@ -77,7 +84,7 @@ public interface Pagination {
 
         @Override
         public Pagination next() {
-            if(!isLast())
+            if (!isLast())
                 this.currentPage++;
 
             return this;
@@ -91,10 +98,10 @@ public interface Pagination {
 
         @Override
         public Pagination addToIterator(SlotIterator iterator) {
-            for(ClickableItem item : getPageItems()) {
+            for (ClickableItem item : getPageItems()) {
                 iterator.next().set(item);
 
-                if(iterator.ended())
+                if (iterator.ended())
                     break;
             }
 

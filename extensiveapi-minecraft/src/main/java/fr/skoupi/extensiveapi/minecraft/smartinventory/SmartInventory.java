@@ -4,6 +4,7 @@ import fr.skoupi.extensiveapi.minecraft.ExtensiveCore;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.content.InventoryContents;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.content.InventoryProvider;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.opener.InventoryOpener;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Getter
 public class SmartInventory {
 
 	private String id;
@@ -85,61 +87,6 @@ public class SmartInventory {
 		player.closeInventory();
 
 		this.manager.setContents(player, null);
-	}
-
-	public String getId ()
-	{
-		return id;
-	}
-
-	public String getTitle ()
-	{
-		return title;
-	}
-
-	public InventoryType getType ()
-	{
-		return type;
-	}
-
-	public int getRows ()
-	{
-		return rows;
-	}
-
-	public int getColumns ()
-	{
-		return columns;
-	}
-
-	public boolean isCloseable ()
-	{
-		return closeable;
-	}
-
-	public void setCloseable (boolean closeable)
-	{
-		this.closeable = closeable;
-	}
-
-	public InventoryProvider getProvider ()
-	{
-		return provider;
-	}
-
-	public Optional<SmartInventory> getParent ()
-	{
-		return Optional.ofNullable(parent);
-	}
-
-	public InventoryManager getManager ()
-	{
-		return manager;
-	}
-
-	List<InventoryListener<? extends Event>> getListeners ()
-	{
-		return listeners;
 	}
 
 	public static Builder builder ()
