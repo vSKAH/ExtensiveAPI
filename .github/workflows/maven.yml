@@ -63,7 +63,7 @@ jobs:
         file_glob: true
         file: extensiveapi-all-compiled/*
         overwrite: true
-        tag: Release - {{ steps.latest.outputs.sha_short }}
+        tag: Release-${{ steps.latest.outputs.sha_short }}
         body: "
         ## 💾  Download link
 
