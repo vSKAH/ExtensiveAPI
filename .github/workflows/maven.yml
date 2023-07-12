@@ -72,7 +72,7 @@ jobs:
         ### ❓ How to install ExtensiveAPI on my Minecraft Server ? 
 
         Simply drag & drop the extensiveapi-minecraft jar file into the `/plugins/` directory of your server.
-        extensiveapi-databases and extensiveapi-core is already shaded in extensiveapi-minecraft
+        Extensiveapi-databases and Extensiveapi-core is already shaded in Extensiveapi-minecraft, only developpers must use.
 
         If you need any help installing you can contact me.
 
