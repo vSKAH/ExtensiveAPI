@@ -63,6 +63,4 @@ jobs:
         overwrite: true
         tag: Latest-Stable
         body: |
-        ## 💾  Download link
-    
-
+        ## 💾  Download link\nThis latest release can be downloaded below this message
