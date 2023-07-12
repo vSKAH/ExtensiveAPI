@@ -5,9 +5,11 @@
     <parent>
         <artifactId>extensiveapi</artifactId>
         <groupId>fr.skoupi</groupId>
-        <version>3.0-SNAPSHOT-B4</version>
+        <version>3.0-beta.4</version>
     </parent>
     <build>
+        <finalName>${project.name} v${project.version}</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

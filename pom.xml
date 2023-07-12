@@ -7,7 +7,7 @@
     <groupId>fr.skoupi</groupId>
     <artifactId>extensiveapi</artifactId>
     <packaging>pom</packaging>
-    <version>3.0-SNAPSHOT-B4</version>
+    <version>3.0-beta.4</version>
 
 
     <!-- Project Info -->
@@ -78,15 +78,8 @@
 
 
     <build>
-        <!-- /src/main/java/ contains all sources (production code) -->
-        <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
-
-        <!-- /src/test/java/ contains all unit tests (testing code) -->
-        <testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
-
         <!-- The default goal for compiling is "clean package" -->
         <defaultGoal>clean package</defaultGoal>
-
 
         <plugins>
             <plugin>
