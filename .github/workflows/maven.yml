@@ -82,7 +82,7 @@ jobs:
 
         If you want to develop with ExtensiveAPI ?
 
-        ```xml
+        ```XML
         <repositories>\n
           <repository>\n
             <id>jitpack.io</id>\n
