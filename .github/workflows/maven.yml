@@ -83,33 +83,19 @@ jobs:
         If you want to develop with ExtensiveAPI ?
 
         ```xml
-        <repositories>
-
-          <repository>
-
-            <id>jitpack.io</id>
-
-            <url>https://jitpack.io</url>
-
-          </repository>
-
-        </repositories>
-
-
-        <dependencies>
-
-	        <dependency>
-
-	          <groupId>com.github.vSKAH</groupId>
-
-	          <artifactId>ExtensiveAPI</artifactId>
-
-	          <version>Latest-Stable</version>
-
-	        </dependency>
-          
+        <repositories>\n
+          <repository>\n
+            <id>jitpack.io</id>\n
+            <url>https://jitpack.io</url>\n
+          </repository>\n
+        </repositories>\n\n
+        <dependencies>\n
+	        <dependency>\n
+	          <groupId>com.github.vSKAH</groupId>\n
+	          <artifactId>ExtensiveAPI</artifactId>\n
+	          <version>Latest-Stable</version>\n
+	        </dependency>\n
         </dependencies>
-        ```
-        "
+        ```"
     
 
