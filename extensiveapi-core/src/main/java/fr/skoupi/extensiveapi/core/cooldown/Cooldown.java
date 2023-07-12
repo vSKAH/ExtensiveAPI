@@ -12,7 +12,7 @@ public interface Cooldown<T> {
     /**
      * Adds a timer to the cooldown manager
      *
-     * @param object The object that will be used to identify the cooldown.
+     * @param object The object to which the cooldown will be attached
      * @param cooldownIdentifier This is the identifier for the cooldown.
      * @param time The time in milliseconds that the cooldown will last.
      */

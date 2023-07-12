@@ -1,4 +1,4 @@
-package fr.skoupi.extensiveapi.core;
+package fr.skoupi.extensiveapi.core.collection;
 
 import fr.skoupi.extensiveapi.core.collection.RandomMap;
 import org.junit.jupiter.api.*;

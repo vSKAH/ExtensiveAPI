@@ -14,17 +14,12 @@ public class DependencyManager {
     @SuppressWarnings("Guava")
     public static final Supplier<URLClassLoaderAccess> URL_INJECTOR = Suppliers.memoize(() -> URLClassLoaderAccess.create((URLClassLoader) DependencyManager.class.getClassLoader()));
 
-    //private final URLClassLoader classLoader;
     private final DependencyDownloader dependencyDownloader;
-    //	private Method method;
     private final List<Dependency> toLoad;
 
     private final List<String> loaded;
 
-    /**
-     * @param mainClass The main class of the application / plugin (Spigot, BungeeCoord, ...)
-     */
-    public DependencyManager(Class<?> mainClass) {
+    public DependencyManager() {
         this.toLoad = new ArrayList<>();
         this.loaded = new ArrayList<>();
         this.dependencyDownloader = new DependencyDownloader();
@@ -40,29 +35,22 @@ public class DependencyManager {
     }
 
     /**
-     * This function start the process to download and inject the dependencies.
+     * This function start the process to download the dependencies in parallel.
      *
-     * @param libsFolder the folder where the dependency will be placed
+     * @param outputDir the folder where the dependency will be placed
      */
-    public DependencyManager dl(File libsFolder) {
-        synchronized (this.dependencyDownloader) {
-            this.dependencyDownloader.download(this.toLoad, libsFolder, dependencyFile -> {
-            });
-        }
+    public DependencyManager downloadJars(File outputDir) {
+        this.dependencyDownloader.download(this.toLoad, outputDir, file -> {});
         return this;
     }
 
-    public void injectJar(File jarFilefolder) {
+    public void injectJarsInsideFolder(File dependencyFolder) {
         try {
-            if (!jarFilefolder.exists()) return;
-            File[] files = jarFilefolder.listFiles(file -> file.getName().endsWith(".jar"));
+            if (!dependencyFolder.exists()) return;
+            File[] files = dependencyFolder.listFiles(file -> file.getName().endsWith(".jar"));
             if (files == null || files.length == 0) return;
             for (File file : files) {
-                if (!loaded.contains(file.getName())) {
-                    URL_INJECTOR.get().addURL(file.toURI().toURL());
-                    //	this.method.invoke(this.classLoader, file.toURI().toURL());
-                    this.loaded.add(file.getName());
-                }
+                injectSingleJar(file);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,7 +61,6 @@ public class DependencyManager {
         try {
             if (!loaded.contains(file.getName())) {
                 URL_INJECTOR.get().addURL(file.toURI().toURL());
-                //	this.method.invoke(this.classLoader, file.toURI().toURL());
                 this.loaded.add(file.getName());
             }
         } catch (Exception e) {

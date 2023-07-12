@@ -9,7 +9,6 @@ import java.nio.file.StandardCopyOption;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -46,7 +45,7 @@ public class DependencyDownloader {
      *
      * @param dependency    the object Depency that contains group, artifact name and version of the jar
      * @param outputDir     the directory where the dependency will be downloaded
-     * @param afterDownload
+     * @param afterDownload the function that will be executed after the download
      * @return the dependency object
      */
     public Dependency downloadDependency(Dependency dependency, File outputDir, Consumer<File> afterDownload) {
@@ -94,9 +93,8 @@ public class DependencyDownloader {
     }
 
     public void download(List<Dependency> dependencies, File outputDir, Consumer<File> afterDownload) {
-        List<Dependency> dep = new ArrayList<>();
         for (final Dependency dependency : dependencies) {
-            dep.add(downloadDependency(dependency, outputDir, afterDownload));
+            downloadDependency(dependency, outputDir, afterDownload);
         }
     }
 

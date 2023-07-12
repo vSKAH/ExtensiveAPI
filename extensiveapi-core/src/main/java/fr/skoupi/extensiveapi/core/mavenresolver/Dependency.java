@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public class Dependency {
 
-    private String groupId;
-    private String artifactId;
-    private String version;
-    private String repository;
+    private final String groupId;
+    private final String artifactId;
+    private final String version;
+    private final String repository;
 
     /**
      * Used if you want to download a dependency from a private repository
@@ -43,13 +43,6 @@ public class Dependency {
 
     public String getURLName() {
         return getRepository() + getGroupId().replace(".", "/") + "/" + getArtifactId() + "/" + getVersion() + "/" + getArtifactId() + "-" + getVersion() + ".jar";
-    }
-
-    /**
-     * @return the full URL of the dependency
-     */
-    public String getURLNameWithoutId() {
-        return getRepository();
     }
 
 }

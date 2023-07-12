@@ -1,4 +1,4 @@
-package fr.skoupi.extensiveapi.core;
+package fr.skoupi.extensiveapi.core.configuration;
 
 import fr.skoupi.extensiveapi.core.configuration.ConfigurationExporter;
 import org.junit.jupiter.api.Assertions;
