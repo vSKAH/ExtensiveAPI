@@ -6,11 +6,6 @@ import org.junit.jupiter.api.*;
 public class RandomMapTest {
 
 
-    @BeforeAll
-    static void setup() {
-
-    }
-
     @DisplayName("Test Total Equals 100")
     @Test
     void testTotal() {
@@ -42,10 +37,6 @@ public class RandomMapTest {
         randomMap.add(50, "This String has 50 weight");
         randomMap.add(50, "This String has 50 weight");
         Assertions.assertNotNull(randomMap.next());
-    }
-
-    @AfterAll
-    static void end() {
     }
 
 }
