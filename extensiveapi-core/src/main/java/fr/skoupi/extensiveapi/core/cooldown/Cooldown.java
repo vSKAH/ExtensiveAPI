@@ -7,6 +7,7 @@ package fr.skoupi.extensiveapi.core.cooldown;
  * For the project ExtensiveAPI
  */
 
+@SuppressWarnings("unused")
 public interface Cooldown<T> {
 
     /**

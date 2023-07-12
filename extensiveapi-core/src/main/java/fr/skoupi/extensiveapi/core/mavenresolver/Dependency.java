@@ -3,6 +3,7 @@ package fr.skoupi.extensiveapi.core.mavenresolver;
 import lombok.Getter;
 
 @Getter
+@SuppressWarnings("unused")
 public class Dependency {
 
     private final String groupId;

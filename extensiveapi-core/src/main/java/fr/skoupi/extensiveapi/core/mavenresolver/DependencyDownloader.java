@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
@@ -46,9 +45,8 @@ public class DependencyDownloader {
      * @param dependency    the object Depency that contains group, artifact name and version of the jar
      * @param outputDir     the directory where the dependency will be downloaded
      * @param afterDownload the function that will be executed after the download
-     * @return the dependency object
      */
-    public Dependency downloadDependency(Dependency dependency, File outputDir, Consumer<File> afterDownload) {
+    public void downloadDependency(Dependency dependency, File outputDir, Consumer<File> afterDownload) {
         String name = dependency.getArtifactId() + "-" + dependency.getVersion() + ".jar";
         File dependencyFile = new File(outputDir + File.separator + name);
         boolean fileExists = dependencyFile.exists() && dependencyFile.isFile();
@@ -57,7 +55,7 @@ public class DependencyDownloader {
             if (checksumDependency(dependency, dependencyFile)) {
                 afterDownload.accept(dependencyFile);
             }
-            return dependency;
+            return;
         }
 
         download(dependency.getURLName(), dependencyFile);
@@ -67,26 +65,23 @@ public class DependencyDownloader {
             if (checksumDependency(dependency, dependencyFile)) {
                 afterDownload.accept(dependencyFile);
             }
-            return dependency;
         }
 
-        return null;
     }
 
     /**
      * This function allow us to download a file (here the jar)
      *
      * @param urlLink        the url of the file we wanna download
-     * @param dependencyFile the directory where the dependency will be downloaded
+     * @param downloadFolder the directory where the dependency will be downloaded
      */
-    public void download(String urlLink, File dependencyFile) {
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public void download(String urlLink, File downloadFolder) {
         try {
             URL url = new URL(urlLink);
-            if (!dependencyFile.exists()) {
-                dependencyFile.mkdirs();
-            }
-            Path targetPath = dependencyFile.toPath();
-            Files.copy(url.openStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+            downloadFolder.mkdirs();
+            Files.copy(url.openStream(), downloadFolder.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -106,6 +101,8 @@ public class DependencyDownloader {
      * @param dependecyFile the file where is located the dependency
      * @return true if the two sha1 are the same
      */
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public boolean checksumDependency(Dependency dependency, File dependecyFile) {
         try {
             InputStream stream = new URL(dependency.getURLName() + ".sha1").openStream();

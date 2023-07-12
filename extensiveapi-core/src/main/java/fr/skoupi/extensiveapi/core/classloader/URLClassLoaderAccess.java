@@ -33,6 +33,7 @@ import java.util.Collection;
 /**
  * Provides access to {@link URLClassLoader}#addURL.
  */
+@SuppressWarnings("unused")
 public abstract class URLClassLoaderAccess {
 
     private final URLClassLoader classLoader;
