@@ -13,6 +13,7 @@
     <version>${project.parent.version}</version>
 
     <repositories>
+
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
@@ -51,6 +52,8 @@
     </repositories>
 
     <dependencies>
+        <!-- Start Hard dependencies -->
+        <!-- Hard Dependencies Are not shaded but are required for the plugin to work -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
@@ -64,7 +67,6 @@
             <version>1.0.7</version>
             <scope>provided</scope>
         </dependency>
-
 
         <dependency>
             <groupId>org.spigotmc.</groupId>
@@ -86,7 +88,9 @@
             <version>3.11.49</version>
             <scope>provided</scope>
         </dependency>
+        <!-- End Hard dependencies -->
 
+        <!-- Start Shade dependencies -->
         <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-paper</artifactId>
@@ -104,6 +108,7 @@
             <artifactId>extensiveapi-databases</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <!-- End Shade dependencies -->
 
         <!-- Hooks -->
 
@@ -156,30 +161,57 @@
             <version>2.4.0-RC</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Testing dependecie for Minecraft -->
+        <dependency>
+            <groupId>com.github.seeseemelk</groupId>
+            <artifactId>MockBukkit-v1.18</artifactId>
+            <version>2.0.0</version>
+            <scope>test</scope>
+
+            <exclusions>
+                <exclusion>
+                    <!-- We use javax.annotation instead. Excluding this -->
+                    <!-- prevents us from using inconsistent annotations -->
+                    <groupId>org.jetbrains</groupId>
+                    <artifactId>annotations</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <properties>
+        <!-- Java 17 -->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Spigot properties -->
+        <spigot.version>1.8.8</spigot.version>
+        <spigot.javadocs>https://hub.spigotmc.org/javadocs/spigot/</spigot.javadocs>
     </properties>
 
     <build>
+        <!-- The name of the final jar -->
+        <finalName>${project.name} v${project.version}</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.4.1</version>
                 <configuration>
-                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml
+                    </dependencyReducedPomLocation>
                     <relocations>
                         <relocation>
                             <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>fr.skoupi.extensiveapi.minecraft.acf.commands</shadedPattern> <!-- Replace this -->
+                            <shadedPattern>fr.skoupi.extensiveapi.minecraft.acf.commands
+                            </shadedPattern> <!-- Replace this -->
                         </relocation>
                         <relocation>
                             <pattern>co.aikar.locales</pattern>
-                            <shadedPattern>fr.skoupi.extensiveapi.minecraft.acf.locales</shadedPattern> <!-- Replace this -->
+                            <shadedPattern>fr.skoupi.extensiveapi.minecraft.acf.locales
+                            </shadedPattern> <!-- Replace this -->
                         </relocation>
                     </relocations>
                 </configuration>

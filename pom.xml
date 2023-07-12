@@ -8,12 +8,23 @@
     <artifactId>extensiveapi</artifactId>
     <packaging>pom</packaging>
     <version>3.0-SNAPSHOT-B4</version>
+
+
+    <!-- Project Info -->
+    <name>ExtensiveAPI</name>
+    <url>https://github.com/vSKAH/ExtensiveAPI</url>
+    <description>ExtensiveAPI is an api to facilitate development mainly for Spigot/Paper plugins but not only.
+    </description>
+
+    <!-- Modules that are part of this project -->
     <modules>
         <module>extensiveapi-databases</module>
         <module>extensiveapi-minecraft</module>
         <module>extensiveapi-core</module>
     </modules>
 
+    <!-- Repositories that host our dependencies -->
+    <!-- Well, any that aren't found on maven-central. -->
     <repositories>
         <repository>
             <id>jitpack.io</id>
@@ -44,20 +55,101 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Testing dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.9.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.4.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.7</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
-
     <build>
+        <!-- /src/main/java/ contains all sources (production code) -->
+        <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+
+        <!-- /src/test/java/ contains all unit tests (testing code) -->
+        <testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
+
+        <!-- The default goal for compiling is "clean package" -->
+        <defaultGoal>clean package</defaultGoal>
+
+
         <plugins>
             <plugin>
+                <!-- Compiler plugin -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+
+                <configuration>
+                    <excludes>
+                        <!-- package info files are only important for Javadocs -->
+                        <!-- We can safely exclude them from the final jar -->
+                        <exclude>**/package-info.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <!-- Attach sources -->
+            <!-- <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.3.0</version>
+
+            <executions>
+                <execution>
+                    <id>attach-sources</id>
+                    <goals>
+                        <goal>jar</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+        -->
+
+            <plugin>
+                <!-- Plugin for Unit Tests -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
+
+                <configuration>
+                    <junitArtifactName>org.junit.jupiter:junit-jupiter</junitArtifactName>
+                    <trimStackTrace>false</trimStackTrace>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <!-- Dependency shading -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.5.0</version>
+
+                <configuration>
+                    <!-- Exclude unneeded metadata files from shaded dependencies -->
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
 
                 <executions>
                     <execution>
@@ -69,6 +161,44 @@
                 </executions>
             </plugin>
         </plugins>
+
+
+        <resources>
+            <!-- We want to include our LICENSE file -->
+            <resource>
+                <directory>${basedir}</directory>
+                <filtering>false</filtering>
+
+                <includes>
+                    <include>LICENSE</include>
+                </includes>
+            </resource>
+        </resources>
+
     </build>
+
+    <properties>
+        <!-- UTF-8 is our standard encoding for source files -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Target Java 8 -->
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+    <issueManagement>
+        <!-- Bug Tracker -->
+        <system>GitHub Issues</system>
+        <url>https://github.com/vSKAH/ExtensiveAPI</url>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <!-- License -->
+            <name>GNU General Public License v3.0</name>
+            <url>https://github.com/vSKAH/ExtensiveAPI/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
 </project>
