@@ -13,22 +13,23 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
+@SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
 public class ConfigurationExporter {
 
     /**
      * If the target file exists, replace it with the input stream. If it doesn't exist, create it
      *
      * @param targetFile The file to create.
-     * @param in The input stream of the file you want to copy.
-     * @param replace If the file already exists, should it be replaced?
+     * @param in         The input stream of the file you want to copy.
+     * @param replace    If the file already exists, should it be replaced?
      * @return The file that was created.
      */
     public static File createConfig(File targetFile, InputStream in, boolean replace) throws IOException {
-        if (replace && targetFile.exists()) {
-            Files.copy(in, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } else if (!targetFile.exists()) {
-            Files.copy(in, targetFile.toPath());
+        if (targetFile.exists()) {
+            if (replace) Files.copy(in, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            return targetFile;
         }
+        Files.copy(in, targetFile.toPath());
         return targetFile;
     }
 

@@ -11,12 +11,9 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoDatabase;
 import fr.skoupi.extensiveapi.databases.IDataSource;
 import lombok.Getter;
 import org.bson.UuidRepresentation;
-
-import java.util.HashMap;
 
 
 @Getter

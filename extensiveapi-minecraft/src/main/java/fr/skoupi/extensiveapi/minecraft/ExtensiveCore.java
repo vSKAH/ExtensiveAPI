@@ -60,7 +60,7 @@ public class ExtensiveCore extends JavaPlugin {
         File dependenciesFile = new File(getDataFolder(), "dependencies.json");
         File dependenciesFolder = new File(getDataFolder(), "SKAH-DEPENDENCIES");
 
-        DependencyManager dependencyManager = new DependencyManager(this.getClass());
+        DependencyManager dependencyManager = new DependencyManager();
 
         try {
             if (!dependenciesFile.exists()) {
@@ -76,9 +76,9 @@ public class ExtensiveCore extends JavaPlugin {
                 getLogger().info("Loading dependency: " + dependency.getArtifactId() + " v" + dependency.getVersion());
             }
             getLogger().info("Downloading dependencies...");
-            dependencyManager.dl(dependenciesFolder);
+            dependencyManager.downloadJars(dependenciesFolder);
             getLogger().info("Injecting dependencies...");
-            dependencyManager.injectJar(dependenciesFolder);
+            dependencyManager.injectJarsInsideFolder(dependenciesFolder);
             getLogger().info("Dependencies are loaded and injected !");
         } catch (IOException e) {
             throw new RuntimeException(e);
