@@ -84,18 +84,30 @@ jobs:
 
         ```xml
         <repositories>
+
           <repository>
+
             <id>jitpack.io</id>
+
             <url>https://jitpack.io</url>
+
           </repository>
+
         </repositories>
 
+
         <dependencies>
+
 	        <dependency>
+
 	          <groupId>com.github.vSKAH</groupId>
+
 	          <artifactId>ExtensiveAPI</artifactId>
+
 	          <version>Latest-Stable</version>
+
 	        </dependency>
+          
         </dependencies>
         ```
         "
