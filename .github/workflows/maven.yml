@@ -41,7 +41,27 @@ jobs:
 
     - name: Build with Maven
       run: mvn package --file pom.xml
-      
-    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+    
+    - name: Get the latest commit sha
+      id: latest
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        
+
+    - name: Create Release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_name: vSKAH/ExtensiveAPI
+        # A personal access token for the GitHub repository in which the release will be created and edited.
+        # It is recommended to create the access token with the following scopes: `repo, user, admin:repo_hook`.
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: |
+          extensiveapi-minecraft/target/extensiveapi-minecraft v3.0-beta.4.jar
+          extensiveapi-databases/target/extensiveapi-databases v3.0-beta.4.jar
+          extensiveapi-core/target/extensiveapi-core v3.0-beta.4.jar
+
+        asset_name: extensiveapi-minecraft v3.0-beta.4.jar
+        tag: Latest Stable
+        overwrite: true
+        body: "Latest Stable Build"
+    
+
