@@ -60,7 +60,7 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file_glob: true
         file: extensiveapi-all-compiled/*
-        overwrite: true
         tag: Latest-Stable
+        overwrite: true
         body: |
         ## 💾  Download link\nThis latest release can be downloaded below this message
