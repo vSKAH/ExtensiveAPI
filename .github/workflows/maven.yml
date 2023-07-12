@@ -63,7 +63,7 @@ jobs:
         file_glob: true
         file: extensiveapi-all-compiled/*
         overwrite: true
-        tag: Release-${{ steps.latest.outputs.sha_short }}
+        tag: RC-${{ steps.latest.outputs.sha_short }}
         body: "
         ## 💾  Download link
 
@@ -95,7 +95,7 @@ jobs:
 	          <dependency>\n
 	            <groupId>com.github.vSKAH</groupId>\n
 	            <artifactId>ExtensiveAPI</artifactId>\n
-	            <version>Latest-Stable</version>\n
+	            <version>RC-${{ steps.latest.outputs.sha_short }}</version>\n
 	          </dependency>\n
         </dependencies>
         ```\n"
