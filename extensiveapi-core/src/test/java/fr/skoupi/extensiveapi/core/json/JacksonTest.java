@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
+@SuppressWarnings("all")
 public class JacksonTest extends IDataSerialisable<Employee> {
 
     static Employee employee;
