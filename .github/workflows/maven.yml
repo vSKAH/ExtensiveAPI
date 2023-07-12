@@ -60,7 +60,38 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file_glob: true
         file: extensiveapi-all-compiled/*
-        tag: Latest-Stable
         overwrite: true
-        body: |
-        ## 💾  Download link\nThis latest release can be downloaded below this message
+        tag: Latest-Stable
+        body: "
+        ## 💾  Download link
+        This latest release can be downloaded below this message
+
+        ### ❓ How to install ExtensiveAPI on my Minecraft Server ? 
+        Simply drag & drop the extensiveapi-minecraft jar file into the `/plugins/` directory of your server.
+        extensiveapi-databases and extensiveapi-core is already shaded in extensiveapi-minecraft
+
+        If you need any help installing you can contact me.
+
+        ## 📝 Change log
+        This part is currently not working
+
+        ## 📦  Maven dependency reference
+        If you want to develop with ExtensiveAPI ?
+        ```XML
+        <repositories>
+          <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+          </repository>
+        </repositories>
+
+        <dependencies>
+	        <dependency>
+	          <groupId>com.github.vSKAH</groupId>
+	          <artifactId>ExtensiveAPI</artifactId>
+	          <version>Latest-Stable</version>
+	        </dependency>
+        </dependencies>
+        ```"
+    
+
