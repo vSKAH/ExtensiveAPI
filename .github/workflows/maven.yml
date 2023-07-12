@@ -60,10 +60,9 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file_glob: true
         file: extensiveapi-all-compiled/*
-        asset_name: extensiveapi-minecraft v3.0-beta.4.jar
-        tag: Latest-Stable
         overwrite: true
-        body: |
+        tag: Latest-Stable
+        body: ${{
           ## 💾  Download link
           This latest release can be downloaded here :
 
@@ -93,6 +92,6 @@ jobs:
 	           <version>Latest-Stable</version>
 	          </dependency>
           </dependencies>
-          ```
+          ``` }}
     
 
