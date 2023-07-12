@@ -50,8 +50,7 @@ jobs:
     - name: Get the latest commit sha
       id: latest
       run: | 
-        git switch preprod
-        echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        echo "::set-output name=sha_short::$(git rev-parse --short preprod)"
 
     - name: Create Release
       uses: svenstaro/upload-release-action@v2
