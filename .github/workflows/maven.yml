@@ -60,7 +60,7 @@ jobs:
           extensiveapi-core/target/extensiveapi-core v3.0-beta.4.jar
 
         asset_name: extensiveapi-minecraft v3.0-beta.4.jar
-        tag: Latest Stable
+        tag: Latest-Stable
         overwrite: true
         body: "Latest Stable Build"
     
