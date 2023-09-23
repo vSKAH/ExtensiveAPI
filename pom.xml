@@ -94,6 +94,7 @@
                         <!-- We can safely exclude them from the final jar -->
                         <exclude>**/package-info.java</exclude>
                     </excludes>
+
                 </configuration>
             </plugin>
 
@@ -157,13 +158,11 @@
 
 
         <resources>
-            <!-- We want to include our LICENSE file -->
             <resource>
-                <directory>${basedir}</directory>
-                <filtering>false</filtering>
-
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
                 <includes>
-                    <include>LICENSE</include>
+                    <include>*</include>
                 </includes>
             </resource>
         </resources>

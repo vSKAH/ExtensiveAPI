@@ -35,4 +35,8 @@ public class PlayerCooldown implements Cooldown<Player> {
     public String getFormattedTime(Player player, String cooldownIdentifier) {
         return DurationFormatUtils.formatDuration(getTime(player, cooldownIdentifier) * 1000, "H'h 'm'm 's's'");
     }
+
+    public String getFormattedTime(Player player, String cooldownIdentifier, String format) {
+        return DurationFormatUtils.formatDuration(getTime(player, cooldownIdentifier) * 1000, format);
+    }
 }
