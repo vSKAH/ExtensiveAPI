@@ -9,11 +9,15 @@ package fr.skoupi.extensiveapi.minecraft.hooks.basics;
 
 
 import com.gamingmesh.jobs.Jobs;
-import fr.skoupi.extensiveapi.minecraft.hooks.Hook;
+import fr.skoupi.extensiveapi.minecraft.hooks.AbstractHook;
 
-public class JobsHook implements Hook<Jobs> {
+public class JobsHook extends AbstractHook<Jobs> {
 
     private Jobs jobs;
+
+    public JobsHook() {
+        super("Jobs", "com.gamingmesh.jobs.Jobs");
+    }
 
     @Override
     public boolean registerHook() {
@@ -23,17 +27,7 @@ public class JobsHook implements Hook<Jobs> {
     }
 
     @Override
-    public String getHookName() {
-        return "Jobs";
-    }
-
-    @Override
-    public String getClasz() {
-        return "com.gamingmesh.jobs.Jobs";
-    }
-
-    @Override
-    public Jobs get() {
+    public Jobs getHook() {
         return jobs;
     }
 }

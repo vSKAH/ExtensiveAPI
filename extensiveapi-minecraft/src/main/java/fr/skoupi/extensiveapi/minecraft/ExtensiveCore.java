@@ -15,7 +15,6 @@ import fr.skoupi.extensiveapi.core.configuration.ConfigurationExporter;
 import fr.skoupi.extensiveapi.core.mavenresolver.Dependency;
 import fr.skoupi.extensiveapi.core.mavenresolver.DependencyManager;
 import fr.skoupi.extensiveapi.minecraft.commands.CommandLoader;
-import fr.skoupi.extensiveapi.minecraft.hooks.Hooks;
 
 import fr.skoupi.extensiveapi.minecraft.smartinventory.InventoryManager;
 import fr.skoupi.extensiveapi.minecraft.armors.ArmorListeners;
@@ -38,10 +37,9 @@ import java.util.concurrent.TimeUnit;
 @Getter
 public class ExtensiveCore extends JavaPlugin {
 
-    private static ExtensiveCore instance;
-    private static InventoryManager inventoryManager;
     private CommandLoader commandLoader;
-    private Hooks hooks;
+    private static @Getter ExtensiveCore instance;
+    private static @Getter InventoryManager inventoryManager;
 
     @Getter
     @Setter
@@ -102,13 +100,10 @@ public class ExtensiveCore extends JavaPlugin {
         commandLoader = new CommandLoader(new PaperCommandManager(this));
         commandLoader.registerDefault();
 
-        //Hook basics plugins
-        hooks = new Hooks();
-
         if (useArmorEvent)
             Bukkit.getPluginManager().registerEvents(new ArmorListeners(), this);
 
-        ExtensiveThreadPool.RUNNABLE_EXECUTOR.scheduleAtFixedRate(new CommandLoader.unregisterCommandTask(), 5, 5, TimeUnit.SECONDS);
+        ExtensiveThreadPool.RUNNABLE_EXECUTOR.scheduleAtFixedRate(new CommandLoader.unregisterCommandTask(), 5, 2, TimeUnit.SECONDS);
     }
 
 
@@ -118,25 +113,6 @@ public class ExtensiveCore extends JavaPlugin {
     @Override
     public void onDisable() {
         ExtensiveThreadPool.shutdownNow();
-    }
-
-    /**
-     * If the instance variable is null, create a new ModulesPlugin object and assign it to the instance variable. Then
-     * return the instance variable.
-     *
-     * @return The instance of the ModulesPlugin class.
-     */
-    public static ExtensiveCore getInstance() {
-        return instance;
-    }
-
-    /**
-     * This function returns the inventoryManager variable.
-     *
-     * @return The inventoryManager object.
-     */
-    public static InventoryManager getInventoryManager() {
-        return inventoryManager;
     }
 
 

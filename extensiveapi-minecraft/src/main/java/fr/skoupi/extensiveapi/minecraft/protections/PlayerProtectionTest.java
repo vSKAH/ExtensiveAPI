@@ -9,7 +9,6 @@ package fr.skoupi.extensiveapi.minecraft.protections;
 
 import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import fr.skoupi.extensiveapi.minecraft.ExtensiveCore;
 import fr.skoupi.extensiveapi.minecraft.hooks.Hooks;
 import fr.skoupi.extensiveapi.minecraft.utils.MinecraftVersion;
 import lombok.NonNull;
@@ -26,7 +25,7 @@ public class PlayerProtectionTest {
     public final Hooks hooks;
 
     public PlayerProtectionTest() {
-        this.hooks = ExtensiveCore.getInstance().getHooks();
+        this.hooks = Hooks.getInstance();
     }
 
     /**
@@ -62,14 +61,14 @@ public class PlayerProtectionTest {
             return false;
 
         // Checking if the plugin is hooked to WorldGuard.
-        if (hooks.isHooked("WorldGuard")) {
-            WorldGuardPlugin worldGuardIntegration = (WorldGuardPlugin) hooks.getLoaded().get("WorldGuard").get();
+        if (hooks.isHooked("WORLDGUARD", false)) {
+            WorldGuardPlugin worldGuardIntegration = (WorldGuardPlugin) hooks.getLoaded().get("WorldGuard").getHook();
             if (!worldGuardIntegration.createProtectionQuery().testBlockPlace(null, location, placedMaterial))
                 return false;
         }
 
         //Check if the plugin is hooked to Factions
-        if (hooks.isHooked("Factions")) {
+        if (hooks.isHooked("FACTIONS", false)) {
             if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, location, "build", true))
                 return false;
         }
@@ -94,20 +93,20 @@ public class PlayerProtectionTest {
         if (block.isLiquid()) return false;
 
         // Checking if the plugin is hooked to Lands.
-        if (hooks.isHooked("Lands")) {
-            LandsIntegration landsIntegration = (LandsIntegration) hooks.getLoaded().get("Lands").get();
+        if (hooks.isHooked("LANDS", false)) {
+            LandsIntegration landsIntegration = (LandsIntegration) hooks.getLoaded().get("Lands").getHook();
             Land land = landsIntegration.getLand(location);
             if (landsIntegration.isClaimed(location) && land != null && !land.getOnlinePlayers().contains(player))
                 return false;
         }
 
         // Checking if the plugin is hooked to WorldGuard.
-        if (hooks.isHooked("WorldGuard")) {
-            WorldGuardPlugin worldGuardIntegration = (WorldGuardPlugin) hooks.getLoaded().get("WorldGuard").get();
+        if (hooks.isHooked("WORLDGUARD", false)) {
+            WorldGuardPlugin worldGuardIntegration = (WorldGuardPlugin) hooks.getLoaded().get("WorldGuard").getHook();
             if (!worldGuardIntegration.createProtectionQuery().testBlockBreak(null, block)) return false;
         }
 
-        if (hooks.isHooked("Factions")) {
+        if (hooks.isHooked("FACTIONS", false)) {
             if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, location, "destroy", true))
                 return false;
         }
@@ -124,8 +123,8 @@ public class PlayerProtectionTest {
      */
     public boolean testPvp(Player player) {
         // It's checking if the plugin is hooked to WorldGuard.
-        if (hooks.isHooked("WorldGuard")) {
-            WorldGuardPlugin worldGuardIntegration = (WorldGuardPlugin) hooks.getLoaded().get("WorldGuard").get();
+        if (hooks.isHooked("WORLDGUARD", false)) {
+            WorldGuardPlugin worldGuardIntegration = (WorldGuardPlugin) hooks.getLoaded().get("WorldGuard").getHook();
             return worldGuardIntegration.createProtectionQuery().testEntityDamage(null, player);
         }
 

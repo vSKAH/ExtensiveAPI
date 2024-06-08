@@ -8,21 +8,15 @@ package fr.skoupi.extensiveapi.minecraft.hooks.basics;
  */
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import fr.skoupi.extensiveapi.minecraft.hooks.Hook;
+import fr.skoupi.extensiveapi.minecraft.hooks.AbstractHook;
 
 /**
  * This class is a hook for WorldGuard.
  */
-public class WorldguardHook implements Hook<WorldGuardPlugin> {
+public class WorldguardHook extends AbstractHook<WorldGuardPlugin> {
 
-    @Override
-    public String getHookName() {
-        return "WorldGuard";
-    }
-
-    @Override
-    public String getClasz() {
-        return "com.sk89q.worldguard.bukkit.WorldGuardPlugin";
+    public WorldguardHook() {
+        super("WorldGuard", "com.sk89q.worldguard.bukkit.WorldGuardPlugin");
     }
 
     @Override
@@ -30,13 +24,9 @@ public class WorldguardHook implements Hook<WorldGuardPlugin> {
         return pluginEnabled();
     }
 
-    /**
-     * This function returns the WorldGuardPlugin instance.
-     *
-     * @return The WorldGuardPlugin instance.
-     */
+
     @Override
-    public WorldGuardPlugin get() {
+    public WorldGuardPlugin getHook() {
         return WorldGuardPlugin.inst();
     }
 }

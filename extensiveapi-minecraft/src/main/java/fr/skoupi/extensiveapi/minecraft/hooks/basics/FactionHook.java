@@ -1,11 +1,15 @@
 package fr.skoupi.extensiveapi.minecraft.hooks.basics;
 
 import com.massivecraft.factions.FactionsPlugin;
-import fr.skoupi.extensiveapi.minecraft.hooks.Hook;
+import fr.skoupi.extensiveapi.minecraft.hooks.AbstractHook;
 
-public class FactionHook implements Hook<FactionsPlugin> {
+public class FactionHook extends AbstractHook<FactionsPlugin> {
 
     private FactionsPlugin factions;
+
+    public FactionHook() {
+        super("Factions", "com.massivecraft.factions.FactionsPlugin");
+    }
 
     @Override
     public boolean registerHook() {
@@ -15,17 +19,7 @@ public class FactionHook implements Hook<FactionsPlugin> {
     }
 
     @Override
-    public String getHookName() {
-        return "Factions";
-    }
-
-    @Override
-    public String getClasz() {
-        return "com.massivecraft.factions.FactionsPlugin";
-    }
-
-    @Override
-    public FactionsPlugin get() {
+    public FactionsPlugin getHook() {
         return factions;
     }
 }

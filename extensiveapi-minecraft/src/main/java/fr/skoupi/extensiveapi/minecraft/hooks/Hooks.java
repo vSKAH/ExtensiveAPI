@@ -15,9 +15,11 @@ import java.util.HashMap;
 public class Hooks {
 
     @Getter
-    private final HashMap<String, Hook<?>> loaded = new HashMap<>();
+    private final HashMap<String, AbstractHook<?>> loaded = new HashMap<>();
+    private static Hooks instance;
 
     public Hooks() {
+        instance = this;
         hookDefaultsPlugins();
     }
 
@@ -39,8 +41,9 @@ public class Hooks {
      *
      * @param hook The hook to register.
      */
-    public void hookPlugin(Hook<?> hook) {
-        if (hook.registerHook()) loaded.put(hook.getHookName(), hook);
+    public void hookPlugin(AbstractHook<?> hook) {
+        if (hook.registerHook())
+            loaded.put(hook.getHookName(), hook);
     }
 
 
@@ -50,12 +53,19 @@ public class Hooks {
      * @param name The name of the plugin you want to check.
      * @return A boolean value.
      */
-    public boolean isHooked(String name) {
+    public boolean isHooked(String name, boolean useBukkitCheck) {
+        if (!useBukkitCheck)
+            return loaded.containsKey(name);
+
         try {
             return loaded.get(name).pluginEnabled();
         } catch (Exception e) {
             return false;
         }
-
     }
+
+    public static Hooks getInstance() {
+        return instance == null ? new Hooks() : instance;
+    }
+
 }

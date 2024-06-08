@@ -2,23 +2,16 @@ package fr.skoupi.extensiveapi.minecraft.hooks.basics;
 
 import dev.unnm3d.rediseconomy.api.RedisEconomyAPI;
 import dev.unnm3d.rediseconomy.currency.Currency;
-import fr.skoupi.extensiveapi.minecraft.hooks.Hook;
+import fr.skoupi.extensiveapi.minecraft.hooks.AbstractHook;
 
 
-public class RedisEconomyHook implements Hook<RedisEconomyAPI> {
+public class RedisEconomyHook extends AbstractHook<RedisEconomyAPI> {
 
     private RedisEconomyAPI redisEconomyAPI;
 
-    @Override
-    public String getHookName() {
-        return "RedisEconomy";
+    public RedisEconomyHook() {
+        super("RedisEconomy", "dev.unnm3d.rediseconomy.RedisEconomyPlugin");
     }
-
-    @Override
-    public String getClasz() {
-        return "dev.unnm3d.rediseconomy.RedisEconomyPlugin";
-    }
-
 
     @Override
     public boolean registerHook() {
@@ -28,11 +21,11 @@ public class RedisEconomyHook implements Hook<RedisEconomyAPI> {
     }
 
     @Override
-    public RedisEconomyAPI get() {
+    public RedisEconomyAPI getHook() {
         return redisEconomyAPI;
     }
 
     public Currency getCurrency(String currencyName) {
-        return get().getCurrencyByName(currencyName);
+        return getHook().getCurrencyByName(currencyName);
     }
 }

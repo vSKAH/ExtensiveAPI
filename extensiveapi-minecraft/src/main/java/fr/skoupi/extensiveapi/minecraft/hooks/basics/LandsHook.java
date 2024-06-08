@@ -8,15 +8,19 @@ package fr.skoupi.extensiveapi.minecraft.hooks.basics;
  */
 
 import fr.skoupi.extensiveapi.minecraft.ExtensiveCore;
-import fr.skoupi.extensiveapi.minecraft.hooks.Hook;
+import fr.skoupi.extensiveapi.minecraft.hooks.AbstractHook;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 
 /**
  * This class is a hook for the Lands plugin.
  */
-public class LandsHook implements Hook<LandsIntegration> {
+public class LandsHook extends AbstractHook<LandsIntegration> {
 
     private LandsIntegration lands;
+
+    public LandsHook() {
+        super("Lands", "me.angeschossen.lands.api.integration.LandsIntegration");
+    }
 
     @Override
     public boolean registerHook() {
@@ -30,13 +34,9 @@ public class LandsHook implements Hook<LandsIntegration> {
         return "Lands";
     }
 
-    @Override
-    public String getClasz() {
-        return "me.angeschossen.lands.api.integration.LandsIntegration";
-    }
 
     @Override
-    public LandsIntegration get() {
+    public LandsIntegration getHook() {
         return lands;
     }
 }
