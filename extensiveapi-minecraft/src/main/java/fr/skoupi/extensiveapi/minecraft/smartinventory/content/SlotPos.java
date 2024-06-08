@@ -10,6 +10,11 @@ public class SlotPos {
         this.column = column;
     }
 
+    public SlotPos(int caseNumber) {
+        this.row = caseNumber / 9;
+        this.column = caseNumber % 9;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(this == obj)

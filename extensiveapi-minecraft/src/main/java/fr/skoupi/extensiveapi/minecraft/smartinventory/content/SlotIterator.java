@@ -12,7 +12,8 @@ public interface SlotIterator {
 
     enum Type {
         HORIZONTAL,
-        VERTICAL
+        VERTICAL,
+        VERTICAL_REVERSE,
     }
 
     Optional<ClickableItem> get();
