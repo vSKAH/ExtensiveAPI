@@ -14,17 +14,16 @@ import org.bukkit.Location;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode
 @ToString
 public class LiteLocation {
 
     private String worldName;
 
-    private int x;
-    private int y;
-    private int z;
+    private double x;
+    private double y;
+    private double z;
 
     public Location toBukkitLocation() {
         return new Location(Bukkit.getWorld(getWorldName()), getX(), getY(), getZ());
@@ -32,9 +31,9 @@ public class LiteLocation {
 
     public LiteLocation fromBukkitLocation(Location location) {
         this.setWorldName(location.getWorld().getName());
-        this.setX(location.getBlockX());
-        this.setY(location.getBlockY());
-        this.setZ(location.getBlockZ());
+        this.setX(location.getX());
+        this.setY(location.getY());
+        this.setZ(location.getZ());
         return this;
     }
 }

@@ -22,6 +22,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -68,10 +69,27 @@ public class ItemStackDeserializer extends JsonDeserializer<ItemStack> {
                 itemMeta.remove("color");
             }
 
+            ArrayList<ItemFlag> flags = new ArrayList<>();
+            if (itemMeta.containsKey("ItemFlags")) {
+               if (jsonNode.get("meta").has("ItemFlags"))
+               {
+                   JsonNode flagsNode = jsonNode.get("meta").get("ItemFlags");
+                   flagsNode.forEach(jsonNode1 -> {
+                       ItemFlag flag = ItemFlag.valueOf(jsonNode1.asText());
+                       flags.add(flag);
+                     });
+               }
+                itemMeta.remove("ItemFlags");
+            }
+
             // It deserializes the ItemMeta from the json file.
             ItemMeta meta = (ItemMeta) ConfigurationSerialization.deserializeObject(itemMeta);
             // It clears the map.
             itemMeta.clear();
+
+            for (ItemFlag flag : flags) {
+                meta.addItemFlags(flag);
+            }
 
             // It checks if the item is a leather armor and if the color is not null. If it is, it will set the color of
             // the leather armor.

@@ -211,7 +211,7 @@ public class MongoDataProvider {
      *                 does not insert a new document when no match is found.
      * @return A boolean value.
      */
-    public boolean syncUpdateOneDocument(Bson filter, Document document, boolean upsert) {
+    public boolean syncUpdateOneDocument(Bson filter, Bson document, boolean upsert) {
         return mongoCollection.updateOne(filter, document, new UpdateOptions().upsert(upsert)).wasAcknowledged();
     }
 
@@ -230,7 +230,7 @@ public class MongoDataProvider {
      * @param executorService The executor service to use for the asynchronous operation.
      * @param future          The future object that will be completed when the update is done.
      */
-    public void asyncUpdateOneDocument(Bson filter, Document document, boolean upsert, ExecutorService executorService, CompletableFuture<Boolean> future) {
+    public void asyncUpdateOneDocument(Bson filter, Bson document, boolean upsert, ExecutorService executorService, CompletableFuture<Boolean> future) {
         executorService.submit(() -> {
             try {
                 future.complete(syncUpdateOneDocument(filter, document, upsert));
