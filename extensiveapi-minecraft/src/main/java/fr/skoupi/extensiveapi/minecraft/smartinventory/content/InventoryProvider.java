@@ -3,7 +3,11 @@ package fr.skoupi.extensiveapi.minecraft.smartinventory.content;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.ClickableItem;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.config.structs.DummyItem;
 import fr.skoupi.extensiveapi.minecraft.smartinventory.config.structs.GuiSettings;
+import fr.skoupi.extensiveapi.minecraft.smartinventory.config.structs.PaginationButton;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 public abstract class InventoryProvider {
 
@@ -26,4 +30,28 @@ public abstract class InventoryProvider {
     public void init(Player player, InventoryContents contents) {}
     public void update(Player player, InventoryContents contents) {}
 
+    protected void addPaginationButtons(Player player, InventoryContents contents, GuiSettings settings) {
+        for (PaginationButton paginationButton : settings.getPaginationButtons()) {
+            SlotPos slotPos = new SlotPos(paginationButton.getSlot());
+            contents.set(slotPos, ClickableItem.of(paginationButton.getItem(), e -> {
+                switch (paginationButton.getType()) {
+                    case PREVIOUS_PAGE:
+                        contents.inventory().open(player, contents.pagination().previous().getPage());
+                        break;
+                    case NEXT_PAGE:
+                        contents.inventory().open(player, contents.pagination().next().getPage());
+                        break;
+                    case FIRST_PAGE:
+                        contents.inventory().open(player, contents.pagination().first().getPage());
+                        break;
+                    case LAST_PAGE:
+                        contents.inventory().open(player, contents.pagination().last().getPage());
+                        break;
+                    default:
+                        Bukkit.getLogger().warning("Unknown pagination button type: " + paginationButton.getType());
+                        break;
+                }
+            }));
+        }
+    }
 }

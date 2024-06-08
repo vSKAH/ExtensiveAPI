@@ -7,6 +7,7 @@ package fr.skoupi.extensiveapi.minecraft.hooks;
  * For the project ExtensiveAPI
  */
 
+import fr.skoupi.extensiveapi.minecraft.ExtensiveCore;
 import fr.skoupi.extensiveapi.minecraft.hooks.basics.*;
 import lombok.Getter;
 
@@ -42,8 +43,11 @@ public class Hooks {
      * @param hook The hook to register.
      */
     public void hookPlugin(AbstractHook<?> hook) {
-        if (hook.registerHook())
+        if (hook.registerHook()) {
+            ExtensiveCore.getInstance().getLogger().info("Hooked " + hook.getHookName());
             loaded.put(hook.getHookName(), hook);
+            loaded.put(hook.getOriginalHookName(), hook);
+        }
     }
 
 
@@ -55,10 +59,10 @@ public class Hooks {
      */
     public boolean isHooked(String name, boolean useBukkitCheck) {
         if (!useBukkitCheck)
-            return loaded.containsKey(name);
+            return loaded.containsKey(name.toUpperCase());
 
         try {
-            return loaded.get(name).pluginEnabled();
+            return loaded.get(name.toUpperCase()).pluginEnabled();
         } catch (Exception e) {
             return false;
         }

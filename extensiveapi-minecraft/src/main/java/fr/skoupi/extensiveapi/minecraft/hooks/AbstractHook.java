@@ -15,7 +15,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 public abstract class AbstractHook<R> {
 
-    private final String originalHookName;
+    private final @Getter String originalHookName;
     private final @Getter String hookName;
     private final @Getter String clasz;
 
